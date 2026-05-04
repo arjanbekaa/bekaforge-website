@@ -18,21 +18,44 @@
           <nav class="breadcrumb"><a href="../index.html">Home</a> / <span>Integrating Actions</span></nav>
           <h1>Guide: Integrating Actions</h1>
           <p class="lede">Use action nodes when a conversation should trigger gameplay or UI behavior without turning the dialogue system into a game logic monolith.</p>
+
+          <h2>See it in action — the Control Room Actions demo</h2>
+          <p>The included <strong>Demo_ControlRoomActions</strong> graph (open <code>DialogueDemo.unity</code> and choose "Control Room Actions" from the demo menu) demonstrates action nodes at work. It shows both fire-and-forget UnityEvent bindings and blocking coroutine handlers — study it before building your own to understand how the graph pauses and resumes around action nodes.</p>
+
           <h2>When to use action nodes</h2>
           <ul>
-            <li>play an SFX</li>
-            <li>start a countdown</li>
-            <li>open or close a panel</li>
-            <li>unlock a door</li>
-            <li>trigger a cutscene step</li>
+            <li>play a sound effect or music cue</li>
+            <li>start a countdown or timer</li>
+            <li>open or close a UI panel</li>
+            <li>unlock a door or trigger a physics event</li>
+            <li>trigger a cutscene step or camera cut</li>
+            <li>award items or update game state</li>
           </ul>
+
+          <h2>DialogActionSO — defining an action</h2>
+          <p>Each action is defined as a <code>DialogActionSO</code> asset. Create one via <code>Right-click → Create → Dialogue Graph System → Definitions → Action</code>. Fill in:</p>
+          <ul>
+            <li><strong>Action ID</strong> — the stable string key your handler checks (e.g. <code>PlayExplosion</code>, <code>UnlockDoor</code>). Use this exact ID in graph action nodes and in <code>CanHandle()</code>.</li>
+            <li><strong>Display Name</strong> — human-readable label shown in the Actions sidebar tab.</li>
+            <li><strong>Description</strong> — tooltip text shown in the editor.</li>
+            <li><strong>Wait For Completion</strong> — if true, the dialogue pauses until your coroutine finishes.</li>
+            <li><strong>Default Delay</strong> — optional seconds to wait after a fire-and-forget action before advancing.</li>
+            <li><strong>Default Payload JSON</strong> — default JSON string passed to your handler if no payload is set on the node.</li>
+          </ul>
+          <p>The <strong>Actions</strong> sidebar tab in the graph editor shows all <code>DialogActionSO</code> assets in your project. Browse them and assign IDs to action nodes without leaving the editor.</p>
+
           <h2>Runtime wiring</h2>
           <ol>
             <li>Add <code>DialogActionRunner</code> to the scene.</li>
             <li>Assign it to <code>DialogManager.actionRunner</code>.</li>
-            <li>Add bindings or handlers to the appropriate conversation set.</li>
+            <li>Add your <code>IActionHandler</code> MonoBehaviours to the scene — the runner discovers them automatically.</li>
           </ol>
-          <h2>Async handler example</h2>
+
+          <h2>Fire-and-forget (UnityEvent)</h2>
+          <p>For simple one-shot triggers, bind a UnityEvent directly on the <code>DialogActionSO</code> asset. No code needed.</p>
+
+          <h2>Blocking coroutine handler</h2>
+          <p>Implement <code>IActionHandler</code> when the dialogue must wait for a result — a countdown, a fade, a door opening animation, or any async gameplay event.</p>
 <pre><code>using System.Collections;
 using DialogSystem.Runtime.Interfaces;
 using UnityEngine;
@@ -43,15 +66,35 @@ public class CountdownHandler : MonoBehaviour, IActionHandler
 
     public IEnumerator Handle(string actionId, string payloadJson)
     {
+        // Dialogue pauses here until this coroutine completes
         yield return new WaitForSeconds(3f);
     }
 }</code></pre>
+
+          <h2>Other definition ScriptableObjects</h2>
+          <p>Three more definition assets help you set up characters and AI context quickly — all under <code>Create → Dialogue Graph System → Definitions</code>:</p>
+
+          <h3>DialogCharacterSO — character definitions</h3>
+          <p>Create via <code>Create → Dialogue Graph System → Definitions → Character</code>. Assign in the <strong>Characters</strong> sidebar tab for bulk portrait, name, and audio assignment across all matching nodes. Key fields:</p>
+          <ul>
+            <li><strong>Character ID</strong> — stable key used to match dialog nodes.</li>
+            <li><strong>Display Name</strong> — shown in the runtime UI speaker nameplate.</li>
+            <li><strong>Portrait</strong> — sprite shown in the portrait/avatar frame.</li>
+            <li><strong>Short Description, Personality Traits, Speech Style, Example Lines</strong> — fed to the AI extension when rewriting or generating dialog for this character, so the AI writes in their voice consistently.</li>
+          </ul>
+
+          <h3>DialogEnvironmentSO — location context</h3>
+          <p>Create via <code>Create → Dialog Graph System → Definitions → Environment</code>. Set in the Context tab to give the AI a sense of place. Key fields: <strong>Display Name</strong>, <strong>Description</strong>, <strong>Atmosphere</strong>, <strong>Mood</strong>, <strong>Time of Day</strong>, <strong>Canon Rules</strong>, <strong>Default Tone</strong>.</p>
+
+          <h3>DialogSceneContextSO — full scene context for AI</h3>
+          <p>Create via <code>Create → Dialog Graph System → Definitions → Scene Context</code>. Combines environment, characters, and available actions into one asset. Assign it in the <strong>Context</strong> tab of the graph editor sidebar. The AI reads this when building prompts — filling it in produces significantly more coherent, canon-consistent results. Key fields: <strong>Environment</strong>, <strong>Participating Characters</strong>, <strong>Available Actions</strong>, <strong>Scene Goal</strong>, <strong>Tone</strong>, <strong>Extra Rules</strong>.</p>
+
           <nav class="page-nav" data-prev-next></nav>
         </article>
       </main>
       <aside class="page-toc" data-page-toc></aside>
     </div>
-    <footer class="footer"><div class="footer-inner"><span>Dialog Graph System docs</span><span>&copy; <span data-current-year></span></span></div></footer>
+    <footer class="footer"><div class="footer-inner"><span>Dialogue Graph System v2.0.0 &mdash; AI Extension v1.0.0</span><span>&copy; <span data-current-year></span></span></div></footer>
   </div>
   <script src="../assets/app.js"></script>
 </body>

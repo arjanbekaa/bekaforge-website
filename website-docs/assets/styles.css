@@ -30,7 +30,7 @@
   --radius-sm:      8px;
   --site-max:       1440px;
   --content-max:    860px;
-  --sidebar-width:  272px;
+  --sidebar-width:  252px;
   --toc-width:      220px;
   --font-body:      'Inter','Segoe UI',Arial,sans-serif;
   --font-head:      'Space Grotesk','Segoe UI',Arial,sans-serif;
@@ -207,31 +207,38 @@ blockquote{
 .sidebar{
   align-self:start;position:sticky;
   top:4.5rem;max-height:calc(100vh - 5.5rem);
-  overflow:auto;background:var(--bf-steel);
+  overflow-y:auto;overflow-x:hidden;
+  background:var(--bf-steel);
   border:1px solid var(--bf-steel-mid);border-radius:var(--radius);
+  scrollbar-width:thin;
+  scrollbar-color:var(--bf-steel-mid) transparent;
 }
-.sidebar-inner{padding:1rem 0.75rem}
+.sidebar::-webkit-scrollbar{width:4px}
+.sidebar::-webkit-scrollbar-track{background:transparent}
+.sidebar::-webkit-scrollbar-thumb{background:var(--bf-steel-mid);border-radius:4px}
+.sidebar-inner{padding:0.75rem 0.65rem}
 
 .sidebar-label{
   display:block;color:var(--bf-slate);
-  font-family:'Inter',sans-serif;font-size:11px;
+  font-family:'Inter',sans-serif;font-size:10.5px;
   text-transform:uppercase;letter-spacing:0.1em;
-  margin-bottom:0.5rem;padding:0 0.4rem;
+  margin-bottom:0.35rem;padding:0 0.4rem;
 }
 .nav-group+.nav-group{
-  margin-top:0.75rem;padding-top:0.75rem;
+  margin-top:0.5rem;padding-top:0.5rem;
   border-top:1px solid var(--bf-steel-mid);
 }
 .nav-group-title{
-  font-family:'Inter',sans-serif;font-size:11px;font-weight:500;
+  font-family:'Inter',sans-serif;font-size:10.5px;font-weight:500;
   color:var(--bf-slate);text-transform:uppercase;
-  letter-spacing:0.1em;margin:0 0 0.4rem;padding:0 0.4rem;
+  letter-spacing:0.1em;margin:0 0 0.25rem;padding:0 0.4rem;
 }
 .nav-list{list-style:none;padding:0;margin:0;display:grid;gap:1px}
 .nav-link{
-  display:block;padding:0.52rem 0.65rem;
-  border-radius:6px;font-family:'Inter',sans-serif;font-size:13.5px;
+  display:block;padding:0.35rem 0.65rem;
+  border-radius:6px;font-family:'Inter',sans-serif;font-size:13px;
   color:var(--bf-slate);transition:background 180ms ease,color 180ms ease;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
 }
 .nav-link:hover,.nav-link:focus-visible{background:var(--bf-steel-mid);color:var(--bf-ash)}
 .nav-link.active{

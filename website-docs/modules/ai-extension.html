@@ -57,7 +57,7 @@
           </ul>
 
           <h2>Command reference</h2>
-          <p>The AI extension supports 14 command types, all routed automatically from your free-text instruction.</p>
+          <p>The AI extension supports 13 command types, all routed automatically from your free-text instruction.</p>
           <table>
             <thead><tr><th>Command</th><th>What it does</th></tr></thead>
             <tbody>
@@ -74,7 +74,6 @@
               <tr><td><code>GenerateDialogChainDraft</code></td><td>Generates a full anchored dialog draft chain from the instruction.</td></tr>
               <tr><td><code>GenerateDialogFlowDraft</code></td><td>Generates a structured conversation flow from a <code>DialogSpecificationSO</code> (set in the Context tab) or from the free-text instruction alone.</td></tr>
               <tr><td><code>ValidateGraph</code></td><td>Runs the graph validator and surfaces errors and warnings inside the AI sidebar.</td></tr>
-              <tr><td><code>RepairLayout</code></td><td>Reformats node positions by calling the layout formatter. The AI never sets positions directly.</td></tr>
             </tbody>
           </table>
 
@@ -90,6 +89,26 @@
             </tbody>
           </table>
           <p>Sample provider assets are in <code>Assets/DialogSystemAIExtension/Samples/Assets/Provider/</code>. Duplicate one and set your own API key and model — samples are templates only.</p>
+
+          <h3>Token usage and temperature</h3>
+          <p>Each provider asset exposes two generation controls you can tune per-provider:</p>
+          <ul>
+            <li><strong>Max Tokens</strong> — maximum number of tokens the model may return per response. Default is <code>512</code>. Increase for longer generation commands like <code>GenerateDialogFlowDraft</code>; lower it for single-node rewrites to reduce cost and latency.</li>
+            <li><strong>Temperature</strong> — controls output randomness. Default is <code>0.7</code>. Lower values (0.3–0.5) produce more predictable, conservative text; higher values (0.9–1.0) produce more varied and creative output.</li>
+          </ul>
+
+          <h3>Context depth — how much of the graph the AI sees</h3>
+          <p>The AI sidebar includes a <strong>Context Depth</strong> dropdown that controls how much graph content is included in each prompt. More context produces better results but uses more tokens.</p>
+          <table>
+            <thead><tr><th>Option</th><th>What the AI sees</th></tr></thead>
+            <tbody>
+              <tr><td>Minimal (selected only)</td><td>Only the selected/anchor node. Fastest and cheapest.</td></tr>
+              <tr><td>Local (nearby nodes)</td><td>The anchor node and its immediate neighbors. Good default for rewrites.</td></tr>
+              <tr><td>Path (branch)</td><td>The full branch from Start to the anchor node. Best for continuation and expansion commands.</td></tr>
+              <tr><td>Full graph</td><td>All nodes in the graph. Best for batch rewrites, flow generation, and validation. Uses the most tokens.</td></tr>
+            </tbody>
+          </table>
+          <p>Each command type has a sensible default depth selected automatically. You can override it with the dropdown before running any command.</p>
 
           <h2>DialogSpecificationSO</h2>
           <p>A ScriptableObject for structured narrative context, used by <code>GenerateDialogFlowDraft</code>. Create one via <code>Assets → Create → Dialogue Graph System → AI → Dialogue Specification</code> and assign it in the <strong>Context</strong> tab of the graph editor sidebar.</p>
@@ -109,7 +128,7 @@
           <div class="placeholder-grid">
             <article class="placeholder-card"><h3>AI tab in the graph editor sidebar</h3><img class="screenshot-img" src="../assets/images/ai-extension-sidebar.png" alt="Ai Extension Sidebar" loading="lazy"><p>Command input, tone and preset selectors, routing explanation label.</p></article>
             <article class="placeholder-card"><h3>Draft preview window</h3><img class="screenshot-img" src="../assets/images/ai-draft-preview.png" alt="Ai Draft Preview" loading="lazy"><p>Shows the proposed change before it is applied to the graph.</p></article>
-            <article class="placeholder-card screenshot-card"><h3>Context sidebar</h3><img class="screenshot-img" src="../assets/images/context-sidebar.png" alt="Context sidebar" loading="lazy"><p>Scene summary, world context, and specification asset for <code>GenerateDialogFlowDraft</code>.</p></article>
+            <article class="placeholder-card screenshot-card"><h3>Context sidebar</h3><img class="screenshot-img" src="../assets/images/context-sidebar.png" alt="Context sidebar" loading="lazy"><p>Scene summary, world context, and specification asset for GenerateDialogFlowDraft.</p></article>
             <article class="placeholder-card screenshot-card"><h3>Branch review panel</h3><img class="screenshot-img" src="../assets/images/review-branch-continuation.png" alt="Branch review panel" loading="lazy"><p>Proposed branch additions shown for review before being committed to the graph.</p></article>
           </div>
           <nav class="page-nav" data-prev-next></nav>
@@ -117,7 +136,7 @@
       </main>
       <aside class="page-toc" data-page-toc></aside>
     </div>
-    <footer class="footer"><div class="footer-inner"><span>Dialog Graph System docs</span><span>&copy; <span data-current-year></span></span></div></footer>
+    <footer class="footer"><div class="footer-inner"><span>Dialogue Graph System v2.0.0 &mdash; AI Extension v1.0.0</span><span>&copy; <span data-current-year></span></span></div></footer>
   </div>
   <script src="../assets/app.js"></script>
 </body>

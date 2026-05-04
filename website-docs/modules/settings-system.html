@@ -16,28 +16,68 @@
       <main class="content-shell" id="main-content">
         <article class="doc-article" data-doc-content>
           <nav class="breadcrumb"><a href="../index.html">Home</a> / <span>Settings System</span></nav>
-          <h1>Settings System</h1>
-          <p class="lede">The settings system centralizes runtime behavior that would otherwise be scattered across prefabs and scripts.</p>
+          <h1>Settings System &amp; Theming</h1>
+          <p class="lede">The settings system centralizes runtime behavior that would otherwise be scattered across prefabs and scripts. The theming system lets you swap the entire visual style of the dialogue UI at runtime by assigning a different <code>DialogThemeSO</code>.</p>
+
           <h2>Runtime model</h2>
           <p><code>DialogSettingsRuntime</code> loads a master settings asset from <code>Resources</code> and exposes helper accessors for text, choice, input, and audio settings. <code>DialogManager</code> uses these settings to resolve effective runtime behavior, with optional local overrides on the component.</p>
+
           <h2>Settings categories</h2>
           <ul>
-            <li><strong>Text:</strong> reveal effect mode, speed, fast-forward, skip, autoplay, punctuation pauses.</li>
+            <li><strong>Text:</strong> reveal effect mode (Typewriter / Fade-in / Word-by-word), speed, fast-forward, skip, autoplay, punctuation pauses.</li>
             <li><strong>Choices:</strong> navigation, hover selection, outline styling, pulse animation, hint and confirm behavior.</li>
             <li><strong>Input:</strong> legacy-style key and axis configuration.</li>
             <li><strong>Audio:</strong> volume, UI SFX, and stop/fade behavior.</li>
           </ul>
+
           <h2>Editor window</h2>
-          <p>Open <code>Tools &gt; Dialog System &gt; Settings</code>. The window creates the settings assets if they do not already exist and groups configuration into separate panels.</p>
+          <p>Open <code>Tools → Dialogue Graph System → Settings</code>. The window creates the settings assets if they do not already exist and groups configuration into separate panels.</p>
+
+          <h2>UI Theming — DialogThemeSO</h2>
+          <p>A <code>DialogThemeSO</code> is a ScriptableObject that packages every visual asset the dialogue UI needs — sprites, colors, and fonts — into a single swappable file. Assign it to the <strong>DialogUIManager</strong> component in the scene inspector. Changing the assigned theme at runtime instantly updates all UI elements.</p>
+
+          <h3>What a theme controls</h3>
+          <ul>
+            <li><strong>Dialog panel</strong> — dialog box background, nameplate sprite, avatar/portrait frame, skip button sprite and icon.</li>
+            <li><strong>Choice buttons</strong> — normal and active state sprites, message icon, optional choice-row prefab override, hotkey background sprite.</li>
+            <li><strong>History panel</strong> — panel background, title bar, character line row, choice row, choice icon.</li>
+            <li><strong>Buttons</strong> — history button background and icon, close button, autoplay button background, autoplay play/pause icons.</li>
+            <li><strong>Text colors</strong> — dialog body, speaker name, choice normal/active, history speaker, history line, history choice, skip-all label, history title.</li>
+            <li><strong>Fonts</strong — default font fallback, plus per-role overrides for speaker name, dialog body, choice text, choice hotkeys, history labels and lines.</li>
+          </ul>
+
+          <h3>Creating a custom theme</h3>
+          <ol>
+            <li>Right-click in the Project window and choose <code>Create → Dialog Graph System → UI Theme</code>.</li>
+            <li>Fill in the sprite and color fields with your own assets.</li>
+            <li>Assign the theme asset to the <strong>Theme</strong> field on your <code>DialogUIManager</code> component.</li>
+          </ol>
+
+          <h3>Included themes (5 ready to use)</h3>
+          <p>Five complete themes are included in <code>Assets/DialogGraphSystem/Definitions/DialogThemes/</code>.</p>
+          <table>
+            <thead><tr><th>Theme</th><th>Style</th></tr></thead>
+            <tbody>
+              <tr><td>Fantasy RPG</td><td>Parchment-style panels, scroll borders, warm palette.</td></tr>
+              <tr><td>Gothic Horror</td><td>Dark stone textures, high-contrast red accents.</td></tr>
+              <tr><td>Minimalist</td><td>Clean flat panels, neutral grays, no decorative borders. Suits any genre.</td></tr>
+              <tr><td>Sci-Fi HUD</td><td>Sharp angular frames, cyan/blue tones, holographic feel.</td></tr>
+              <tr><td>Visual Novel</td><td>Soft gradient panels, rounded corners, pastel palette.</td></tr>
+            </tbody>
+          </table>
+
           <div class="placeholder-grid">
-            <article class="placeholder-card"><h3>Settings editor</h3><img class="screenshot-img" src="../assets/images/settings-text.png" alt="Settings Text" loading="lazy"><p>Recommended visual for this page.</p></article><article class="placeholder-card screenshot-card"><h3>Choice settings</h3><img class="screenshot-img" src="../assets/images/settings-choices.png" alt="Choice settings" loading="lazy"><p>Button layout, input key mappings, and display timing for choice nodes.</p></article><article class="placeholder-card screenshot-card"><h3>Audio settings</h3><img class="screenshot-img" src="../assets/images/settings-audio.png" alt="Audio settings" loading="lazy"><p>Audio source assignment, volume sliders, and UI sound event bindings.</p></article><article class="placeholder-card screenshot-card"><h3>AI settings</h3><img class="screenshot-img" src="../assets/images/settings-ai.png" alt="AI settings" loading="lazy"><p>Provider selection, endpoint routing, and prompt-mode configuration for the AI extension.</p></article>
+            <article class="placeholder-card"><h3>Settings editor</h3><img class="screenshot-img" src="../assets/images/settings-text.png" alt="Settings Text" loading="lazy"><p>Text reveal, speed, skip, and autoplay controls.</p></article>
+            <article class="placeholder-card screenshot-card"><h3>Choice settings</h3><img class="screenshot-img" src="../assets/images/settings-choices.png" alt="Choice settings" loading="lazy"><p>Button layout, input key mappings, and display timing for choice nodes.</p></article>
+            <article class="placeholder-card screenshot-card"><h3>Audio settings</h3><img class="screenshot-img" src="../assets/images/settings-audio.png" alt="Audio settings" loading="lazy"><p>Audio source assignment, volume sliders, and UI sound event bindings.</p></article>
+            <article class="placeholder-card screenshot-card"><h3>AI settings</h3><img class="screenshot-img" src="../assets/images/settings-ai.png" alt="AI settings" loading="lazy"><p>Provider selection, endpoint routing, and prompt-mode configuration for the AI extension.</p></article>
           </div>
           <nav class="page-nav" data-prev-next></nav>
         </article>
       </main>
       <aside class="page-toc" data-page-toc></aside>
     </div>
-    <footer class="footer"><div class="footer-inner"><span>Dialog Graph System docs</span><span>&copy; <span data-current-year></span></span></div></footer>
+    <footer class="footer"><div class="footer-inner"><span>Dialogue Graph System v2.0.0 &mdash; AI Extension v1.0.0</span><span>&copy; <span data-current-year></span></span></div></footer>
   </div>
   <script src="../assets/app.js"></script>
 </body>
