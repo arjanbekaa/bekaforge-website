@@ -28,9 +28,24 @@
             <li><code>DialogUndoUtility.cs</code></li>
           </ul>
           <h2>Authoring entry point</h2>
-          <p>Open <code>Tools &gt; Dialog System &gt; Dialog Graph</code>. The launcher window is the main entry point and lets you open the last edited graph, choose an existing graph, or create and open a new graph.</p>
+          <p>Open <code>Tools → Dialogue Graph System → Dialogue Graph</code>. The launcher window is the main entry point and lets you open the last edited graph, choose an existing graph, or create and open a new graph.</p>
           <h2>How graph assets are stored</h2>
           <p>The editor stores the graph as one <code>DialogGraph</code> asset with multiple node sub-assets attached to it. This keeps save/load and import/export simpler than storing each node separately.</p>
+          <h2>Right sidebar — four tabs</h2>
+          <p>The editor window is a split-view with the graph canvas on the left and a four-tab sidebar on the right. Each tab is a focused panel for a different authoring concern.</p>
+          <ul>
+            <li><strong>Characters</strong> — bulk-assign speaker names, portraits, and voice clips to all nodes for a given character at once.</li>
+            <li><strong>Actions</strong> — browse and manage <code>DialogActionSO</code> assets; see which action IDs are available before wiring them into action nodes.</li>
+            <li><strong>Context</strong> — set the scene summary, world context, and <code>DialogSpecificationSO</code> asset used by the AI extension's <code>GenerateDialogFlowDraft</code> command.</li>
+            <li><strong>AI</strong> — issue free-text commands to the active AI provider, review the routing result, and confirm or reject the preview before any graph mutation is applied.</li>
+          </ul>
+
+          <h2>Format Layout and validation</h2>
+          <p>The toolbar exposes a <strong>Format Layout</strong> button that runs <code>DialogGraphLayoutFormatterEditor.FormatLinkedSubgraphOnly</code> — it re-spaces nodes in the connected subgraph without touching unconnected ones. A separate <strong>Validate</strong> button opens the graph validation window with click-to-select navigation for any errors or warnings found.</p>
+
+          <h2>View-state persistence</h2>
+          <p>Pan position, zoom level, and sidebar toggle state are saved per graph in <code>EditorPrefs</code>. Reopening a graph restores exactly where you left off.</p>
+
           <h2>GraphView responsibilities</h2>
           <ul>
             <li>zooming, dragging, and selection</li>

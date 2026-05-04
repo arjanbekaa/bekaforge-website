@@ -43,12 +43,74 @@
           <p>The provider abstraction is <code>LlmProviderDefinitionBase</code>, with concrete providers for OpenAI-style chat completions, Gemini, Ollama, and custom JSON APIs.</p>
           <p>Shipped provider assets are templates only. For OpenAI-compatible services, prefer a root <code>baseUrl</code> plus <code>/v1/chat/completions</code> in <code>chatEndpoint</code>.</p>
           <h2>Editor entry point</h2>
-          <p>Open any <code>DialogGraph</code> asset in the graph editor and select the <strong>AI</strong> tab in the right sidebar.</p>
+          <p>Open any <code>DialogGraph</code> asset via <code>Tools → Dialogue Graph System → Dialogue Graph</code>, then select the <strong>AI</strong> tab in the right sidebar.</p>
+
+          <h2>AI sidebar controls</h2>
+          <ul>
+            <li><strong>Instruction field</strong> — multi-line free-text input. Describe what you want in plain language (e.g. "rewrite this line to sound more nervous", "add 3 dialog nodes before the end").</li>
+            <li><strong>Tone selector</strong> — Neutral, Serious, Humorous, Dramatic, Casual, Poetic. Applied as a style hint in the prompt.</li>
+            <li><strong>Instruction preset</strong> — None, Write Naturally, Keep It Short, Add Subtext, Make It Tense. Adds a system-level writing directive to every prompt.</li>
+            <li><strong>Run button</strong> — routes the instruction, resolves the anchor node, dispatches to the handler, and opens the preview window.</li>
+            <li><strong>Routing explanation label</strong> — shows which command was detected, the confidence score, and which anchor node was matched.</li>
+            <li><strong>Low-confidence anchor warning</strong> — if the anchor match confidence is below 0.75, a warning is shown with the matched node title before execution. You can cancel or proceed.</li>
+            <li><strong>Context summary</strong> — shows the loaded graph name, active speaker count, and available action count.</li>
+          </ul>
+
+          <h2>Command reference</h2>
+          <p>The AI extension supports 14 command types, all routed automatically from your free-text instruction.</p>
+          <table>
+            <thead><tr><th>Command</th><th>What it does</th></tr></thead>
+            <tbody>
+              <tr><td><code>RewriteDialog</code></td><td>Rewrites the text of the selected dialog node. Opens a single-node preview with current vs. proposed text.</td></tr>
+              <tr><td><code>GrammarFix</code></td><td>Corrects grammar and punctuation in the selected node's text only — no style changes.</td></tr>
+              <tr><td><code>AddDialogNodesAfter</code></td><td>Inserts one or more dialog nodes after an anchor node. Use phrases like "add 3 lines after the guard".</td></tr>
+              <tr><td><code>AddDialogNodesBeforeEnd</code></td><td>Legacy alias — resolved to <code>AddDialogNodesAfter</code> with the End node as anchor.</td></tr>
+              <tr><td><code>InsertActionNode</code></td><td>Inserts a single action node after the selected node. The AI suggests the action ID and payload.</td></tr>
+              <tr><td><code>AddChoiceNodeAfter</code></td><td>Inserts a choice node with AI-suggested options after an anchor node.</td></tr>
+              <tr><td><code>SuggestChoices</code></td><td>Proposes choice option text for the selected dialog node without inserting nodes.</td></tr>
+              <tr><td><code>ContinueBranch</code></td><td>Extends the selected branch with additional dialog content continuing from the current anchor.</td></tr>
+              <tr><td><code>ExpandSelectedNode</code></td><td>Expands the selected dialog node into a small multi-node branch with optional choices.</td></tr>
+              <tr><td><code>BatchRewriteBySpeaker</code></td><td>Rewrites all dialog lines for a specific speaker in one pass. Preview shows per-row accept/reject toggles — all rows default to accepted, so you only deselect the ones you want to keep.</td></tr>
+              <tr><td><code>GenerateDialogChainDraft</code></td><td>Generates a full anchored dialog draft chain from the instruction.</td></tr>
+              <tr><td><code>GenerateDialogFlowDraft</code></td><td>Generates a structured conversation flow from a <code>DialogSpecificationSO</code> (set in the Context tab) or from the free-text instruction alone.</td></tr>
+              <tr><td><code>ValidateGraph</code></td><td>Runs the graph validator and surfaces errors and warnings inside the AI sidebar.</td></tr>
+              <tr><td><code>RepairLayout</code></td><td>Reformats node positions by calling the layout formatter. The AI never sets positions directly.</td></tr>
+            </tbody>
+          </table>
+
+          <h2>LLM providers</h2>
+          <p>Providers are ScriptableObject assets. API keys are stored in <code>EditorPrefs</code> per asset GUID and are never written into the asset file or committed to version control.</p>
+          <table>
+            <thead><tr><th>Provider</th><th>Default model</th><th>Notes</th></tr></thead>
+            <tbody>
+              <tr><td>OpenAI</td><td><code>gpt-4.1-mini</code></td><td>Compatible with LM Studio, Groq, Together AI — change the base URL only.</td></tr>
+              <tr><td>Gemini</td><td><code>gemini-2.5-flash</code></td><td>Uses Google's Generative Language API.</td></tr>
+              <tr><td>Ollama</td><td><code>gpt-oss:20b</code></td><td>Local inference at <code>http://localhost:11434</code>.</td></tr>
+              <tr><td>Custom JSON</td><td>User-configured</td><td>Any endpoint that accepts a JSON body and returns a JSON response.</td></tr>
+            </tbody>
+          </table>
+          <p>Sample provider assets are in <code>Assets/DialogSystemAIExtension/Samples/Assets/Provider/</code>. Duplicate one and set your own API key and model — samples are templates only.</p>
+
+          <h2>DialogSpecificationSO</h2>
+          <p>A ScriptableObject for structured narrative context, used by <code>GenerateDialogFlowDraft</code>. Create one via <code>Assets → Create → Dialogue Graph System → AI → Dialogue Specification</code> and assign it in the <strong>Context</strong> tab of the graph editor sidebar.</p>
+          <ul>
+            <li><code>conversationDepth</code> (2–20) — how many exchanges to generate.</li>
+            <li><code>characters</code> — list of <code>DialogCharacterSO</code> assets participating in the scene.</li>
+            <li><code>environment</code> — location, description, time of day, mood.</li>
+            <li><code>gameContext</code> — genre, player role, narrative style, canon rules.</li>
+            <li><code>sceneSummary</code>, <code>tone</code> — free-text directives.</li>
+            <li><code>allowedActions</code> / <code>forbiddenActions</code> — constrain which action IDs the AI may suggest.</li>
+          </ul>
+
           <h2>Safety and recovery</h2>
           <p><code>AiJsonSanitizer</code> handles common LLM formatting issues such as markdown fences and stray prose. If a response is recovered from malformed output, a warning banner appears in the preview — review the draft carefully before confirming.</p>
+          <p><code>AiCommandSafetyValidator</code> rejects any AI response that contains GUIDs, node positions, or edge definitions before the graph is touched. The AI layer is structurally prevented from owning any graph mutation.</p>
+
           <div class="placeholder-grid">
-            <article class="placeholder-card"><h3>AI tab in the graph editor sidebar</h3><img class="screenshot-img" src="../assets/images/ai-extension-sidebar.png" alt="Ai Extension Sidebar" loading="lazy"><p>Best visual for the command input and draft preview flow.</p></article>
-            <article class="placeholder-card"><h3>Draft preview window</h3><img class="screenshot-img" src="../assets/images/ai-draft-preview.png" alt="Ai Draft Preview" loading="lazy"><p>Shows the proposed change before it is applied to the graph.</p></article><article class="placeholder-card screenshot-card"><h3>Context sidebar</h3><img class="screenshot-img" src="../assets/images/context-sidebar.png" alt="Context sidebar" loading="lazy"><p>Scene summary, world context, and tone inputs fed to the AI provider alongside each command.</p></article><article class="placeholder-card screenshot-card"><h3>Branch review panel</h3><img class="screenshot-img" src="../assets/images/review-branch-continuation.png" alt="Branch review panel" loading="lazy"><p>Proposed branch additions shown for review before being committed to the graph.</p></article>
+            <article class="placeholder-card"><h3>AI tab in the graph editor sidebar</h3><img class="screenshot-img" src="../assets/images/ai-extension-sidebar.png" alt="Ai Extension Sidebar" loading="lazy"><p>Command input, tone and preset selectors, routing explanation label.</p></article>
+            <article class="placeholder-card"><h3>Draft preview window</h3><img class="screenshot-img" src="../assets/images/ai-draft-preview.png" alt="Ai Draft Preview" loading="lazy"><p>Shows the proposed change before it is applied to the graph.</p></article>
+            <article class="placeholder-card screenshot-card"><h3>Context sidebar</h3><img class="screenshot-img" src="../assets/images/context-sidebar.png" alt="Context sidebar" loading="lazy"><p>Scene summary, world context, and specification asset for <code>GenerateDialogFlowDraft</code>.</p></article>
+            <article class="placeholder-card screenshot-card"><h3>Branch review panel</h3><img class="screenshot-img" src="../assets/images/review-branch-continuation.png" alt="Branch review panel" loading="lazy"><p>Proposed branch additions shown for review before being committed to the graph.</p></article>
           </div>
           <nav class="page-nav" data-prev-next></nav>
         </article>

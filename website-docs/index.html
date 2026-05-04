@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Dialog Graph System Docs</title>
-  <meta name="description" content="Technical documentation website for Dialog Graph System, a Unity graph-based dialogue toolkit.">
+  <title>Dialogue Graph System v2.0 Docs</title>
+  <meta name="description" content="Technical documentation website for Dialogue Graph System v2.0, a Unity graph-based dialogue toolkit.">
   <link rel="stylesheet" href="assets/styles.css">
 </head>
 <body data-page="home" data-base="">
@@ -36,10 +36,10 @@
 
       <main class="content-shell" id="main-content">
         <section class="page-hero">
-          <span class="eyebrow">Unity Documentation Portal</span>
+          <span class="eyebrow">Unity Documentation Portal &nbsp;·&nbsp; v2.0.0 &nbsp;·&nbsp; AI Extension v1.0.0</span>
           <h1 class="hero-title">Graph-based dialogue docs built for developers, contributors, and reviewers.</h1>
           <p class="hero-subtitle">
-            This site publishes the repository documentation for Dialog Graph System in a cleaner, browsable HTML format.
+            This site publishes the repository documentation for Dialogue Graph System in a cleaner, browsable HTML format.
             It covers the runtime, editor tooling, settings model, JSON workflow, transcript support, and the optional AI extension.
           </p>
           <div class="hero-actions">
@@ -57,24 +57,23 @@
               </p>
               <div class="stat-grid">
                 <div class="stat">
-                  <strong>2</strong>
-                  <span>Demo scenes in the repo</span>
+                  <strong>1</strong>
+                  <span>Demo scene, 3 playable graphs</span>
                 </div>
                 <div class="stat">
                   <strong>5</strong>
                   <span>Core node types</span>
                 </div>
                 <div class="stat">
-                  <strong>3</strong>
-                  <span>Main authoring workflows</span>
+                  <strong>14</strong>
+                  <span>AI command types</span>
                 </div>
               </div>
             </article>
 
-            <article class="placeholder-card">
-              <h3>Hero Screenshot Placeholder</h3>
+            <article class="hero-card">
+              <h3>Graph Editor Overview</h3>
               <img class="screenshot-img" src="assets/images/graph-editor-overview.png" alt="Graph Editor Overview" loading="lazy">
-              <p>Recommended image: a clean graph editor overview or the runtime dialogue panel in Play Mode.</p>
             </article>
           </div>
         </section>
@@ -131,12 +130,13 @@
 
         <section class="homepage-section panel">
           <h2>Demo entry points in this repository</h2>
+          <p>Open <code>Assets/DialogGraphSystem/DemoScenes/DialogueDemo.unity</code> and press Play. The demo menu lets you launch any of the three sample graphs.</p>
           <table>
-            <thead><tr><th>Asset</th><th>Purpose</th></tr></thead>
+            <thead><tr><th>Graph asset</th><th>Purpose</th></tr></thead>
             <tbody>
-              <tr><td><code>Assets/DialogGraphSystem/DemoScenes/DialogDemo.unity</code></td><td>Basic runtime and branching demonstration scene.</td></tr>
-              <tr><td><code>Assets/DialogGraphSystem/DemoScenes/ActionDialogDemo.unity</code></td><td>Demonstrates action nodes and waitable behavior.</td></tr>
-              <tr><td><code>Assets/DialogGraphSystem/Resources/Conversation/DialogDemo.asset</code></td><td>Sample graph asset used by the demo flow.</td></tr>
+              <tr><td><code>Assets/DialogGraphSystem/Graphs/Demo_CafeChoices.asset</code></td><td>Branching conversation with choices.</td></tr>
+              <tr><td><code>Assets/DialogGraphSystem/Graphs/Demo_ControlRoomActions.asset</code></td><td>Action nodes and waitable coroutine behavior.</td></tr>
+              <tr><td><code>Assets/DialogGraphSystem/Graphs/Demo_ProductTour.asset</code></td><td>Linear guided tour demonstrating typewriter and portrait effects.</td></tr>
             </tbody>
           </table>
         </section>
@@ -168,8 +168,8 @@
 
     <footer class="footer">
       <div class="footer-inner">
-        <span>Dialog Graph System documentation website</span>
-        <span>&copy; <span data-current-year></span> Docs portal for GitHub Pages</span>
+        <span>Dialogue Graph System documentation &mdash; v2.0.0 &nbsp;|&nbsp; AI Extension v1.0.0</span>
+        <span>&copy; <span data-current-year></span> Arjan Beka &nbsp;&mdash;&nbsp; MIT License</span>
       </div>
     </footer>
   </div>
