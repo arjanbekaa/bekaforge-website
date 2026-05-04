@@ -1,0 +1,149 @@
+/**
+ * Beka Forge — Brand Design Tokens
+ * CSS Custom Properties
+ *
+ * Usage: import this file once at the root of your stylesheet.
+ * All tokens are prefixed with --bf- (Beka Forge).
+ */
+
+:root {
+
+  /* ── BRAND COLOURS ───────────────────────────────────────────────── */
+
+  /* Forge (primary brand orange) */
+  --bf-forge:           #E8541A;
+  --bf-forge-light:     #FF7A40;
+  --bf-forge-dark:      #BF3D10;
+  --bf-forge-hover:     #D44A12;
+  --bf-forge-subtle:    rgba(232, 84, 26, 0.10);
+  --bf-forge-border:    rgba(232, 84, 26, 0.30);
+
+  /* Neutrals */
+  --bf-obsidian:        #0E1117;   /* deepest bg — hero sections */
+  --bf-steel:           #1C2333;   /* card / surface bg */
+  --bf-steel-mid:       #252E42;   /* elevated surfaces, borders */
+  --bf-slate:           #8892A4;   /* muted text, subtitles */
+  --bf-ash:             #F0F2F5;   /* light text on dark bg */
+  --bf-white:           #FFFFFF;
+
+  /* Accent — Technical Blue (AI / links / info) */
+  --bf-blue:            #3B82F6;
+  --bf-blue-light:      #60A5FA;
+  --bf-blue-subtle:     rgba(59, 130, 246, 0.10);
+
+  /* ── SEMANTIC ALIASES ────────────────────────────────────────────── */
+  --bf-color-brand:          var(--bf-forge);
+  --bf-color-brand-hover:    var(--bf-forge-hover);
+  --bf-color-bg-base:        var(--bf-obsidian);
+  --bf-color-bg-surface:     var(--bf-steel);
+  --bf-color-bg-elevated:    var(--bf-steel-mid);
+  --bf-color-text-primary:   var(--bf-ash);
+  --bf-color-text-secondary: var(--bf-slate);
+  --bf-color-text-on-brand:  var(--bf-white);
+  --bf-color-border:         var(--bf-steel-mid);
+  --bf-color-border-brand:   var(--bf-forge-border);
+  --bf-color-link:           var(--bf-blue);
+
+  /* ── TYPOGRAPHY ──────────────────────────────────────────────────── */
+  --bf-font-display:    'Space Grotesk', 'Liberation Sans', sans-serif;
+  --bf-font-body:       'Inter', 'Liberation Sans', sans-serif;
+  --bf-font-mono:       'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+
+  /* Scale */
+  --bf-text-xs:   0.75rem;    /* 12px */
+  --bf-text-sm:   0.875rem;   /* 14px */
+  --bf-text-base: 1rem;       /* 16px */
+  --bf-text-lg:   1.125rem;   /* 18px */
+  --bf-text-xl:   1.25rem;    /* 20px */
+  --bf-text-2xl:  1.5rem;     /* 24px */
+  --bf-text-3xl:  1.875rem;   /* 30px */
+  --bf-text-4xl:  2.25rem;    /* 36px */
+  --bf-text-5xl:  3rem;       /* 48px */
+  --bf-text-6xl:  3.75rem;    /* 60px */
+  --bf-text-7xl:  4.5rem;     /* 72px */
+
+  /* Weight */
+  --bf-weight-regular: 400;
+  --bf-weight-medium:  500;
+  --bf-weight-bold:    700;
+
+  /* Line heights */
+  --bf-leading-tight:  1.15;
+  --bf-leading-snug:   1.35;
+  --bf-leading-normal: 1.6;
+  --bf-leading-loose:  1.8;
+
+  /* Letter spacing */
+  --bf-tracking-tight: -0.03em;
+  --bf-tracking-normal: 0em;
+  --bf-tracking-wide:   0.06em;
+  --bf-tracking-wider:  0.12em;
+  --bf-tracking-widest: 0.2em;
+
+  /* ── SPACING ─────────────────────────────────────────────────────── */
+  --bf-space-1:  0.25rem;   /* 4px  */
+  --bf-space-2:  0.5rem;    /* 8px  */
+  --bf-space-3:  0.75rem;   /* 12px */
+  --bf-space-4:  1rem;      /* 16px */
+  --bf-space-5:  1.25rem;   /* 20px */
+  --bf-space-6:  1.5rem;    /* 24px */
+  --bf-space-8:  2rem;      /* 32px */
+  --bf-space-10: 2.5rem;    /* 40px */
+  --bf-space-12: 3rem;      /* 48px */
+  --bf-space-16: 4rem;      /* 64px */
+  --bf-space-20: 5rem;      /* 80px */
+  --bf-space-24: 6rem;      /* 96px */
+  --bf-space-32: 8rem;      /* 128px */
+
+  /* ── BORDER RADIUS ───────────────────────────────────────────────── */
+  --bf-radius-sm:   4px;
+  --bf-radius-md:   8px;
+  --bf-radius-lg:   12px;
+  --bf-radius-xl:   16px;
+  --bf-radius-2xl:  24px;
+  --bf-radius-full: 9999px;
+
+  /* ── SHADOWS ─────────────────────────────────────────────────────── */
+  --bf-shadow-sm:   0 1px 2px rgba(0,0,0,0.4);
+  --bf-shadow-md:   0 4px 12px rgba(0,0,0,0.35);
+  --bf-shadow-lg:   0 8px 32px rgba(0,0,0,0.4);
+  --bf-shadow-brand:0 4px 24px rgba(232, 84, 26, 0.25);
+
+  /* ── TRANSITIONS ─────────────────────────────────────────────────── */
+  --bf-transition-fast:   100ms ease;
+  --bf-transition-base:   180ms ease;
+  --bf-transition-slow:   300ms ease;
+
+  /* ── Z-INDEX ─────────────────────────────────────────────────────── */
+  --bf-z-base:    0;
+  --bf-z-raised:  10;
+  --bf-z-overlay: 100;
+  --bf-z-modal:   200;
+  --bf-z-toast:   300;
+
+  /* ── LAYOUT ──────────────────────────────────────────────────────── */
+  --bf-container-sm:   640px;
+  --bf-container-md:   768px;
+  --bf-container-lg:   1024px;
+  --bf-container-xl:   1280px;
+  --bf-container-2xl:  1440px;
+
+  /* ── BORDER WIDTHS ───────────────────────────────────────────────── */
+  --bf-border-thin:   0.5px;
+  --bf-border-base:   1px;
+  --bf-border-accent: 2px;
+
+}
+
+/* ── LIGHT MODE OVERRIDES ──────────────────────────────────────────────── */
+/* Uncomment and apply .bf-light class on <body> for light mode support */
+/*
+.bf-light {
+  --bf-color-bg-base:        var(--bf-ash);
+  --bf-color-bg-surface:     var(--bf-white);
+  --bf-color-bg-elevated:    #E2E8F0;
+  --bf-color-text-primary:   var(--bf-obsidian);
+  --bf-color-text-secondary: #4A5568;
+  --bf-color-border:         #E2E8F0;
+}
+*/

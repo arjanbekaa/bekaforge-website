@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>History and Transcripts | Dialog Graph System Docs</title>
+  <meta name="description" content="History/backlog UI versus exact branch transcript reconstruction.">
+  <link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body data-page="history-and-transcripts" data-base="../">
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <div class="site-shell">
+    <header class="topbar"><div class="topbar-inner"><a class="brand" href="../index.html"><svg width="28" height="28" viewBox="0 0 64 64" fill="none" aria-hidden="true"><rect x="9" y="21" width="46" height="22" rx="3" fill="#E8541A"/><rect x="21" y="7" width="22" height="16" rx="2" fill="#E8541A"/><rect x="9" y="43" width="13" height="13" rx="2" fill="#E8541A" opacity="0.72"/><rect x="42" y="43" width="13" height="13" rx="2" fill="#E8541A" opacity="0.72"/><rect x="21" y="27" width="22" height="3" rx="1.5" fill="#0E1117" opacity="0.28"/></svg><span class="brand-text"><span class="brand-name"><span class="brand-beka">Beka</span><span class="brand-forge">Forge</span></span><small>Docs — Dialogue Graph System</small></span></a><div class="topbar-spacer"></div><div class="top-actions"><div class="search-wrap"><input class="search-input" type="search" placeholder="Filter pages from the sidebar" readonly></div><a class="back-to-site" href="../../index.html">&#8592; BekaForge</a><button class="menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-controls="sidebar">Menu</button></div></div></header>
+    <div class="page-layout">
+      <aside class="sidebar" id="sidebar"><div class="sidebar-inner" data-sidebar-nav></div></aside>
+      <main class="content-shell" id="main-content">
+        <article class="doc-article" data-doc-content>
+          <nav class="breadcrumb"><a href="../index.html">Home</a> / <span>History and Transcripts</span></nav>
+          <h1>History and Transcripts</h1>
+          <p class="lede">This module covers the player-facing backlog view and the exact branch transcript reconstruction added for deterministic review.</p>
+          <h2>DialogueHistory</h2>
+          <p><code>DialogueHistory</code> subscribes to <code>DialogManager</code> events such as <code>OnLineShown</code>, <code>OnChoicePicked</code>, and <code>OnConversationReset</code>. It records lightweight history entries and updates <code>DialogueHistoryView</code> when the panel is open.</p>
+          <h2>Transcript builder</h2>
+          <p><code>DialogGraphTranscriptBuilder</code> rebuilds a transcript directly from the <code>DialogGraph</code> and the stored branch path, traversing the graph deterministically in <code>SpecificBranchPath</code> mode.</p>
+<pre><code>string transcript = DialogManager.Instance.GetLastPlayedDialogTranscript("intro_guard");
+Debug.Log(transcript);</code></pre>
+<pre><code>Guard: Halt. State your business.
+Your Choice: I am here to help.
+Guard: Then you may enter.</code></pre>
+          <h2>Best practices</h2>
+          <ul>
+            <li>use <code>DialogueHistory</code> for UI display</li>
+            <li>use transcript reconstruction for exact branch reporting or debugging</li>
+          </ul>
+          <div class="placeholder-grid">
+            <article class="placeholder-card"><h3>History panel</h3><img class="screenshot-img" src="../assets/images/runtime-history-panel.png" alt="Runtime History Panel" loading="lazy"><p>Best visual for this page.</p></article><article class="placeholder-card screenshot-card"><h3>Branch reconstruction</h3><img class="screenshot-img" src="../assets/images/review-branch-continuation.png" alt="Branch reconstruction" loading="lazy"><p>Inspecting how a transcript rebuilds the exact played branch from recorded choice indices.</p></article>
+          </div>
+          <nav class="page-nav" data-prev-next></nav>
+        </article>
+      </main>
+      <aside class="page-toc" data-page-toc></aside>
+    </div>
+    <footer class="footer"><div class="footer-inner"><span>Dialog Graph System docs</span><span>&copy; <span data-current-year></span></span></div></footer>
+  </div>
+  <script src="../assets/app.js"></script>
+</body>
+</html>

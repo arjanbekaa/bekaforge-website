@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI Extension | Dialog Graph System Docs</title>
+  <meta name="description" content="Command-based AI authoring assistance inside the graph editor — draft-first pipeline, ownership boundaries, provider setup.">
+  <link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body data-page="ai-extension" data-base="../">
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <div class="site-shell">
+    <header class="topbar"><div class="topbar-inner"><a class="brand" href="../index.html"><svg width="28" height="28" viewBox="0 0 64 64" fill="none" aria-hidden="true"><rect x="9" y="21" width="46" height="22" rx="3" fill="#E8541A"/><rect x="21" y="7" width="22" height="16" rx="2" fill="#E8541A"/><rect x="9" y="43" width="13" height="13" rx="2" fill="#E8541A" opacity="0.72"/><rect x="42" y="43" width="13" height="13" rx="2" fill="#E8541A" opacity="0.72"/><rect x="21" y="27" width="22" height="3" rx="1.5" fill="#0E1117" opacity="0.28"/></svg><span class="brand-text"><span class="brand-name"><span class="brand-beka">Beka</span><span class="brand-forge">Forge</span></span><small>Docs — Dialogue Graph System</small></span></a><div class="topbar-spacer"></div><div class="top-actions"><div class="search-wrap"><input class="search-input" type="search" placeholder="Filter pages from the sidebar" readonly></div><a class="back-to-site" href="../../index.html">&#8592; BekaForge</a><button class="menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-controls="sidebar">Menu</button></div></div></header>
+    <div class="page-layout">
+      <aside class="sidebar" id="sidebar"><div class="sidebar-inner" data-sidebar-nav></div></aside>
+      <main class="content-shell" id="main-content">
+        <article class="doc-article" data-doc-content>
+          <nav class="breadcrumb"><a href="../index.html">Home</a> / <span>AI Extension</span></nav>
+          <h1>AI Extension</h1>
+          <p class="lede">The optional AI extension provides command-based authoring assistance inside the graph editor. It proposes targeted, preview-first changes — rewrites, line insertions, action insertions — that you confirm before they are applied. It does not expose a raw full-graph generation or import workflow in the shipped release.</p>
+          <h2>Key files</h2>
+          <ul>
+            <li><code>AiGraphCommandExecutor.cs</code> — coordinates parse → validate → route → delegate</li>
+            <li><code>AiInstructionRouter.cs</code> — maps free-text instructions to command types</li>
+            <li><code>AiCommandSafetyValidator.cs</code> — rejects any AI response containing GUIDs, positions, or edge definitions</li>
+            <li><code>AiJsonSanitizer.cs</code> — strips markdown fences and fixes LLM encoding artifacts</li>
+            <li><code>LlmProviderDefinitionBase.cs</code> and providers</li>
+          </ul>
+          <h2>Draft-first pipeline</h2>
+<pre><code>User instruction (free text)
+    -> AiInstructionRouter (route + anchor resolve)
+    -> AiPromptBuilder
+    -> LLM Provider (HTTP)
+    -> AiJsonSanitizer
+    -> AiCommandSafetyValidator
+    -> AiDraftResponseParser
+    -> Preview window (human review)
+    -- confirm -->
+    -> DialogGraphMutationService (create nodes / edges / GUIDs)</code></pre>
+          <h2>Ownership boundaries</h2>
+          <p>The AI layer may only return rewritten text, draft dialog line content, draft action references, and draft choice content. The core graph layer exclusively owns GUIDs, node positions, edges, graph serialisation, and undo records. Any AI response that includes forbidden fields is rejected by <code>AiCommandSafetyValidator</code> before the graph is touched.</p>
+          <h2>Provider model</h2>
+          <p>The provider abstraction is <code>LlmProviderDefinitionBase</code>, with concrete providers for OpenAI-style chat completions, Gemini, Ollama, and custom JSON APIs.</p>
+          <p>Shipped provider assets are templates only. For OpenAI-compatible services, prefer a root <code>baseUrl</code> plus <code>/v1/chat/completions</code> in <code>chatEndpoint</code>.</p>
+          <h2>Editor entry point</h2>
+          <p>Open any <code>DialogGraph</code> asset in the graph editor and select the <strong>AI</strong> tab in the right sidebar.</p>
+          <h2>Safety and recovery</h2>
+          <p><code>AiJsonSanitizer</code> handles common LLM formatting issues such as markdown fences and stray prose. If a response is recovered from malformed output, a warning banner appears in the preview — review the draft carefully before confirming.</p>
+          <div class="placeholder-grid">
+            <article class="placeholder-card"><h3>AI tab in the graph editor sidebar</h3><img class="screenshot-img" src="../assets/images/ai-extension-sidebar.png" alt="Ai Extension Sidebar" loading="lazy"><p>Best visual for the command input and draft preview flow.</p></article>
+            <article class="placeholder-card"><h3>Draft preview window</h3><img class="screenshot-img" src="../assets/images/ai-draft-preview.png" alt="Ai Draft Preview" loading="lazy"><p>Shows the proposed change before it is applied to the graph.</p></article><article class="placeholder-card screenshot-card"><h3>Context sidebar</h3><img class="screenshot-img" src="../assets/images/context-sidebar.png" alt="Context sidebar" loading="lazy"><p>Scene summary, world context, and tone inputs fed to the AI provider alongside each command.</p></article><article class="placeholder-card screenshot-card"><h3>Branch review panel</h3><img class="screenshot-img" src="../assets/images/review-branch-continuation.png" alt="Branch review panel" loading="lazy"><p>Proposed branch additions shown for review before being committed to the graph.</p></article>
+          </div>
+          <nav class="page-nav" data-prev-next></nav>
+        </article>
+      </main>
+      <aside class="page-toc" data-page-toc></aside>
+    </div>
+    <footer class="footer"><div class="footer-inner"><span>Dialog Graph System docs</span><span>&copy; <span data-current-year></span></span></div></footer>
+  </div>
+  <script src="../assets/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Architecture | Dialog Graph System Docs</title>
+  <meta name="description" content="Editor/runtime split, data flow, extension points, and coupling notes.">
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body data-page="architecture" data-base="">
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <div class="site-shell">
+    <header class="topbar"><div class="topbar-inner"><a class="brand" href="index.html"><svg width="28" height="28" viewBox="0 0 64 64" fill="none" aria-hidden="true"><rect x="9" y="21" width="46" height="22" rx="3" fill="#E8541A"/><rect x="21" y="7" width="22" height="16" rx="2" fill="#E8541A"/><rect x="9" y="43" width="13" height="13" rx="2" fill="#E8541A" opacity="0.72"/><rect x="42" y="43" width="13" height="13" rx="2" fill="#E8541A" opacity="0.72"/><rect x="21" y="27" width="22" height="3" rx="1.5" fill="#0E1117" opacity="0.28"/></svg><span class="brand-text"><span class="brand-name"><span class="brand-beka">Beka</span><span class="brand-forge">Forge</span></span><small>Docs — Dialogue Graph System</small></span></a><div class="topbar-spacer"></div><div class="top-actions"><div class="search-wrap"><input class="search-input" type="search" placeholder="Filter pages from the sidebar" readonly></div><a class="back-to-site" href="../index.html">&#8592; BekaForge</a><button class="menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-controls="sidebar">Menu</button></div></div></header>
+    <div class="page-layout">
+      <aside class="sidebar" id="sidebar"><div class="sidebar-inner" data-sidebar-nav></div></aside>
+      <main class="content-shell" id="main-content">
+        <article class="doc-article" data-doc-content>
+          <nav class="breadcrumb"><a href="index.html">Home</a> / <span>Architecture</span></nav>
+          <h1>Architecture</h1>
+          <p class="lede">The project is organized around a clear editor/runtime split, with an optional AI extension layered on top of the same graph and JSON workflow.</p>
+          <div class="meta-strip">
+            <span class="meta-chip">Assemblies: DialogSystem.Runtime and DialogSystem.Editor</span>
+            <span class="meta-chip">Optional module: DialogSystemAIExtension</span>
+          </div>
+
+          <h2>Repository structure</h2>
+          <table>
+            <thead><tr><th>Path</th><th>Responsibility</th></tr></thead>
+            <tbody>
+              <tr><td><code>Assets/DialogGraphSystem/Scripts/Runtime</code></td><td>Playback, UI, settings, history, transcripts, utilities.</td></tr>
+              <tr><td><code>Assets/DialogGraphSystem/Scripts/Editor</code></td><td>Graph authoring, import/export, settings editor, GraphView tooling.</td></tr>
+              <tr><td><code>Assets/DialogSystemAIExtension</code></td><td>Optional preview-first AI authoring assistance and provider infrastructure.</td></tr>
+            </tbody>
+          </table>
+
+          <h2>Runtime data flow</h2>
+<pre><code>Game code or UI event
+    -> DialogManager.PlayDialogByID
+    -> DialogGraph lookup
+    -> Graph traversal
+    -> DialogUIController
+    -> DialogActionRunner
+    -> OnLineShown / OnChoicePicked
+    -> DialogueHistory
+    -> Branch path tracking
+    -> DialogGraphTranscriptBuilder</code></pre>
+
+          <h2>Editor authoring flow</h2>
+<pre><code>DialogGraphLauncherWindow
+    -> DialogGraphEditorWindow
+    -> DialogGraphView
+    -> Node views and edges
+    -> DialogGraph asset plus node sub-assets
+    -> Save / Load / Undo</code></pre>
+
+          <h2>Main extension points</h2>
+          <ul>
+            <li><code>IActionHandler</code> implementations for custom gameplay actions</li>
+            <li><code>DialogActionRunner</code> conversation and global action sets</li>
+            <li>replacement or extended UI around <code>DialogUIController</code></li>
+            <li>new reveal effects implementing <code>ITextRevealEffect</code></li>
+            <li>new transcript build modes in <code>DialogGraphTranscriptBuilder</code></li>
+            <li>new AI provider definitions derived from <code>LlmProviderDefinitionBase</code></li>
+          </ul>
+
+          <h2>Coupling and technical debt notes</h2>
+          <ul>
+            <li>The runtime relies on specific <code>Resources</code> paths for settings and demo assets.</li>
+            <li>The AI extension integrates into the main system through editor bridge code and string-based type loading in a few places.</li>
+            <li>The graph authoring flow depends on <code>UnityEditor.Experimental.GraphView</code>, which works but is not future-proof long term.</li>
+            <li>Several systems assume the included prefab structures or field wiring patterns, so prefab replacement should be done carefully.</li>
+          </ul>
+
+          <h2>Suggested visuals</h2>
+          <div class="placeholder-grid">
+            <article class="placeholder-card"><h3>Graph editor overview</h3><img class="screenshot-img" src="assets/images/graph-editor-overview.png" alt="Graph Editor Overview" loading="lazy"><p>Best visual anchor for the editor/runtime split.</p></article>
+            <article class="placeholder-card"><h3>AI extension sidebar</h3><img class="screenshot-img" src="assets/images/ai-extension-sidebar.png" alt="Ai Extension Sidebar" loading="lazy"><p>Useful if you want the architecture page to show the optional extension layer.</p></article>
+          </div>
+
+          <nav class="page-nav" data-prev-next></nav>
+        </article>
+      </main>
+      <aside class="page-toc" data-page-toc></aside>
+    </div>
+    <footer class="footer"><div class="footer-inner"><span>Dialog Graph System docs</span><span>&copy; <span data-current-year></span></span></div></footer>
+  </div>
+  <script src="assets/app.js"></script>
+</body>
+</html>

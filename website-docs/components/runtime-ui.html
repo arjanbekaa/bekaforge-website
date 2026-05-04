@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Runtime UI Components | Dialog Graph System Docs</title>
+  <meta name="description" content="DialogUIController, ChoiceButtonView, and DialogueHistoryView usage guidance.">
+  <link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body data-page="runtime-ui" data-base="../">
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <div class="site-shell">
+    <header class="topbar"><div class="topbar-inner"><a class="brand" href="../index.html"><svg width="28" height="28" viewBox="0 0 64 64" fill="none" aria-hidden="true"><rect x="9" y="21" width="46" height="22" rx="3" fill="#E8541A"/><rect x="21" y="7" width="22" height="16" rx="2" fill="#E8541A"/><rect x="9" y="43" width="13" height="13" rx="2" fill="#E8541A" opacity="0.72"/><rect x="42" y="43" width="13" height="13" rx="2" fill="#E8541A" opacity="0.72"/><rect x="21" y="27" width="22" height="3" rx="1.5" fill="#0E1117" opacity="0.28"/></svg><span class="brand-text"><span class="brand-name"><span class="brand-beka">Beka</span><span class="brand-forge">Forge</span></span><small>Docs — Dialogue Graph System</small></span></a><div class="topbar-spacer"></div><div class="top-actions"><div class="search-wrap"><input class="search-input" type="search" placeholder="Filter pages from the sidebar" readonly></div><a class="back-to-site" href="../../index.html">&#8592; BekaForge</a><button class="menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-controls="sidebar">Menu</button></div></div></header>
+    <div class="page-layout">
+      <aside class="sidebar" id="sidebar"><div class="sidebar-inner" data-sidebar-nav></div></aside>
+      <main class="content-shell" id="main-content">
+        <article class="doc-article" data-doc-content>
+          <nav class="breadcrumb"><a href="../index.html">Home</a> / <span>Runtime UI Components</span></nav>
+          <h1>Runtime UI Components</h1>
+          <p class="lede">The runtime UI layer is intentionally thin. It should render the active conversation state and forward user interaction back to the manager.</p>
+          <h2>DialogUIController</h2>
+          <p><code>DialogUIController</code> is the bridge between <code>DialogManager</code> and the actual scene or prefab UI. It expects references for the panel root, speaker label, dialog text, portrait image, choice container, choice prefab, skip button, panel button, and autoplay visuals.</p>
+          <h2>ChoiceButtonView</h2>
+          <p><code>ChoiceButtonView</code> renders and animates one selectable choice row. It supports hover selection, click handling, outline highlighting, pulse animation, and optional hotkey hints.</p>
+          <h2>DialogueHistoryView</h2>
+          <p><code>DialogueHistoryView</code> is a pooled list renderer for history entries, designed for append-heavy backlog display with scroll-to-bottom behavior.</p>
+          <h2>Common mistakes</h2>
+          <ul>
+            <li>forgetting a <code>Button</code> on the choice prefab root</li>
+            <li>letting child TMP labels intercept raycasts</li>
+            <li>replacing prefabs without matching the controller's expected field layout</li>
+          </ul>
+          <div class="placeholder-grid">
+            <article class="placeholder-card"><h3>Runtime dialogue UI</h3><img class="screenshot-img" src="../assets/images/runtime-dialog-ui.png" alt="Runtime Dialog Ui" loading="lazy"><p>Best visual for this page.</p></article><article class="placeholder-card screenshot-card"><h3>History panel</h3><img class="screenshot-img" src="../assets/images/runtime-history-panel.png" alt="History panel" loading="lazy"><p>The DialogueHistoryView rendering the backlog of shown lines and player-selected choices.</p></article>
+          </div>
+          <nav class="page-nav" data-prev-next></nav>
+        </article>
+      </main>
+      <aside class="page-toc" data-page-toc></aside>
+    </div>
+    <footer class="footer"><div class="footer-inner"><span>Dialog Graph System docs</span><span>&copy; <span data-current-year></span></span></div></footer>
+  </div>
+  <script src="../assets/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Getting Started | Dialog Graph System Docs</title>
+  <meta name="description" content="Read this first: understand the project quickly and run the demo scenes.">
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body data-page="getting-started" data-base="">
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <div class="site-shell">
+    <header class="topbar"><div class="topbar-inner"><a class="brand" href="index.html"><svg width="28" height="28" viewBox="0 0 64 64" fill="none" aria-hidden="true"><rect x="9" y="21" width="46" height="22" rx="3" fill="#E8541A"/><rect x="21" y="7" width="22" height="16" rx="2" fill="#E8541A"/><rect x="9" y="43" width="13" height="13" rx="2" fill="#E8541A" opacity="0.72"/><rect x="42" y="43" width="13" height="13" rx="2" fill="#E8541A" opacity="0.72"/><rect x="21" y="27" width="22" height="3" rx="1.5" fill="#0E1117" opacity="0.28"/></svg><span class="brand-text"><span class="brand-name"><span class="brand-beka">Beka</span><span class="brand-forge">Forge</span></span><small>Docs — Dialogue Graph System</small></span></a><div class="topbar-spacer"></div><div class="top-actions"><div class="search-wrap"><input class="search-input" type="search" placeholder="Filter pages from the sidebar" readonly></div><a class="back-to-site" href="../index.html">&#8592; BekaForge</a><button class="menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-controls="sidebar">Menu</button></div></div></header>
+    <div class="page-layout">
+      <aside class="sidebar" id="sidebar"><div class="sidebar-inner" data-sidebar-nav></div></aside>
+      <main class="content-shell" id="main-content">
+        <article class="doc-article" data-doc-content>
+          <nav class="breadcrumb"><a href="index.html">Home</a> / <span>Getting Started</span></nav>
+          <h1>Getting Started</h1>
+          <p class="lede">Start here if you want to understand the project quickly, open the right demo scene first, and see how the runtime and editor pieces fit together before integrating anything into your own game.</p>
+          <div class="meta-strip">
+            <span class="meta-chip">Audience: developers and reviewers</span>
+            <span class="meta-chip">Best entry point for first-time readers</span>
+          </div>
+
+          <h2>What this project is</h2>
+          <p>Dialog Graph System is a Unity asset with a clear editor/runtime split. Authoring happens in editor-only GraphView tools under <code>Assets/DialogGraphSystem/Scripts/Editor</code>. Playback happens through runtime components under <code>Assets/DialogGraphSystem/Scripts/Runtime</code>.</p>
+          <p>The main runtime coordinator is <code>DialogManager</code>. It reads a <code>DialogGraph</code>, shows lines and choices through <code>DialogUIController</code>, executes optional action nodes through <code>DialogActionRunner</code>, and exposes events for history and game-side integration.</p>
+
+          <h2>Fastest way to see it running</h2>
+          <ol>
+            <li>Open the project in Unity 2021.3 LTS or newer.</li>
+            <li>Open <code>Assets/DialogGraphSystem/DemoScenes/DialogDemo.unity</code>.</li>
+            <li>Enter Play Mode.</li>
+            <li>Trigger the sample dialogue from the scene UI or attached demo behavior.</li>
+            <li>Then open <code>Assets/DialogGraphSystem/DemoScenes/ActionDialogDemo.unity</code> to see action node behavior.</li>
+          </ol>
+
+          <div class="callout callout-info">
+            <strong>Read this as two systems</strong>
+            <span>The graph editor is the authoring workflow. The runtime manager and UI bridge are the playback workflow. Most integration issues happen when those responsibilities get blurred.</span>
+          </div>
+
+          <h2>First concepts to understand</h2>
+          <ul>
+            <li><code>DialogGraph</code>: the ScriptableObject that stores node collections and links.</li>
+            <li><code>DialogManager</code>: the runtime state machine that traverses the graph.</li>
+            <li><code>DialogUIController</code>: the bridge used to render lines, portraits, and choices.</li>
+            <li><code>DialogActionRunner</code>: dispatches action nodes to UnityEvents or coroutine handlers.</li>
+            <li><code>DialogueHistory</code>: records shown lines and selected choices for backlog display.</li>
+            <li><code>DialogGraphView</code>: the graph authoring surface built on GraphView.</li>
+          </ul>
+
+          <h2>Minimum runtime setup</h2>
+          <p>You need one <code>DialogManager</code> in the scene, one <code>DialogUIController</code> wired to scene UI, and at least one <code>DialogGraph</code> mapped to a <code>dialogID</code>.</p>
+<pre><code>using DialogSystem.Runtime.Core;
+using UnityEngine;
+
+public class GuardIntroStarter : MonoBehaviour
+{
+    public void Begin()
+    {
+        DialogManager.Instance.PlayDialogByID("intro_guard");
+    }
+}</code></pre>
+
+          <h2>First realistic flow</h2>
+          <ol>
+            <li>Create a <code>DialogGraph</code> asset in the editor.</li>
+            <li>Add dialog, choice, and optional action nodes.</li>
+            <li>Connect the graph from <code>Start</code> to <code>End</code>.</li>
+            <li>Assign the graph to a <code>dialogID</code> in <code>DialogManager</code>.</li>
+            <li>Call <code>PlayDialogByID</code>.</li>
+            <li>Let the manager drive UI, input, audio, and optional actions.</li>
+            <li>Read history or the rebuilt transcript if you need reporting.</li>
+          </ol>
+
+          <h2>Recommended screenshots for this page</h2>
+          <div class="placeholder-grid"><article class="placeholder-card screenshot-card"><h3>Demo scene</h3><img class="screenshot-img" src="assets/images/demo-main-menu.png" alt="Demo scene" loading="lazy"><p>The included demo scene entry point — open this first to see a working conversation in Play Mode.</p></article>
+            <article class="placeholder-card"><h3>Runtime dialogue panel</h3><img class="screenshot-img" src="assets/images/runtime-dialog-ui.png" alt="Runtime Dialog Ui" loading="lazy"><p>Shows readers what working looks like in Play Mode.</p></article>
+            <article class="placeholder-card"><h3>Graph editor overview</h3><img class="screenshot-img" src="assets/images/graph-editor-overview.png" alt="Graph Editor Overview" loading="lazy"><p>Helps connect the authoring model to the runtime flow early.</p></article>
+          </div>
+
+          <nav class="page-nav" data-prev-next></nav>
+        </article>
+      </main>
+      <aside class="page-toc" data-page-toc></aside>
+    </div>
+    <footer class="footer"><div class="footer-inner"><span>Dialog Graph System docs</span><span>&copy; <span data-current-year></span></span></div></footer>
+  </div>
+  <script src="assets/app.js"></script>
+</body>
+</html>

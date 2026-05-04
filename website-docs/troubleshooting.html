@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Troubleshooting | Dialog Graph System Docs</title>
+  <meta name="description" content="Common setup, runtime, transcript, JSON, and AI workflow problems.">
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body data-page="troubleshooting" data-base="">
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <div class="site-shell">
+    <header class="topbar"><div class="topbar-inner"><a class="brand" href="index.html"><svg width="28" height="28" viewBox="0 0 64 64" fill="none" aria-hidden="true"><rect x="9" y="21" width="46" height="22" rx="3" fill="#E8541A"/><rect x="21" y="7" width="22" height="16" rx="2" fill="#E8541A"/><rect x="9" y="43" width="13" height="13" rx="2" fill="#E8541A" opacity="0.72"/><rect x="42" y="43" width="13" height="13" rx="2" fill="#E8541A" opacity="0.72"/><rect x="21" y="27" width="22" height="3" rx="1.5" fill="#0E1117" opacity="0.28"/></svg><span class="brand-text"><span class="brand-name"><span class="brand-beka">Beka</span><span class="brand-forge">Forge</span></span><small>Docs — Dialogue Graph System</small></span></a><div class="topbar-spacer"></div><div class="top-actions"><div class="search-wrap"><input class="search-input" type="search" placeholder="Filter pages from the sidebar" readonly></div><a class="back-to-site" href="../index.html">&#8592; BekaForge</a><button class="menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-controls="sidebar">Menu</button></div></div></header>
+    <div class="page-layout">
+      <aside class="sidebar" id="sidebar"><div class="sidebar-inner" data-sidebar-nav></div></aside>
+      <main class="content-shell" id="main-content">
+        <article class="doc-article" data-doc-content>
+          <nav class="breadcrumb"><a href="index.html">Home</a> / <span>Troubleshooting</span></nav>
+          <h1>Troubleshooting</h1>
+          <p class="lede">Use this page when a graph exists but does not play, UI appears but choices do not work, or generated/imported data behaves unexpectedly.</p>
+          <h2>The dialogue does not start</h2>
+          <ul>
+            <li><code>DialogManager.uiPanel</code> is assigned</li>
+            <li>the graph is mapped in <code>dialogGraphs</code></li>
+            <li>the requested <code>dialogID</code> matches exactly</li>
+            <li>the graph has a valid <code>Start</code> link</li>
+          </ul>
+          <h2>The UI appears but choices do not work</h2>
+          <ul>
+            <li><code>choiceButtonPrefab</code> is assigned</li>
+            <li>the prefab root has a <code>Button</code></li>
+            <li><code>choicesContainer</code> is assigned</li>
+            <li>the EventSystem is active and compatible with your input setup</li>
+          </ul>
+          <h2>History panel is empty</h2>
+          <ul>
+            <li><code>DialogueHistory</code> is enabled</li>
+            <li>it is subscribed to the active <code>DialogManager</code></li>
+            <li><code>DialogueHistoryView</code> references are wired</li>
+          </ul>
+          <h2>Transcript comes back empty</h2>
+          <ul>
+            <li>the conversation was started by <code>dialogID</code></li>
+            <li>the conversation has already completed once</li>
+            <li>the graph mapping still exists</li>
+            <li>the graph structure has not changed in a way that invalidates the stored branch path</li>
+          </ul>
+          <h2>JSON import fails</h2>
+          <ul>
+            <li>the JSON is valid</li>
+            <li>GUIDs are unique</li>
+            <li>links reference real nodes</li>
+            <li>choice arrays and link ports align</li>
+          </ul>
+          <h2>AI command preview fails</h2>
+          <ul>
+            <li>the provider returned structured JSON content and not explanatory text</li>
+            <li>the selected command is supported in the current release</li>
+            <li>the selected model can follow structured output instructions reliably</li>
+            <li>the provider asset points to the correct endpoint and contains your current key or local Ollama settings</li>
+          </ul>
+          <nav class="page-nav" data-prev-next></nav>
+        </article>
+      </main>
+      <aside class="page-toc" data-page-toc></aside>
+    </div>
+    <footer class="footer"><div class="footer-inner"><span>Dialog Graph System docs</span><span>&copy; <span data-current-year></span></span></div></footer>
+  </div>
+  <script src="assets/app.js"></script>
+</body>
+</html>

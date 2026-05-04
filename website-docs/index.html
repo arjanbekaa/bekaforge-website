@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dialog Graph System Docs</title>
+  <meta name="description" content="Technical documentation website for Dialog Graph System, a Unity graph-based dialogue toolkit.">
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body data-page="home" data-base="">
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <div class="site-shell">
+    <header class="topbar">
+      <div class="topbar-inner">
+        <a class="brand" href="index.html" aria-label="Dialog Graph System docs home">
+          <span class="brand-mark">DG</span>
+          <span class="brand-text">
+            <span>Dialog Graph System</span>
+            <small>Static documentation portal</small>
+          </span>
+        </a>
+        <div class="topbar-spacer"></div>
+        <div class="top-actions">
+          <div class="search-wrap">
+            <input class="search-input" type="search" placeholder="Use the sidebar to filter pages" aria-label="Search hint" readonly>
+          </div>
+          <a class="back-to-site" href="../index.html">&#8592; BekaForge</a><button class="menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-controls="sidebar">Menu</button>
+        </div>
+      </div>
+    </header>
+
+    <div class="page-layout">
+      <aside class="sidebar" id="sidebar">
+        <div class="sidebar-inner" data-sidebar-nav></div>
+      </aside>
+
+      <main class="content-shell" id="main-content">
+        <section class="page-hero">
+          <span class="eyebrow">Unity Documentation Portal</span>
+          <h1 class="hero-title">Graph-based dialogue docs built for developers, contributors, and reviewers.</h1>
+          <p class="hero-subtitle">
+            This site publishes the repository documentation for Dialog Graph System in a cleaner, browsable HTML format.
+            It covers the runtime, editor tooling, settings model, JSON workflow, transcript support, and the optional AI extension.
+          </p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="getting-started.html">Start with Getting Started</a>
+            <a class="button button-secondary" href="architecture.html">Open Architecture</a>
+          </div>
+
+          <div class="hero-grid">
+            <article class="hero-card">
+              <h2>What the project does</h2>
+              <p>
+                Dialog Graph System is a Unity toolkit for authoring branching conversations in a graph editor and playing them
+                back through a runtime UI. It includes a JSON round-trip workflow, action nodes, a history panel, transcript
+                rebuilding, and an optional AI extension for command-based authoring assistance.
+              </p>
+              <div class="stat-grid">
+                <div class="stat">
+                  <strong>2</strong>
+                  <span>Demo scenes in the repo</span>
+                </div>
+                <div class="stat">
+                  <strong>5</strong>
+                  <span>Core node types</span>
+                </div>
+                <div class="stat">
+                  <strong>3</strong>
+                  <span>Main authoring workflows</span>
+                </div>
+              </div>
+            </article>
+
+            <article class="placeholder-card">
+              <h3>Hero Screenshot Placeholder</h3>
+              <img class="screenshot-img" src="assets/images/graph-editor-overview.png" alt="Graph Editor Overview" loading="lazy">
+              <p>Recommended image: a clean graph editor overview or the runtime dialogue panel in Play Mode.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="homepage-section panel">
+          <h2>Who this documentation is for</h2>
+          <div class="feature-grid">
+            <article class="doc-card">
+              <h3>Developers</h3>
+              <p>Learn how to wire <code>DialogManager</code>, play conversations by <code>dialogID</code>, and integrate actions, history, and transcripts.</p>
+            </article>
+            <article class="doc-card">
+              <h3>Contributors</h3>
+              <p>Understand the editor/runtime split, asset model, and the safest extension points before changing the graph workflow.</p>
+            </article>
+            <article class="doc-card">
+              <h3>Reviewers and clients</h3>
+              <p>Inspect the architecture, supported workflows, and major systems without digging through every Unity script first.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="homepage-section panel">
+          <h2>Key features</h2>
+          <div class="card-grid">
+            <article class="doc-card"><h3>Graph-based authoring</h3><p>Author Start, Dialog, Choice, Action, and End nodes through editor-only GraphView tooling.</p></article>
+            <article class="doc-card"><h3>Runtime playback</h3><p>Use TextMeshPro-backed UI for speaker names, portraits, typewriter effects, skip, autoplay, and choice handling.</p></article>
+            <article class="doc-card"><h3>JSON workflows</h3><p>Export and import graph JSON for backup, review, migration, and controlled external tooling.</p></article>
+            <article class="doc-card"><h3>Action nodes</h3><p>Run UnityEvent bindings or coroutine-based gameplay handlers through <code>DialogActionRunner</code> and <code>IActionHandler</code>.</p></article>
+            <article class="doc-card"><h3>History and transcripts</h3><p>Keep a player-facing backlog and rebuild the exact played branch with deterministic transcript generation.</p></article>
+            <article class="doc-card"><h3>AI extension</h3><p>Issue free-text commands in the graph editor's AI sidebar to rewrite lines, insert nodes, and extend branches — with a preview step before any change is applied.</p></article>
+          </div>
+        </section>
+
+        <section class="homepage-section panel">
+          <h2>Start here</h2>
+          <div class="link-grid">
+            <a class="doc-card" href="getting-started.html"><h3>Getting Started</h3><p>Quick repo orientation, demo scenes, and the smallest runtime setup to get the system running.</p></a>
+            <a class="doc-card" href="installation.html"><h3>Installation</h3><p>Unity requirements, package assumptions, scene setup checklist, and AI extension setup basics.</p></a>
+            <a class="doc-card" href="quick-tutorial.html"><h3>Quick Tutorial</h3><p>Create a graph, wire a <code>dialogID</code>, trigger playback, and inspect the branch transcript.</p></a>
+            <a class="doc-card" href="architecture.html"><h3>Architecture</h3><p>Review the editor/runtime split, data flow, extension points, and current coupling boundaries.</p></a>
+          </div>
+        </section>
+
+        <section class="homepage-section panel">
+          <h2>Examples and common workflows</h2>
+          <div class="link-grid">
+            <a class="doc-card" href="guides/creating-a-dialog.html"><h3>Create a dialog graph</h3><p>Build a branching conversation, map it to a <code>dialogID</code>, and trigger it from gameplay code.</p></a>
+            <a class="doc-card" href="guides/integrating-actions.html"><h3>Integrate action nodes</h3><p>Connect action nodes to UnityEvents or async handlers without overloading the dialogue layer.</p></a>
+            <a class="doc-card" href="guides/ai-generation-workflow.html"><h3>Use the AI extension</h3><p>Issue commands to rewrite, extend, or insert nodes inside an open graph, with a draft preview before anything is applied.</p></a>
+            <a class="doc-card" href="modules/history-and-transcripts.html"><h3>Review history and transcripts</h3><p>Understand the difference between the history panel and exact branch transcript reconstruction.</p></a>
+          </div>
+        </section>
+
+        <section class="homepage-section panel">
+          <h2>Demo entry points in this repository</h2>
+          <table>
+            <thead><tr><th>Asset</th><th>Purpose</th></tr></thead>
+            <tbody>
+              <tr><td><code>Assets/DialogGraphSystem/DemoScenes/DialogDemo.unity</code></td><td>Basic runtime and branching demonstration scene.</td></tr>
+              <tr><td><code>Assets/DialogGraphSystem/DemoScenes/ActionDialogDemo.unity</code></td><td>Demonstrates action nodes and waitable behavior.</td></tr>
+              <tr><td><code>Assets/DialogGraphSystem/Resources/Conversation/DialogDemo.asset</code></td><td>Sample graph asset used by the demo flow.</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="homepage-section panel">
+          <h2>Screenshot-ready sections</h2>
+          <div class="placeholder-grid">
+            <article class="placeholder-card"><h3>Graph editor overview</h3><img class="screenshot-img" src="assets/images/graph-editor-overview.png" alt="Graph Editor Overview" loading="lazy"><p>Best for the Architecture and Graph Editor pages.</p></article>
+            <article class="placeholder-card"><h3>Runtime UI</h3><img class="screenshot-img" src="assets/images/runtime-dialog-ui.png" alt="Runtime Dialog Ui" loading="lazy"><p>Best for Getting Started and Runtime UI Components.</p></article>
+            <article class="placeholder-card"><h3>Settings window</h3><img class="screenshot-img" src="assets/images/settings-text.png" alt="Settings Text" loading="lazy"><p>Best for Installation and Settings System.</p></article>
+            <article class="placeholder-card"><h3>AI extension sidebar</h3><img class="screenshot-img" src="assets/images/ai-extension-sidebar.png" alt="Ai Extension Sidebar" loading="lazy"><p>Best for the AI Extension module and AI-assisted authoring guide.</p></article>
+          </div>
+        </section>
+      </main>
+
+      <aside class="page-toc">
+        <div class="toc-card">
+          <p class="toc-title">Portal map</p>
+          <ul class="toc-list">
+            <li><a class="toc-link" href="getting-started.html">Getting Started</a></li>
+            <li><a class="toc-link" href="modules/runtime-dialog-flow.html">Runtime Flow</a></li>
+            <li><a class="toc-link" href="modules/graph-editor.html">Graph Editor</a></li>
+            <li><a class="toc-link" href="modules/ai-extension.html">AI Extension</a></li>
+            <li><a class="toc-link" href="troubleshooting.html">Troubleshooting</a></li>
+          </ul>
+        </div>
+      </aside>
+    </div>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        <span>Dialog Graph System documentation website</span>
+        <span>&copy; <span data-current-year></span> Docs portal for GitHub Pages</span>
+      </div>
+    </footer>
+  </div>
+  <script src="assets/app.js"></script>
+</body>
+</html>

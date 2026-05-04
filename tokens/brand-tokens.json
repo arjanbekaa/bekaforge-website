@@ -1,0 +1,79 @@
+{
+  "$schema": "https://design-tokens.github.io/community-group/format/",
+  "name": "Beka Forge Brand Tokens",
+  "version": "1.0.0",
+
+  "color": {
+    "forge":         { "value": "#E8541A", "type": "color", "description": "Primary brand orange — forge fire" },
+    "forge-light":   { "value": "#FF7A40", "type": "color", "description": "Lighter forge, hover states on dark bg" },
+    "forge-dark":    { "value": "#BF3D10", "type": "color", "description": "Darker forge, pressed states" },
+    "obsidian":      { "value": "#0E1117", "type": "color", "description": "Deepest background, hero sections" },
+    "steel":         { "value": "#1C2333", "type": "color", "description": "Card and surface background" },
+    "steel-mid":     { "value": "#252E42", "type": "color", "description": "Elevated surfaces and borders" },
+    "slate":         { "value": "#8892A4", "type": "color", "description": "Muted text, subtitles, labels" },
+    "ash":           { "value": "#F0F2F5", "type": "color", "description": "Primary text on dark backgrounds" },
+    "white":         { "value": "#FFFFFF", "type": "color" },
+    "tech-blue":     { "value": "#3B82F6", "type": "color", "description": "Technical accent — AI, links, info" },
+    "tech-blue-light": { "value": "#60A5FA", "type": "color" }
+  },
+
+  "typography": {
+    "font-display":   { "value": "Space Grotesk", "type": "fontFamily" },
+    "font-body":      { "value": "Inter",          "type": "fontFamily" },
+    "font-mono":      { "value": "JetBrains Mono", "type": "fontFamily" },
+
+    "size-xs":   { "value": "12px", "type": "fontSize" },
+    "size-sm":   { "value": "14px", "type": "fontSize" },
+    "size-base": { "value": "16px", "type": "fontSize" },
+    "size-lg":   { "value": "18px", "type": "fontSize" },
+    "size-xl":   { "value": "20px", "type": "fontSize" },
+    "size-2xl":  { "value": "24px", "type": "fontSize" },
+    "size-3xl":  { "value": "30px", "type": "fontSize" },
+    "size-4xl":  { "value": "36px", "type": "fontSize" },
+    "size-5xl":  { "value": "48px", "type": "fontSize" },
+    "size-6xl":  { "value": "60px", "type": "fontSize" },
+    "size-7xl":  { "value": "72px", "type": "fontSize" },
+
+    "weight-regular": { "value": 400, "type": "fontWeight" },
+    "weight-medium":  { "value": 500, "type": "fontWeight" },
+    "weight-bold":    { "value": 700, "type": "fontWeight" }
+  },
+
+  "spacing": {
+    "1":  { "value": "4px",   "type": "spacing" },
+    "2":  { "value": "8px",   "type": "spacing" },
+    "3":  { "value": "12px",  "type": "spacing" },
+    "4":  { "value": "16px",  "type": "spacing" },
+    "5":  { "value": "20px",  "type": "spacing" },
+    "6":  { "value": "24px",  "type": "spacing" },
+    "8":  { "value": "32px",  "type": "spacing" },
+    "10": { "value": "40px",  "type": "spacing" },
+    "12": { "value": "48px",  "type": "spacing" },
+    "16": { "value": "64px",  "type": "spacing" },
+    "20": { "value": "80px",  "type": "spacing" },
+    "24": { "value": "96px",  "type": "spacing" },
+    "32": { "value": "128px", "type": "spacing" }
+  },
+
+  "borderRadius": {
+    "sm":   { "value": "4px",    "type": "borderRadius" },
+    "md":   { "value": "8px",    "type": "borderRadius" },
+    "lg":   { "value": "12px",   "type": "borderRadius" },
+    "xl":   { "value": "16px",   "type": "borderRadius" },
+    "2xl":  { "value": "24px",   "type": "borderRadius" },
+    "full": { "value": "9999px", "type": "borderRadius" }
+  },
+
+  "shadow": {
+    "sm":    { "value": "0 1px 2px rgba(0,0,0,0.4)",           "type": "boxShadow" },
+    "md":    { "value": "0 4px 12px rgba(0,0,0,0.35)",         "type": "boxShadow" },
+    "lg":    { "value": "0 8px 32px rgba(0,0,0,0.4)",          "type": "boxShadow" },
+    "brand": { "value": "0 4px 24px rgba(232, 84, 26, 0.25)", "type": "boxShadow" }
+  },
+
+  "motion": {
+    "fast":  { "value": "100ms ease",  "type": "transition" },
+    "base":  { "value": "180ms ease",  "type": "transition" },
+    "slow":  { "value": "300ms ease",  "type": "transition" }
+  }
+}

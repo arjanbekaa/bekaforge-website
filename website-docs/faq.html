@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FAQ | Dialog Graph System Docs</title>
+  <meta name="description" content="Frequently asked questions about runtime, editor tooling, UI replacement, and AI support.">
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body data-page="faq" data-base="">
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <div class="site-shell">
+    <header class="topbar"><div class="topbar-inner"><a class="brand" href="index.html"><svg width="28" height="28" viewBox="0 0 64 64" fill="none" aria-hidden="true"><rect x="9" y="21" width="46" height="22" rx="3" fill="#E8541A"/><rect x="21" y="7" width="22" height="16" rx="2" fill="#E8541A"/><rect x="9" y="43" width="13" height="13" rx="2" fill="#E8541A" opacity="0.72"/><rect x="42" y="43" width="13" height="13" rx="2" fill="#E8541A" opacity="0.72"/><rect x="21" y="27" width="22" height="3" rx="1.5" fill="#0E1117" opacity="0.28"/></svg><span class="brand-text"><span class="brand-name"><span class="brand-beka">Beka</span><span class="brand-forge">Forge</span></span><small>Docs — Dialogue Graph System</small></span></a><div class="topbar-spacer"></div><div class="top-actions"><div class="search-wrap"><input class="search-input" type="search" placeholder="Filter pages from the sidebar" readonly></div><a class="back-to-site" href="../index.html">&#8592; BekaForge</a><button class="menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-controls="sidebar">Menu</button></div></div></header>
+    <div class="page-layout">
+      <aside class="sidebar" id="sidebar"><div class="sidebar-inner" data-sidebar-nav></div></aside>
+      <main class="content-shell" id="main-content">
+        <article class="doc-article" data-doc-content>
+          <nav class="breadcrumb"><a href="index.html">Home</a> / <span>FAQ</span></nav>
+          <h1>FAQ</h1>
+          <h2>Is this system runtime-only or does it include authoring tools?</h2>
+          <p>It includes both. The runtime and editor tools are split into separate assemblies and folders.</p>
+          <h2>Can I start dialogues without using dialogID?</h2>
+          <p>Yes. <code>DialogManager.StartDialog(DialogGraph graph)</code> starts directly from an asset reference.</p>
+          <h2>Does the system support branching?</h2>
+          <p>Yes. Choice nodes branch by option index and the manager tracks selected branch indices for transcript reconstruction.</p>
+          <h2>Can I trigger gameplay events during dialogue?</h2>
+          <p>Yes. Use action nodes together with <code>DialogActionRunner</code> and, when needed, <code>IActionHandler</code>.</p>
+          <h2>Does it support a history or backlog UI?</h2>
+          <p>Yes. <code>DialogueHistory</code> and <code>DialogueHistoryView</code> provide that feature.</p>
+          <h2>Is there AI generation support?</h2>
+          <p>Yes, in the optional <code>DialogSystemAIExtension</code> module.</p>
+          <h2>Can I replace the included UI?</h2>
+          <p>Yes, but keep the manager/UI contract intact or update the integration accordingly.</p>
+          <nav class="page-nav" data-prev-next></nav>
+        </article>
+      </main>
+      <aside class="page-toc" data-page-toc></aside>
+    </div>
+    <footer class="footer"><div class="footer-inner"><span>Dialog Graph System docs</span><span>&copy; <span data-current-year></span></span></div></footer>
+  </div>
+  <script src="assets/app.js"></script>
+</body>
+</html>

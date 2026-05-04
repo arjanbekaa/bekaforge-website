@@ -1,0 +1,116 @@
+// ============================================================
+// Beka Forge — Brand Tokens (SCSS variables)
+// ============================================================
+
+// ── COLOURS ────────────────────────────────────────────────
+$bf-forge:          #E8541A;
+$bf-forge-light:    #FF7A40;
+$bf-forge-dark:     #BF3D10;
+$bf-forge-hover:    #D44A12;
+
+$bf-obsidian:       #0E1117;
+$bf-steel:          #1C2333;
+$bf-steel-mid:      #252E42;
+$bf-slate:          #8892A4;
+$bf-ash:            #F0F2F5;
+$bf-white:          #FFFFFF;
+
+$bf-blue:           #3B82F6;
+$bf-blue-light:     #60A5FA;
+
+// ── TYPOGRAPHY ──────────────────────────────────────────────
+$bf-font-display:   'Space Grotesk', 'Liberation Sans', sans-serif;
+$bf-font-body:      'Inter', 'Liberation Sans', sans-serif;
+$bf-font-mono:      'JetBrains Mono', 'Fira Code', monospace;
+
+// ── BREAKPOINTS ──────────────────────────────────────────────
+$bf-bp-sm:  640px;
+$bf-bp-md:  768px;
+$bf-bp-lg:  1024px;
+$bf-bp-xl:  1280px;
+$bf-bp-2xl: 1440px;
+
+// ── SPACING SCALE ────────────────────────────────────────────
+$bf-space: (
+  1:  4px,
+  2:  8px,
+  3:  12px,
+  4:  16px,
+  5:  20px,
+  6:  24px,
+  8:  32px,
+  10: 40px,
+  12: 48px,
+  16: 64px,
+  20: 80px,
+  24: 96px,
+  32: 128px,
+);
+
+// ── BORDER RADIUS ────────────────────────────────────────────
+$bf-radius-sm:   4px;
+$bf-radius-md:   8px;
+$bf-radius-lg:   12px;
+$bf-radius-xl:   16px;
+$bf-radius-2xl:  24px;
+$bf-radius-full: 9999px;
+
+// ── MIXINS ───────────────────────────────────────────────────
+
+@mixin bf-display($weight: 700) {
+  font-family: $bf-font-display;
+  font-weight: $weight;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+
+@mixin bf-body($weight: 400) {
+  font-family: $bf-font-body;
+  font-weight: $weight;
+  line-height: 1.6;
+}
+
+@mixin bf-label {
+  font-family: $bf-font-body;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+@mixin bf-card {
+  background: $bf-steel;
+  border: 1px solid $bf-steel-mid;
+  border-radius: $bf-radius-lg;
+  padding: 24px;
+}
+
+@mixin bf-button-primary {
+  background: $bf-forge;
+  color: $bf-white;
+  font-family: $bf-font-body;
+  font-weight: 500;
+  border: none;
+  border-radius: $bf-radius-md;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background 180ms ease;
+  &:hover { background: $bf-forge-hover; }
+  &:active { background: $bf-forge-dark; }
+}
+
+@mixin bf-button-ghost {
+  background: transparent;
+  color: $bf-ash;
+  font-family: $bf-font-body;
+  font-weight: 500;
+  border: 1px solid $bf-steel-mid;
+  border-radius: $bf-radius-md;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: border-color 180ms ease, background 180ms ease;
+  &:hover {
+    border-color: $bf-forge;
+    background: rgba($bf-forge, 0.06);
+  }
+}

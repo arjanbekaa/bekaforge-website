@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Guide: AI-Assisted Authoring Workflow | Dialog Graph System Docs</title>
+  <meta name="description" content="Use command-based AI assistance inside the graph editor to rewrite lines, insert nodes, and extend dialogue — with a preview-first confirmation step.">
+  <link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body data-page="ai-generation-workflow" data-base="../">
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <div class="site-shell">
+    <header class="topbar"><div class="topbar-inner"><a class="brand" href="../index.html"><svg width="28" height="28" viewBox="0 0 64 64" fill="none" aria-hidden="true"><rect x="9" y="21" width="46" height="22" rx="3" fill="#E8541A"/><rect x="21" y="7" width="22" height="16" rx="2" fill="#E8541A"/><rect x="9" y="43" width="13" height="13" rx="2" fill="#E8541A" opacity="0.72"/><rect x="42" y="43" width="13" height="13" rx="2" fill="#E8541A" opacity="0.72"/><rect x="21" y="27" width="22" height="3" rx="1.5" fill="#0E1117" opacity="0.28"/></svg><span class="brand-text"><span class="brand-name"><span class="brand-beka">Beka</span><span class="brand-forge">Forge</span></span><small>Docs — Dialogue Graph System</small></span></a><div class="topbar-spacer"></div><div class="top-actions"><div class="search-wrap"><input class="search-input" type="search" placeholder="Filter pages from the sidebar" readonly></div><a class="back-to-site" href="../../index.html">&#8592; BekaForge</a><button class="menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-controls="sidebar">Menu</button></div></div></header>
+    <div class="page-layout">
+      <aside class="sidebar" id="sidebar"><div class="sidebar-inner" data-sidebar-nav></div></aside>
+      <main class="content-shell" id="main-content">
+        <article class="doc-article" data-doc-content>
+          <nav class="breadcrumb"><a href="../index.html">Home</a> / <span>AI-Assisted Authoring Workflow</span></nav>
+          <h1>Guide: AI-Assisted Authoring Workflow</h1>
+          <p class="lede">Use command-based AI assistance inside the graph editor to rewrite dialogue, insert nodes, and extend branches — with a draft preview step before any change is applied.</p>
+          <h2>Authoring loop</h2>
+          <ol>
+            <li>Open an existing <code>DialogGraph</code> asset in the graph editor.</li>
+            <li>Configure <code>DialogAISettings</code> and a provider asset if you have not already.</li>
+            <li>Create a provider asset under <code>Assets/DialogSystemAIExtension/ProviderAssets</code>, duplicate one from <code>Assets/DialogSystemAIExtension/Samples/ExampleAssets/Provider</code>, or use your own folder.</li>
+            <li>Select an anchor node in the graph (optional — helps the AI target the right location).</li>
+            <li>Open the <strong>AI</strong> tab in the right sidebar and type a free-text instruction.</li>
+            <li>Review the draft preview that appears before anything is written to the graph.</li>
+            <li>Click <strong>Apply</strong> to confirm, or discard the draft. Use Ctrl+Z to undo any applied change.</li>
+          </ol>
+          <h2>Example instructions</h2>
+          <ul>
+            <li><code>Rewrite this line so the character sounds more nervous</code></li>
+            <li><code>Add three more dialog lines before the end</code></li>
+            <li><code>Insert a PlaySound action after the selected dialog node</code></li>
+            <li><code>Check the graph for structural problems</code></li>
+          </ul>
+          <h2>What the AI may not produce</h2>
+          <p>The AI layer is validated before any draft reaches the graph. It is not permitted to return GUIDs, node positions, edge definitions, or serialised graph JSON. Any response containing these fields is rejected by the safety validator and a failure notice is shown instead of a preview.</p>
+          <h2>Best practices</h2>
+          <ul>
+            <li>select an anchor node before issuing positional commands ("insert after this node")</li>
+            <li>review all proposed action node IDs before confirming — the AI suggests from the registered action list but does not validate game-side bindings</li>
+            <li>treat all AI output as a draft for human review, not the final source of truth</li>
+            <li>for OpenAI-compatible services, prefer the <code>OpenAI</code> provider asset with a root <code>baseUrl</code> plus <code>/v1/chat/completions</code></li>
+            <li>if a hosted provider returns prose instead of structured output, try a model with structured-output support or use Ollama locally</li>
+          </ul>
+          <nav class="page-nav" data-prev-next></nav>
+        </article>
+      </main>
+      <aside class="page-toc" data-page-toc></aside>
+    </div>
+    <footer class="footer"><div class="footer-inner"><span>Dialog Graph System docs</span><span>&copy; <span data-current-year></span></span></div></footer>
+  </div>
+  <script src="../assets/app.js"></script>
+</body>
+</html>

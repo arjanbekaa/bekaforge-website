@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>JSON Import and Export | Dialog Graph System Docs</title>
+  <meta name="description" content="Legacy JSON export, import validation, and manual bridge workflows.">
+  <link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body data-page="import-export" data-base="../">
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <div class="site-shell">
+    <header class="topbar"><div class="topbar-inner"><a class="brand" href="../index.html"><svg width="28" height="28" viewBox="0 0 64 64" fill="none" aria-hidden="true"><rect x="9" y="21" width="46" height="22" rx="3" fill="#E8541A"/><rect x="21" y="7" width="22" height="16" rx="2" fill="#E8541A"/><rect x="9" y="43" width="13" height="13" rx="2" fill="#E8541A" opacity="0.72"/><rect x="42" y="43" width="13" height="13" rx="2" fill="#E8541A" opacity="0.72"/><rect x="21" y="27" width="22" height="3" rx="1.5" fill="#0E1117" opacity="0.28"/></svg><span class="brand-text"><span class="brand-name"><span class="brand-beka">Beka</span><span class="brand-forge">Forge</span></span><small>Docs — Dialogue Graph System</small></span></a><div class="topbar-spacer"></div><div class="top-actions"><div class="search-wrap"><input class="search-input" type="search" placeholder="Filter pages from the sidebar" readonly></div><a class="back-to-site" href="../../index.html">&#8592; BekaForge</a><button class="menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-controls="sidebar">Menu</button></div></div></header>
+    <div class="page-layout">
+      <aside class="sidebar" id="sidebar"><div class="sidebar-inner" data-sidebar-nav></div></aside>
+      <main class="content-shell" id="main-content">
+        <article class="doc-article" data-doc-content>
+          <nav class="breadcrumb"><a href="../index.html">Home</a> / <span>JSON Import and Export</span></nav>
+          <h1>JSON Import and Export</h1>
+          <p class="lede">The JSON tooling lets the system round-trip dialogue graphs to and from a serializable format for backups, review, migration, and controlled external tooling.</p>
+          <h2>Key files</h2>
+          <ul>
+            <li><code>DialogJsonIOWindow.cs</code></li>
+            <li><code>DialogExportUtility.cs</code></li>
+            <li><code>DialogJsonImportBridge.cs</code></li>
+          </ul>
+          <h2>Editor entry point</h2>
+          <p>Open <code>Tools &gt; Dialog System &gt; Legacy &gt; JSON Import-Export...</code>. The window has Export and Import tabs.</p>
+          <h2>Export workflow</h2>
+          <p>Choose a <code>DialogGraph</code>, choose an output folder inside <code>Assets</code>, enable pretty print if needed, and optionally include node positions.</p>
+          <h2>Import workflow</h2>
+          <p>Load JSON from a <code>TextAsset</code> or external file, validate it, create a new <code>DialogGraph</code> asset, and optionally open that graph in the editor window.</p>
+          <h2>Import bridge</h2>
+          <p><code>DialogJsonImportBridge</code> parses JSON into DTOs, validates the structure, creates the graph asset, rebuilds nodes and links, and optionally opens the result in the graph editor. The shipped AI extension uses preview-first draft commands instead of raw full-graph JSON import.</p>
+          <h2>Best practices</h2>
+          <ul>
+            <li>export graphs before making large structural edits</li>
+            <li>keep imported JSON under review if it comes from external tooling</li>
+            <li>preserve the graph asset as the source of truth after import</li>
+          </ul>
+          <div class="placeholder-grid">
+            <article class="placeholder-card"><h3>JSON I/O window</h3><img class="screenshot-img" src="../assets/images/json-export.png" alt="Json Export" loading="lazy"><p>Best image for this workflow.</p></article><article class="placeholder-card screenshot-card"><h3>Import window</h3><img class="screenshot-img" src="../assets/images/json-import.png" alt="Import window" loading="lazy"><p>The JSON import interface — load a JSON file to create or overwrite a graph asset.</p></article>
+          </div>
+          <nav class="page-nav" data-prev-next></nav>
+        </article>
+      </main>
+      <aside class="page-toc" data-page-toc></aside>
+    </div>
+    <footer class="footer"><div class="footer-inner"><span>Dialog Graph System docs</span><span>&copy; <span data-current-year></span></span></div></footer>
+  </div>
+  <script src="../assets/app.js"></script>
+</body>
+</html>

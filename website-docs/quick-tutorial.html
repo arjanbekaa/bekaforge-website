@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Quick Tutorial | Dialog Graph System Docs</title>
+  <meta name="description" content="Create a graph, wire runtime components, trigger playback, and inspect the transcript.">
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body data-page="quick-tutorial" data-base="">
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <div class="site-shell">
+    <header class="topbar"><div class="topbar-inner"><a class="brand" href="index.html"><svg width="28" height="28" viewBox="0 0 64 64" fill="none" aria-hidden="true"><rect x="9" y="21" width="46" height="22" rx="3" fill="#E8541A"/><rect x="21" y="7" width="22" height="16" rx="2" fill="#E8541A"/><rect x="9" y="43" width="13" height="13" rx="2" fill="#E8541A" opacity="0.72"/><rect x="42" y="43" width="13" height="13" rx="2" fill="#E8541A" opacity="0.72"/><rect x="21" y="27" width="22" height="3" rx="1.5" fill="#0E1117" opacity="0.28"/></svg><span class="brand-text"><span class="brand-name"><span class="brand-beka">Beka</span><span class="brand-forge">Forge</span></span><small>Docs — Dialogue Graph System</small></span></a><div class="topbar-spacer"></div><div class="top-actions"><div class="search-wrap"><input class="search-input" type="search" placeholder="Filter pages from the sidebar" readonly></div><a class="back-to-site" href="../index.html">&#8592; BekaForge</a><button class="menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-controls="sidebar">Menu</button></div></div></header>
+    <div class="page-layout">
+      <aside class="sidebar" id="sidebar"><div class="sidebar-inner" data-sidebar-nav></div></aside>
+      <main class="content-shell" id="main-content">
+        <article class="doc-article" data-doc-content>
+          <nav class="breadcrumb"><a href="index.html">Home</a> / <span>Quick Tutorial</span></nav>
+          <h1>Quick Tutorial</h1>
+          <p class="lede">This is the smallest meaningful workflow in the repository: create a graph, wire runtime components, and play a branching conversation end to end.</p>
+
+          <h2>Step 1. Create or open a graph</h2>
+          <p>Open <code>Tools &gt; Dialog System &gt; Dialog Graph</code>. In the launcher window, either create a new graph asset or open an existing graph such as <code>DialogDemo</code>.</p>
+
+          <h2>Step 2. Build a minimal graph</h2>
+          <ol>
+            <li>Keep the generated <code>Start</code> and <code>End</code> markers.</li>
+            <li>Add one <code>Dialog</code> node for an opening line.</li>
+            <li>Add one <code>Choice</code> node with at least two answers.</li>
+            <li>Add one or two more <code>Dialog</code> nodes for the branch outcomes.</li>
+            <li>Connect everything so every branch reaches <code>End</code>.</li>
+          </ol>
+<pre><code>Start -> Dialog -> Choice -> Dialog A -> End
+                       -> Dialog B -> End</code></pre>
+
+          <h2>Step 3. Save the graph</h2>
+          <p>Use the graph editor toolbar to save. The graph is stored as a <code>DialogGraph</code> asset with sub-assets for the individual nodes.</p>
+
+          <h2>Step 4. Wire runtime components</h2>
+          <p>In your scene, add or reuse a <code>DialogManager</code>, assign its <code>uiPanel</code>, add your graph to <code>dialogGraphs</code>, and give the mapping a <code>dialogID</code>.</p>
+
+          <h2>Step 5. Trigger playback</h2>
+<pre><code>using DialogSystem.Runtime.Core;
+using UnityEngine;
+
+public class StartGuardConversation : MonoBehaviour
+{
+    public void PlayIntro()
+    {
+        DialogManager.Instance.PlayDialogByID(
+            "intro_guard",
+            () => Debug.Log("Conversation finished."));
+    }
+}</code></pre>
+
+          <h2>Step 6. Try runtime behaviors</h2>
+          <ul>
+            <li>dialog text appears in the runtime panel</li>
+            <li>portraits and speaker names update</li>
+            <li>choices can be selected by click or keyboard</li>
+            <li>skip and autoplay work as expected</li>
+          </ul>
+
+          <h2>Step 7. Inspect history and transcript</h2>
+<pre><code>string transcript = DialogManager.Instance.GetLastPlayedDialogTranscript("intro_guard");
+Debug.Log(transcript);</code></pre>
+
+          <div class="placeholder-grid">
+            <article class="placeholder-card"><h3>Branching graph example</h3><img class="screenshot-img" src="assets/images/graph-editor-branching-example.png" alt="Graph Editor Branching Example" loading="lazy"><p>Ideal visual for the authoring steps.</p></article>
+            <article class="placeholder-card"><h3>Runtime result</h3><img class="screenshot-img" src="assets/images/runtime-dialog-ui.png" alt="Runtime Dialog Ui" loading="lazy"><p>Shows the graph authoring result in Play Mode.</p></article>
+          </div>
+
+          <nav class="page-nav" data-prev-next></nav>
+        </article>
+      </main>
+      <aside class="page-toc" data-page-toc></aside>
+    </div>
+    <footer class="footer"><div class="footer-inner"><span>Dialog Graph System docs</span><span>&copy; <span data-current-year></span></span></div></footer>
+  </div>
+  <script src="assets/app.js"></script>
+</body>
+</html>

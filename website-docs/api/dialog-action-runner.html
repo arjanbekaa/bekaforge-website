@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DialogActionRunner API | Dialog Graph System Docs</title>
+  <meta name="description" content="Action bindings, async handlers, conversation sets, and convenience methods.">
+  <link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body data-page="dialog-action-runner" data-base="../">
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <div class="site-shell">
+    <header class="topbar"><div class="topbar-inner"><a class="brand" href="../index.html"><svg width="28" height="28" viewBox="0 0 64 64" fill="none" aria-hidden="true"><rect x="9" y="21" width="46" height="22" rx="3" fill="#E8541A"/><rect x="21" y="7" width="22" height="16" rx="2" fill="#E8541A"/><rect x="9" y="43" width="13" height="13" rx="2" fill="#E8541A" opacity="0.72"/><rect x="42" y="43" width="13" height="13" rx="2" fill="#E8541A" opacity="0.72"/><rect x="21" y="27" width="22" height="3" rx="1.5" fill="#0E1117" opacity="0.28"/></svg><span class="brand-text"><span class="brand-name"><span class="brand-beka">Beka</span><span class="brand-forge">Forge</span></span><small>Docs — Dialogue Graph System</small></span></a><div class="topbar-spacer"></div><div class="top-actions"><div class="search-wrap"><input class="search-input" type="search" placeholder="Filter pages from the sidebar" readonly></div><a class="back-to-site" href="../../index.html">&#8592; BekaForge</a><button class="menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-controls="sidebar">Menu</button></div></div></header>
+    <div class="page-layout">
+      <aside class="sidebar" id="sidebar"><div class="sidebar-inner" data-sidebar-nav></div></aside>
+      <main class="content-shell" id="main-content">
+        <article class="doc-article" data-doc-content>
+          <nav class="breadcrumb"><a href="../index.html">Home</a> / <span>DialogActionRunner API</span></nav>
+          <h1>DialogActionRunner API</h1>
+          <p class="lede"><code>DialogActionRunner</code> is the runtime dispatcher for action nodes and manual action invocation.</p>
+          <h2>Responsibilities</h2>
+          <ul>
+            <li>invoke synchronous UnityEvent bindings by <code>actionId</code></li>
+            <li>run coroutine-based asynchronous handlers through <code>IActionHandler</code></li>
+            <li>support per-conversation action sets keyed by <code>dialogID</code></li>
+            <li>optionally fall back to a global action set</li>
+          </ul>
+          <h2>Convenience methods</h2>
+<pre><code>StartCoroutine(actionRunner.RunActionGlobal(
+    actionId: "PlaySfx",
+    payloadJson: "{\"clip\":\"ding\"}",
+    waitForCompletion: false));</code></pre>
+<pre><code>StartCoroutine(actionRunner.RunActionForConversation(
+    dialogId: "intro_guard",
+    actionId: "UnlockGate",
+    payloadJson: "{\"gateId\":\"north\"}",
+    waitForCompletion: true));</code></pre>
+          <h2>Async handler example</h2>
+<pre><code>using System.Collections;
+using DialogSystem.Runtime.Interfaces;
+using UnityEngine;
+
+public class UnlockGateHandler : MonoBehaviour, IActionHandler
+{
+    public bool CanHandle(string actionId) => actionId == "UnlockGate";
+
+    public IEnumerator Handle(string actionId, string payloadJson)
+    {
+        Debug.Log($"Unlock gate with payload: {payloadJson}");
+        yield return null;
+    }
+}</code></pre>
+          <nav class="page-nav" data-prev-next></nav>
+        </article>
+      </main>
+      <aside class="page-toc" data-page-toc></aside>
+    </div>
+    <footer class="footer"><div class="footer-inner"><span>Dialog Graph System docs</span><span>&copy; <span data-current-year></span></span></div></footer>
+  </div>
+  <script src="../assets/app.js"></script>
+</body>
+</html>

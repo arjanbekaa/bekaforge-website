@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Installation | Dialog Graph System Docs</title>
+  <meta name="description" content="Unity version, setup checklist, package requirements, and AI extension prerequisites.">
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body data-page="installation" data-base="">
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <div class="site-shell">
+    <header class="topbar"><div class="topbar-inner"><a class="brand" href="index.html"><svg width="28" height="28" viewBox="0 0 64 64" fill="none" aria-hidden="true"><rect x="9" y="21" width="46" height="22" rx="3" fill="#E8541A"/><rect x="21" y="7" width="22" height="16" rx="2" fill="#E8541A"/><rect x="9" y="43" width="13" height="13" rx="2" fill="#E8541A" opacity="0.72"/><rect x="42" y="43" width="13" height="13" rx="2" fill="#E8541A" opacity="0.72"/><rect x="21" y="27" width="22" height="3" rx="1.5" fill="#0E1117" opacity="0.28"/></svg><span class="brand-text"><span class="brand-name"><span class="brand-beka">Beka</span><span class="brand-forge">Forge</span></span><small>Docs — Dialogue Graph System</small></span></a><div class="topbar-spacer"></div><div class="top-actions"><div class="search-wrap"><input class="search-input" type="search" placeholder="Filter pages from the sidebar" readonly></div><a class="back-to-site" href="../index.html">&#8592; BekaForge</a><button class="menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-controls="sidebar">Menu</button></div></div></header>
+    <div class="page-layout">
+      <aside class="sidebar" id="sidebar"><div class="sidebar-inner" data-sidebar-nav></div></aside>
+      <main class="content-shell" id="main-content">
+        <article class="doc-article" data-doc-content>
+          <nav class="breadcrumb"><a href="index.html">Home</a> / <span>Installation</span></nav>
+          <h1>Installation</h1>
+          <p class="lede">Use this page when importing the asset into a project or verifying that a scene has the minimum wiring required for runtime playback.</p>
+
+          <h2>Unity version</h2>
+          <p>The codebase targets Unity 2021.3 LTS or newer. The project changelog also indicates validation across later LTS/editor versions.</p>
+
+          <h2>Package dependencies</h2>
+          <p>From the current <code>Packages/manifest.json</code>, the key runtime/editor dependencies are <code>com.unity.textmeshpro</code>, <code>com.unity.ugui</code>, and the editor GraphView APIs used in authoring tools.</p>
+
+          <h2>Scene setup checklist</h2>
+          <ol>
+            <li>Add a <code>DialogManager</code> to the scene.</li>
+            <li>Assign a <code>DialogUIController</code> to <code>DialogManager.uiPanel</code>.</li>
+            <li>Assign an <code>AudioSource</code> if voice or UI audio is required.</li>
+            <li>Add one or more <code>DialogGraph</code> entries in <code>dialogGraphs</code>.</li>
+            <li>Map each graph to a stable <code>dialogID</code>.</li>
+          </ol>
+
+          <div class="callout callout-warning">
+            <strong>Common integration miss</strong>
+            <span>If the graph exists but the conversation does not start, the missing piece is often the <code>dialogID</code> mapping on the manager rather than the graph asset itself.</span>
+          </div>
+
+          <h2>Optional runtime pieces</h2>
+          <ul>
+            <li><code>DialogActionRunner</code> if you use action nodes</li>
+            <li><code>DialogueHistory</code> and <code>DialogueHistoryView</code> if you want backlog support</li>
+          </ul>
+
+          <h2>Global settings asset</h2>
+          <p>The settings runtime loader expects the master settings asset at <code>Resources/DialogSettingsSO/DialogSystemSettings</code>. In this repository, the editor settings window creates and maintains that asset automatically.</p>
+          <p>Open <code>Tools &gt; Dialog System &gt; Settings</code> to create or verify the master settings asset and its sub-assets.</p>
+
+          <h2>Input system notes</h2>
+          <p>The code supports legacy input and newer input packages through <code>InputHelper</code>. If you use the new Input System only, make sure the scene EventSystem is configured accordingly.</p>
+
+          <h2>AI extension setup</h2>
+          <p>The optional AI extension depends on the main dialog system, a <code>DialogAISettings</code> asset in a Resources folder, and at least one provider asset such as OpenAI, Gemini, Ollama, or a custom JSON provider.</p>
+          <ul>
+            <li>Create a provider asset under <code>Assets/DialogSystemAIExtension/ProviderAssets</code>, duplicate one from <code>Assets/DialogSystemAIExtension/Samples/ExampleAssets/Provider</code>, or use your own folder.</li>
+            <li>Hosted providers require your own API key; shipped provider samples are templates only.</li>
+            <li>For OpenAI-compatible services, prefer a root <code>baseUrl</code> plus <code>/v1/chat/completions</code> in <code>chatEndpoint</code>.</li>
+            <li>Review the AI draft preview before confirming any change. The shipped AI workflow is preview-first.</li>
+          </ul>
+
+          <h2>Verify your install</h2>
+          <ol>
+            <li>Open <code>DialogDemo.unity</code>.</li>
+            <li>Enter Play Mode.</li>
+            <li>Trigger a conversation.</li>
+            <li>Confirm line reveal, choice display, and skip/autoplay behavior.</li>
+            <li>Open the graph editor and load <code>DialogDemo</code>.</li>
+          </ol>
+
+          <h2>Suggested visuals</h2>
+          <div class="placeholder-grid">
+            <article class="placeholder-card"><h3>DialogManager inspector</h3><img class="screenshot-img" src="assets/images/dialog-manager-inspector.png" alt="Dialog Manager Inspector" loading="lazy"><p>Shows graph mapping, UI panel assignment, and optional runner wiring.</p></article>
+            <article class="placeholder-card"><h3>Settings window</h3><img class="screenshot-img" src="assets/images/settings-text.png" alt="Settings Text" loading="lazy"><p>Shows how the global settings asset is created and managed.</p></article>
+          </div>
+
+          <nav class="page-nav" data-prev-next></nav>
+        </article>
+      </main>
+      <aside class="page-toc" data-page-toc></aside>
+    </div>
+    <footer class="footer"><div class="footer-inner"><span>Dialog Graph System docs</span><span>&copy; <span data-current-year></span></span></div></footer>
+  </div>
+  <script src="assets/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Settings System | Dialog Graph System Docs</title>
+  <meta name="description" content="Master settings asset, runtime access, text and choice behavior, and editor settings window.">
+  <link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body data-page="settings-system" data-base="../">
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <div class="site-shell">
+    <header class="topbar"><div class="topbar-inner"><a class="brand" href="../index.html"><svg width="28" height="28" viewBox="0 0 64 64" fill="none" aria-hidden="true"><rect x="9" y="21" width="46" height="22" rx="3" fill="#E8541A"/><rect x="21" y="7" width="22" height="16" rx="2" fill="#E8541A"/><rect x="9" y="43" width="13" height="13" rx="2" fill="#E8541A" opacity="0.72"/><rect x="42" y="43" width="13" height="13" rx="2" fill="#E8541A" opacity="0.72"/><rect x="21" y="27" width="22" height="3" rx="1.5" fill="#0E1117" opacity="0.28"/></svg><span class="brand-text"><span class="brand-name"><span class="brand-beka">Beka</span><span class="brand-forge">Forge</span></span><small>Docs — Dialogue Graph System</small></span></a><div class="topbar-spacer"></div><div class="top-actions"><div class="search-wrap"><input class="search-input" type="search" placeholder="Filter pages from the sidebar" readonly></div><a class="back-to-site" href="../../index.html">&#8592; BekaForge</a><button class="menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-controls="sidebar">Menu</button></div></div></header>
+    <div class="page-layout">
+      <aside class="sidebar" id="sidebar"><div class="sidebar-inner" data-sidebar-nav></div></aside>
+      <main class="content-shell" id="main-content">
+        <article class="doc-article" data-doc-content>
+          <nav class="breadcrumb"><a href="../index.html">Home</a> / <span>Settings System</span></nav>
+          <h1>Settings System</h1>
+          <p class="lede">The settings system centralizes runtime behavior that would otherwise be scattered across prefabs and scripts.</p>
+          <h2>Runtime model</h2>
+          <p><code>DialogSettingsRuntime</code> loads a master settings asset from <code>Resources</code> and exposes helper accessors for text, choice, input, and audio settings. <code>DialogManager</code> uses these settings to resolve effective runtime behavior, with optional local overrides on the component.</p>
+          <h2>Settings categories</h2>
+          <ul>
+            <li><strong>Text:</strong> reveal effect mode, speed, fast-forward, skip, autoplay, punctuation pauses.</li>
+            <li><strong>Choices:</strong> navigation, hover selection, outline styling, pulse animation, hint and confirm behavior.</li>
+            <li><strong>Input:</strong> legacy-style key and axis configuration.</li>
+            <li><strong>Audio:</strong> volume, UI SFX, and stop/fade behavior.</li>
+          </ul>
+          <h2>Editor window</h2>
+          <p>Open <code>Tools &gt; Dialog System &gt; Settings</code>. The window creates the settings assets if they do not already exist and groups configuration into separate panels.</p>
+          <div class="placeholder-grid">
+            <article class="placeholder-card"><h3>Settings editor</h3><img class="screenshot-img" src="../assets/images/settings-text.png" alt="Settings Text" loading="lazy"><p>Recommended visual for this page.</p></article><article class="placeholder-card screenshot-card"><h3>Choice settings</h3><img class="screenshot-img" src="../assets/images/settings-choices.png" alt="Choice settings" loading="lazy"><p>Button layout, input key mappings, and display timing for choice nodes.</p></article><article class="placeholder-card screenshot-card"><h3>Audio settings</h3><img class="screenshot-img" src="../assets/images/settings-audio.png" alt="Audio settings" loading="lazy"><p>Audio source assignment, volume sliders, and UI sound event bindings.</p></article><article class="placeholder-card screenshot-card"><h3>AI settings</h3><img class="screenshot-img" src="../assets/images/settings-ai.png" alt="AI settings" loading="lazy"><p>Provider selection, endpoint routing, and prompt-mode configuration for the AI extension.</p></article>
+          </div>
+          <nav class="page-nav" data-prev-next></nav>
+        </article>
+      </main>
+      <aside class="page-toc" data-page-toc></aside>
+    </div>
+    <footer class="footer"><div class="footer-inner"><span>Dialog Graph System docs</span><span>&copy; <span data-current-year></span></span></div></footer>
+  </div>
+  <script src="../assets/app.js"></script>
+</body>
+</html>

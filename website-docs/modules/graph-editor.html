@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Graph Editor | Dialog Graph System Docs</title>
+  <meta name="description" content="Launcher, GraphView, node sub-assets, save/load behavior, and extension guidance.">
+  <link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body data-page="graph-editor" data-base="../">
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <div class="site-shell">
+    <header class="topbar"><div class="topbar-inner"><a class="brand" href="../index.html"><svg width="28" height="28" viewBox="0 0 64 64" fill="none" aria-hidden="true"><rect x="9" y="21" width="46" height="22" rx="3" fill="#E8541A"/><rect x="21" y="7" width="22" height="16" rx="2" fill="#E8541A"/><rect x="9" y="43" width="13" height="13" rx="2" fill="#E8541A" opacity="0.72"/><rect x="42" y="43" width="13" height="13" rx="2" fill="#E8541A" opacity="0.72"/><rect x="21" y="27" width="22" height="3" rx="1.5" fill="#0E1117" opacity="0.28"/></svg><span class="brand-text"><span class="brand-name"><span class="brand-beka">Beka</span><span class="brand-forge">Forge</span></span><small>Docs — Dialogue Graph System</small></span></a><div class="topbar-spacer"></div><div class="top-actions"><div class="search-wrap"><input class="search-input" type="search" placeholder="Filter pages from the sidebar" readonly></div><a class="back-to-site" href="../../index.html">&#8592; BekaForge</a><button class="menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-controls="sidebar">Menu</button></div></div></header>
+    <div class="page-layout">
+      <aside class="sidebar" id="sidebar"><div class="sidebar-inner" data-sidebar-nav></div></aside>
+      <main class="content-shell" id="main-content">
+        <article class="doc-article" data-doc-content>
+          <nav class="breadcrumb"><a href="../index.html">Home</a> / <a href="../architecture.html">Architecture</a> / <span>Graph Editor</span></nav>
+          <h1>Graph Editor</h1>
+          <p class="lede">The graph editor provides the authoring surface for creating <code>DialogGraph</code> assets and their node sub-assets.</p>
+          <h2>Key files</h2>
+          <ul>
+            <li><code>DialogGraphLauncherWindow.cs</code></li>
+            <li><code>DialogGraphEditorWindow.cs</code></li>
+            <li><code>DialogGraphView.cs</code></li>
+            <li><code>View/Elements/Nodes/*</code></li>
+            <li><code>DialogGraphLayoutFormatter.cs</code></li>
+            <li><code>DialogUndoUtility.cs</code></li>
+          </ul>
+          <h2>Authoring entry point</h2>
+          <p>Open <code>Tools &gt; Dialog System &gt; Dialog Graph</code>. The launcher window is the main entry point and lets you open the last edited graph, choose an existing graph, or create and open a new graph.</p>
+          <h2>How graph assets are stored</h2>
+          <p>The editor stores the graph as one <code>DialogGraph</code> asset with multiple node sub-assets attached to it. This keeps save/load and import/export simpler than storing each node separately.</p>
+          <h2>GraphView responsibilities</h2>
+          <ul>
+            <li>zooming, dragging, and selection</li>
+            <li>grid and minimap</li>
+            <li>context-menu node creation</li>
+            <li>graph save/load synchronization</li>
+            <li>start/end node guarantees</li>
+            <li>undo-aware structural changes</li>
+          </ul>
+          <h2>Common mistakes</h2>
+          <ul>
+            <li>modifying node data without marking the graph dirty</li>
+            <li>bypassing undo utilities when adding or removing assets from the graph</li>
+            <li>treating GraphView state as authoritative instead of the serialized asset</li>
+          </ul>
+          <div class="placeholder-grid">
+            <article class="placeholder-card"><h3>Launcher window</h3><img class="screenshot-img" src="../assets/images/graph-launcher.png" alt="Graph Launcher" loading="lazy"><p>Good for showing the entry flow into the editor.</p></article>
+            <article class="placeholder-card"><h3>Graph editor overview</h3><img class="screenshot-img" src="../assets/images/graph-editor-overview.png" alt="Graph Editor Overview" loading="lazy"><p>Best visual for this page.</p></article><article class="placeholder-card screenshot-card"><h3>Characters sidebar</h3><img class="screenshot-img" src="../assets/images/characters-sidebar.png" alt="Characters sidebar" loading="lazy"><p>Name and portrait assignments for speaker nodes, managed from the graph editor sidebar.</p></article><article class="placeholder-card screenshot-card"><h3>Actions sidebar</h3><img class="screenshot-img" src="../assets/images/actions-sidebar.png" alt="Actions sidebar" loading="lazy"><p>Define and review available action IDs from the Actions tab without leaving the editor.</p></article><article class="placeholder-card screenshot-card"><h3>New dialogue dialog</h3><img class="screenshot-img" src="../assets/images/new-dialogue-popup.png" alt="New dialogue dialog" loading="lazy"><p>The creation prompt for new graph assets — sets the dialog ID before opening the canvas.</p></article>
+          </div>
+          <nav class="page-nav" data-prev-next></nav>
+        </article>
+      </main>
+      <aside class="page-toc" data-page-toc></aside>
+    </div>
+    <footer class="footer"><div class="footer-inner"><span>Dialog Graph System docs</span><span>&copy; <span data-current-year></span></span></div></footer>
+  </div>
+  <script src="../assets/app.js"></script>
+</body>
+</html>

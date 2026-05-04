@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Core Concepts | Dialog Graph System Docs</title>
+  <meta name="description" content="DialogGraph, node types, dialog IDs, settings, history, transcripts, and JSON workflow.">
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body data-page="core-concepts" data-base="">
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <div class="site-shell">
+    <header class="topbar"><div class="topbar-inner"><a class="brand" href="index.html"><svg width="28" height="28" viewBox="0 0 64 64" fill="none" aria-hidden="true"><rect x="9" y="21" width="46" height="22" rx="3" fill="#E8541A"/><rect x="21" y="7" width="22" height="16" rx="2" fill="#E8541A"/><rect x="9" y="43" width="13" height="13" rx="2" fill="#E8541A" opacity="0.72"/><rect x="42" y="43" width="13" height="13" rx="2" fill="#E8541A" opacity="0.72"/><rect x="21" y="27" width="22" height="3" rx="1.5" fill="#0E1117" opacity="0.28"/></svg><span class="brand-text"><span class="brand-name"><span class="brand-beka">Beka</span><span class="brand-forge">Forge</span></span><small>Docs — Dialogue Graph System</small></span></a><div class="topbar-spacer"></div><div class="top-actions"><div class="search-wrap"><input class="search-input" type="search" placeholder="Filter pages from the sidebar" readonly></div><a class="back-to-site" href="../index.html">&#8592; BekaForge</a><button class="menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-controls="sidebar">Menu</button></div></div></header>
+    <div class="page-layout">
+      <aside class="sidebar" id="sidebar"><div class="sidebar-inner" data-sidebar-nav></div></aside>
+      <main class="content-shell" id="main-content">
+        <article class="doc-article" data-doc-content>
+          <nav class="breadcrumb"><a href="index.html">Home</a> / <span>Core Concepts</span></nav>
+          <h1>Core Concepts</h1>
+          <p class="lede">These are the concepts that appear across the runtime, editor, JSON workflow, and AI extension. Lock these first and the rest of the system becomes much easier to reason about.</p>
+
+          <h2>DialogGraph</h2>
+          <p><code>DialogGraph</code> is the primary content asset. It stores directed links, dialog nodes, choice nodes, action nodes, and editor-facing start/end marker data. The graph uses GUID-based links rather than scene references, which keeps it portable for asset workflows and JSON import/export.</p>
+
+          <h2>Node types</h2>
+          <h3>Start</h3>
+          <p>The entry marker. <code>DialogManager</code> resolves the first playable node by reading the outgoing link from <code>startGuid</code>.</p>
+          <h3>DialogNode</h3>
+          <p>A spoken line with speaker name, portrait, question text, optional audio clip, and optional display time.</p>
+          <h3>ChoiceNode</h3>
+          <p>A decision point with optional prompt text, a list of <code>Choice</code> entries, and one outgoing path per choice index.</p>
+          <h3>ActionNode</h3>
+          <p>A runtime side effect with <code>actionId</code>, <code>payloadJson</code>, optional pre-delay, and optional wait-for-completion behavior.</p>
+          <h3>End</h3>
+          <p>The terminal marker.</p>
+
+          <figure class="screenshot-figure"><img class="screenshot-img" src="assets/images/nodes-overview.png" alt="All node types — Start, Dialog, Choice, Action, and End — as they appear in the graph editor." loading="lazy"><figcaption>All node types — Start, Dialog, Choice, Action, and End — as they appear in the graph editor.</figcaption></figure><h2>Dialog IDs</h2>
+          <p>Gameplay code generally starts conversations by <code>dialogID</code>, not by direct asset reference. <code>DialogManager.dialogGraphs</code> maps each ID to a graph asset. That same mapping also enables conversation-specific action sets, branch-path persistence, and transcript lookup by ID.</p>
+
+          <h2>Settings model</h2>
+          <p>The settings system uses a master asset plus sub-assets: <code>DialogSystemSettings</code>, <code>DialogTextSettings</code>, <code>DialogChoiceSettings</code>, <code>DialogInputSettings</code>, and <code>DialogAudioSettings</code>. Runtime code reads them through <code>DialogSettingsRuntime</code>.</p>
+
+          <h2>History versus transcript</h2>
+          <p><code>DialogueHistory</code> records what was shown and chosen during runtime for UI backlog display. <code>DialogGraphTranscriptBuilder</code> reconstructs the exact played branch from the graph and recorded branch-path indices. History is good for player-facing review; transcripts are better for deterministic branch reconstruction.</p>
+
+          <h2>JSON workflow</h2>
+          <p>The system supports exporting and importing graph JSON for backup, source review, migration, and controlled external tooling. The graph asset remains the canonical source of truth after import.</p>
+
+          <h2>AI workflow</h2>
+          <p>The optional AI extension uses character profiles, world/context data, allowed action definitions, scene summary, tone, and provider configuration to produce preview-first draft edits inside an open graph. It does not ship a raw full-graph generation/import workflow.</p>
+
+          <nav class="page-nav" data-prev-next></nav>
+        </article>
+      </main>
+      <aside class="page-toc" data-page-toc></aside>
+    </div>
+    <footer class="footer"><div class="footer-inner"><span>Dialog Graph System docs</span><span>&copy; <span data-current-year></span></span></div></footer>
+  </div>
+  <script src="assets/app.js"></script>
+</body>
+</html>
