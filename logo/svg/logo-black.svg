@@ -25,11 +25,8 @@
   <rect width="320" height="80" fill="#FFFFFF" rx="0"/>
   <g transform="translate(16,8)">
     
-    <rect x="9"  y="21" width="46" height="22" rx="3" fill="#000000"/>
-    <rect x="21" y="7"  width="22" height="16" rx="2" fill="#000000"/>
-    <rect x="9"  y="43" width="13" height="13" rx="2" fill="#000000" opacity="0.72"/>
-    <rect x="42" y="43" width="13" height="13" rx="2" fill="#000000" opacity="0.72"/>
-    <rect x="21" y="27" width="22" height="3"  rx="1.5" fill="#0E1117" opacity="0.08"/>
+    <polygon points="4.0,16.19 4.05,18.23 17.66,27.35 25.96,27.4 25.96,32.7 14.45,41.77 49.55,41.77 38.04,32.7 38.04,27.4 46.34,27.35 60.0,18.18 60.0,16.19" fill="#000000"/>
+    <polygon points="22.39,44.22 32.03,51.81 41.6,44.22" fill="#000000"/>
   
   </g>
   

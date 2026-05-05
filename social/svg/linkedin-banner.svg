@@ -6,11 +6,9 @@
     <rect width="1584" height="396" fill="#0E1117"/>
     <rect x="0" y="0" width="8" height="396" fill="#E8541A"/>
     <g transform="translate(80,98)">
-      <rect x="28.125"  y="65.625" width="143.75" height="68.75" rx="9.375" fill="#E8541A"/>
-      <rect x="65.625" y="21.875"  width="68.75" height="50" rx="6.25" fill="#E8541A"/>
-      <rect x="28.125"  y="134.375" width="40.625" height="40.625" rx="6.25" fill="#E8541A" opacity="0.72"/>
-      <rect x="131.25" y="134.375" width="40.625" height="40.625" rx="6.25" fill="#E8541A" opacity="0.72"/>
-      <rect x="65.625" y="84.375" width="68.75" height="9.375"  rx="4.6875" fill="#0E1117" opacity="0.28"/>
+      <defs><linearGradient id="fg_linkedin_banner" x1="100.00" y1="50.00" x2="100.00" y2="162.50" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#FF7A00"/><stop offset="100%" stop-color="#FF5A00"/></linearGradient></defs>
+    <polygon points="12.5000,50.5938 12.6562,56.9688 55.1875,85.4688 81.1250,85.6250 81.1250,102.1875 45.1562,130.5312 154.8438,130.5312 118.8750,102.1875 118.8750,85.6250 144.8125,85.4688 187.5000,56.8125 187.5000,50.5938" fill="url(#fg_linkedin_banner)"/>
+    <polygon points="69.9688,138.1875 100.0938,161.9062 130.0000,138.1875" fill="url(#fg_linkedin_banner)"/>
     </g>
     <text font-family="SG,'Space Grotesk Light','Liberation Sans',sans-serif" font-weight="700" font-size="68" letter-spacing="-2" x="310" y="210">
       <tspan fill="#F0F2F5">Beka</tspan><tspan fill="#E8541A">Forge</tspan>

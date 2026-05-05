@@ -7,11 +7,9 @@
     <rect x="0" y="0" width="6" height="630" fill="#E8541A"/>
     <rect x="0" y="580" width="1200" height="1" fill="#1C2333"/>
     <g transform="translate(80,200)">
-      <rect x="32.34375"  y="75.46875" width="165.3125" height="79.0625" rx="10.78125" fill="#E8541A"/>
-      <rect x="75.46875" y="25.15625"  width="79.0625" height="57.5" rx="7.1875" fill="#E8541A"/>
-      <rect x="32.34375"  y="154.53125" width="46.71875" height="46.71875" rx="7.1875" fill="#E8541A" opacity="0.72"/>
-      <rect x="150.9375" y="154.53125" width="46.71875" height="46.71875" rx="7.1875" fill="#E8541A" opacity="0.72"/>
-      <rect x="75.46875" y="97.03125" width="79.0625" height="10.78125"  rx="5.390625" fill="#0E1117" opacity="0.28"/>
+      <defs><linearGradient id="fg_og_image" x1="115.00" y1="57.50" x2="115.00" y2="186.88" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#FF7A00"/><stop offset="100%" stop-color="#FF5A00"/></linearGradient></defs>
+    <polygon points="14.3750,58.1828 14.5547,65.5141 63.4656,98.2891 93.2938,98.4688 93.2938,117.5156 51.9297,150.1109 178.0703,150.1109 136.7062,117.5156 136.7062,98.4688 166.5344,98.2891 215.6250,65.3344 215.6250,58.1828" fill="url(#fg_og_image)"/>
+    <polygon points="80.4641,158.9156 115.1078,186.1922 149.5000,158.9156" fill="url(#fg_og_image)"/>
     </g>
     <text font-family="SG,'Space Grotesk Light','Liberation Sans',sans-serif" font-weight="700" font-size="80" letter-spacing="-2" x="340" y="310">
       <tspan fill="#F0F2F5">Beka</tspan><tspan fill="#E8541A">Forge</tspan>
