@@ -469,6 +469,10 @@ blockquote{
   text-transform:uppercase;letter-spacing:0.1em;
 }
 .toc-list{list-style:none;padding:0;margin:0;display:grid;gap:1px}
+.toc-section-label{
+  font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;
+  color:var(--bf-slate);opacity:0.55;padding:0.6rem 0.6rem 0.2rem;pointer-events:none;
+}
 .toc-link{
   display:block;padding:0.44rem 0.6rem;border-radius:5px;
   font-family:'Inter',sans-serif;color:var(--bf-slate);font-size:13px;

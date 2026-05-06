@@ -153,19 +153,19 @@
         #importFile{display:none}
   </style>
 </head>
-<body class="pub-mode">
+<body>
 <div class="toast" id="toast"></div>
-
+<input type="file" id="importFile" accept=".json">
 <div class="wrap">
   <header class="header">
     <div>
       <div class="hd-brand">Beka Forge</div>
       <h1 class="hd-title">Dialogue Graph System</h1>
-      <p class="hd-sub">What&rsquo;s built, what&rsquo;s coming next.</p>
+      <p class="hd-sub">Development Roadmap &amp; Task Tracker</p>
     </div>
     <div class="hd-right">
       <div class="stats" id="stats"></div>
-      <div class="mode-row" style="display:none">
+      <div class="mode-row">
         <span class="mode-lbl">View:</span>
         <div class="mode-toggle">
           <button class="mode-btn active" data-mode="internal" onclick="setMode('internal')">Internal</button>
@@ -174,7 +174,10 @@
       </div>
     </div>
   </header>
-
+  <div class="pub-banner">
+    <div class="pub-dot"></div>
+    <span>Public roadmap view &mdash; internal notes and planning details are hidden.</span>
+  </div>
   <div class="controls">
     <div class="ctrl-search">
       <span class="ctrl-search-ico">&#8981;</span>
@@ -185,23 +188,40 @@
       <option value="">All Statuses</option>
       <option>Done</option><option>In Progress</option><option>Planned</option><option>On Hold</option><option>Maybe Later</option>
     </select>
-    <select class="ctrl-select" id="fPriority" style="display:none" onchange="applyFilters()">
+    <select class="ctrl-select" id="fPriority" onchange="applyFilters()">
       <option value="">All Priorities</option>
       <option>Critical</option><option>High</option><option>Medium</option><option>Low</option>
     </select>
-    <select class="ctrl-select" id="fCategory" style="display:none" onchange="applyFilters()"><option value="">All Categories</option></select>
+    <select class="ctrl-select" id="fCategory" onchange="applyFilters()"><option value="">All Categories</option></select>
     <div class="ctrl-actions">
-
-
-
-
+      <button class="btn btn-ghost" onclick="exportJSON()">&#8595; Export JSON</button>
+      <button class="btn btn-ghost" onclick="document.getElementById('importFile').click()">&#8593; Import JSON</button>
+      <button class="btn btn-ghost" onclick="exportMD()">&#8856; Export MD</button>
+      <button class="btn btn-danger int-only" onclick="resetData()">&#8635; Reset</button>
     </div>
   </div>
 
-
+  <!-- PROMPT MODAL -->
+  <div class="pm-overlay" id="pmOverlay" onclick="pmClickOutside(event)">
+    <div class="pm-box" onclick="event.stopPropagation()">
+      <div class="pm-hd">
+        <div class="pm-hd-left">
+          <div class="pm-title" id="pmTitle">LLM / Codex Prompt</div>
+          <div class="pm-sub">Copy and paste into Claude, Codex, GPT-4, or any LLM</div>
+        </div>
+        <button class="btn-sm" onclick="pmClose()" style="flex-shrink:0">&#10005; Close</button>
+      </div>
+      <div class="pm-body">
+        <pre class="pm-pre" id="pmText"></pre>
+      </div>
+      <div class="pm-ft">
+        <button class="btn btn-ghost" onclick="pmCopy()">&#10063; Copy to Clipboard</button>
+      </div>
+    </div>
+  </div>
   <main id="main"></main>
   <footer class="footer">
-    <p>Dialogue Graph System &nbsp;&middot;&nbsp; <a href="https://bekaforge.com" target="_blank">Beka Forge</a></p>
+    <p>Dialogue Graph System &nbsp;&middot;&nbsp; Beka Forge &nbsp;&middot;&nbsp; Data auto-saved to browser &nbsp;&middot;&nbsp; <a href="#" onclick="exportJSON();return false;">Export your data</a></p>
   </footer>
 </div>
 <script>
@@ -424,8 +444,8 @@ function initDrag(){
     });
   });
 }
-const _importEl=document.getElementById('importFile');if(_importEl)_importEl.addEventListener('change',importJSON);
-loadState();populateFilters();isPublicMode=true;render();
+document.getElementById('importFile').addEventListener('change',importJSON);
+loadState();populateFilters();render();
 </script>
 </body>
 </html>
