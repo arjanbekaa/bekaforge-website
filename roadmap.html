@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dialogue Graph System — Roadmap | Beka Forge</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:#0b0b0e; --surface:#131318; --surface2:#1a1a22; --surface3:#22222e;
+      --border:#26263a; --border2:#32324a;
+      --text:#e0e0ee; --text2:#8888a8; --text3:#4e4e6a;
+      --accent:#f97316; --accent-dim:rgba(249,115,22,0.10); --accent-glow:rgba(249,115,22,0.20);
+      --green:#22c55e; --green-dim:rgba(34,197,94,0.10);
+      --blue:#60a5fa; --blue-dim:rgba(96,165,250,0.10);
+      --yellow:#fbbf24; --yellow-dim:rgba(251,191,36,0.10);
+      --red:#f87171; --red-dim:rgba(248,113,113,0.10);
+      --gray:#6b7280; --gray-dim:rgba(107,114,128,0.10);
+      --purple:#c084fc; --purple-dim:rgba(192,132,252,0.10);
+      --r:8px; --r-sm:5px;
+    }
+    html { font-size:14px; scroll-behavior:smooth; }
+    body { background:var(--bg); color:var(--text); font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Inter',system-ui,sans-serif; line-height:1.55; min-height:100vh; }
+    ::-webkit-scrollbar{width:5px;height:5px} ::-webkit-scrollbar-track{background:var(--bg)} ::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+    a{color:var(--accent);text-decoration:none}
+    .wrap{max-width:1300px;margin:0 auto;padding:0 20px 64px}
+    .header{padding:30px 0 22px;border-bottom:1px solid var(--border);margin-bottom:22px;display:flex;justify-content:space-between;align-items:flex-start;gap:20px;flex-wrap:wrap}
+    .hd-brand{font-size:10px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:var(--accent);margin-bottom:7px}
+    .hd-title{font-size:24px;font-weight:800;letter-spacing:-0.025em;color:var(--text);margin-bottom:4px}
+    .hd-sub{font-size:12px;color:var(--text3)}
+    .hd-right{display:flex;flex-direction:column;align-items:flex-end;gap:12px}
+    .stats{display:flex;gap:4px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:2px}
+    .stat{padding:8px 14px;text-align:center;border-radius:6px;min-width:66px}
+    .stat-val{font-size:20px;font-weight:800;line-height:1;letter-spacing:-0.02em}
+    .stat-lbl{font-size:9px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3);margin-top:3px}
+    .stat-active{background:var(--surface3)}
+    .s-total .stat-val{color:var(--text)} .s-done .stat-val{color:var(--green)} .s-wip .stat-val{color:var(--blue)} .s-plan .stat-val{color:var(--yellow)} .s-pct .stat-val{color:var(--accent)}
+    .mode-row{display:flex;align-items:center;gap:8px}
+    .mode-lbl{font-size:11px;color:var(--text3)}
+    .mode-toggle{display:flex;background:var(--surface2);border:1px solid var(--border);border-radius:var(--r-sm);overflow:hidden}
+    .mode-btn{padding:6px 14px;font-size:11px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;cursor:pointer;border:none;background:transparent;color:var(--text3);transition:background 0.13s,color 0.13s}
+    .mode-btn.active{background:var(--accent);color:#fff}
+    .mode-btn:hover:not(.active){background:var(--surface3);color:var(--text2)}
+    .pub-banner{display:none;align-items:center;gap:10px;background:var(--accent-dim);border:1px solid var(--accent-glow);border-radius:var(--r);padding:9px 14px;font-size:12px;color:var(--accent);margin-bottom:20px}
+    body.pub-mode .pub-banner{display:flex}
+    .pub-dot{width:7px;height:7px;background:var(--accent);border-radius:50%;flex-shrink:0;animation:pulse 2s infinite}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+    .controls{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:12px 14px;margin-bottom:24px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+    .ctrl-search{position:relative;flex:1;min-width:180px}
+    .ctrl-search-ico{position:absolute;left:9px;top:50%;transform:translateY(-50%);color:var(--text3);font-size:13px;pointer-events:none}
+    .ctrl-input{width:100%;padding:7px 10px 7px 30px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--r-sm);color:var(--text);font-size:12px;outline:none;transition:border-color 0.13s}
+    .ctrl-input:focus{border-color:var(--accent)} .ctrl-input::placeholder{color:var(--text3)}
+    .ctrl-select{padding:7px 10px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--r-sm);color:var(--text);font-size:12px;outline:none;cursor:pointer}
+    .ctrl-select:focus{border-color:var(--accent)}
+    .ctrl-actions{display:flex;gap:6px;margin-left:auto;flex-wrap:wrap}
+    .btn{padding:6px 12px;font-size:11px;font-weight:700;letter-spacing:0.03em;border-radius:var(--r-sm);cursor:pointer;border:1px solid var(--border);transition:all 0.12s}
+    .btn-ghost{background:var(--surface2);color:var(--text2)} .btn-ghost:hover{background:var(--surface3);color:var(--text);border-color:var(--border2)}
+    .btn-danger{background:var(--red-dim);color:var(--red);border-color:rgba(248,113,113,0.2)} .btn-danger:hover{background:rgba(248,113,113,0.18)}
+    .vgroup{margin-bottom:28px}
+    .vgroup-hd{display:flex;align-items:center;gap:10px;margin-bottom:12px;cursor:pointer;user-select:none;padding:6px 0}
+    .vg-arrow{color:var(--text3);font-size:11px;transition:transform 0.15s;width:14px;text-align:center;flex-shrink:0}
+    .vgroup.collapsed .vg-arrow{transform:rotate(-90deg)}
+    .vg-name{font-size:15px;font-weight:800;color:var(--text);letter-spacing:-0.015em}
+    .vg-sub{font-size:11px;color:var(--text3);font-style:italic}
+    .vtag{font-size:9px;font-weight:700;padding:2px 8px;border-radius:100px;letter-spacing:0.08em;text-transform:uppercase;flex-shrink:0}
+    .vtag-released{background:var(--green-dim);color:var(--green);border:1px solid rgba(34,197,94,0.2)}
+    .vtag-planned{background:var(--yellow-dim);color:var(--yellow);border:1px solid rgba(251,191,36,0.2)}
+    .vtag-addon{background:var(--purple-dim);color:var(--purple);border:1px solid rgba(192,132,252,0.2)}
+    .vg-prog{display:flex;align-items:center;gap:7px;margin-left:auto;flex-shrink:0}
+    .vg-prog-bar{width:120px;height:3px;background:var(--border);border-radius:2px;overflow:hidden}
+    .vg-prog-fill{height:100%;background:var(--accent);border-radius:2px;transition:width 0.4s}
+    .vg-prog-lbl{font-size:11px;color:var(--text3);white-space:nowrap}
+    .vgroup-body{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:10px}
+    .vgroup.collapsed .vgroup-body{display:none}
+    .tcard{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:13px 14px 10px;display:flex;flex-direction:column;transition:border-color 0.13s;border-left-width:3px}
+    .tcard:hover{border-color:var(--border2)}
+    .tcard.st-done{border-left-color:var(--green)} .tcard.st-inprog{border-left-color:var(--blue)}
+    .tcard.st-planned{border-left-color:var(--border2)} .tcard.st-onhold{border-left-color:var(--gray)} .tcard.st-maybe{border-left-color:var(--purple)}
+    .tc-top{display:flex;align-items:flex-start;gap:8px;margin-bottom:7px}
+    .tc-title{font-size:13px;font-weight:600;color:var(--text);line-height:1.4;flex:1}
+    .tc-badges{display:flex;gap:4px;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end}
+    .badge{font-size:9px;font-weight:700;padding:2px 7px;border-radius:100px;letter-spacing:0.05em;text-transform:uppercase;cursor:pointer;border:none;transition:opacity 0.12s,transform 0.08s;white-space:nowrap}
+    body.pub-mode .badge{cursor:default}
+    .badge:hover{opacity:0.75} .badge:active{transform:scale(0.95)}
+    .bd-done{background:var(--green-dim);color:var(--green)} .bd-inprog{background:var(--blue-dim);color:var(--blue)}
+    .bd-planned{background:var(--yellow-dim);color:var(--yellow)} .bd-onhold{background:var(--gray-dim);color:var(--gray)} .bd-maybe{background:var(--purple-dim);color:var(--purple)}
+    .bd-critical{background:var(--red-dim);color:var(--red)} .bd-high{background:var(--accent-dim);color:var(--accent)} .bd-medium{background:var(--yellow-dim);color:var(--yellow)} .bd-low{background:var(--gray-dim);color:var(--gray)}
+    .tc-desc{font-size:11.5px;color:var(--text2);line-height:1.55;margin-bottom:9px}
+    .tc-cats{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:9px}
+    .cat-pill{font-size:10px;padding:2px 7px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--r-sm);color:var(--text3)}
+    .tc-pub-note{margin-bottom:8px;padding:7px 10px;background:var(--accent-dim);border-left:2px solid rgba(249,115,22,0.35);border-radius:0 var(--r-sm) var(--r-sm) 0;font-size:11px;color:var(--text2);line-height:1.5}
+    .tc-note-lbl{font-size:9px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:3px}
+    .tc-pub-note .tc-note-lbl{color:var(--accent)}
+    .tc-int-note{margin-bottom:8px;padding:7px 10px;background:var(--surface2);border-left:2px solid var(--border2);border-radius:0 var(--r-sm) var(--r-sm) 0;font-size:11px;color:var(--text2);line-height:1.5}
+    .tc-int-note .tc-note-lbl{color:var(--text3)}
+    body.pub-mode .int-only{display:none!important}
+    .tc-meta{display:flex;gap:10px;flex-wrap:wrap;font-size:10.5px;color:var(--text3);padding-top:7px;border-top:1px solid var(--border);margin-top:auto}
+    .tc-meta-item{display:flex;align-items:center;gap:3px} .tc-meta-val{color:var(--text2)}
+    .tc-actions{display:flex;gap:6px;align-items:center;margin-top:8px;padding-top:7px;border-top:1px solid var(--border)}
+    .btn-sm{padding:3px 9px;font-size:10px;font-weight:700;letter-spacing:0.03em;border-radius:var(--r-sm);cursor:pointer;border:1px solid var(--border);background:var(--surface2);color:var(--text2);transition:all 0.11s}
+    .btn-sm:hover{background:var(--surface3);color:var(--text)}
+    .btn-sm-done{background:var(--green-dim);color:var(--green);border-color:rgba(34,197,94,0.2)} .btn-sm-done:hover{background:rgba(34,197,94,0.18)}
+    .btn-sm-edit{margin-left:auto}
+    .tc-edit{display:none;flex-direction:column;gap:8px;margin-top:9px;padding-top:9px;border-top:1px dashed var(--border2)}
+    .tc-edit.open{display:flex}
+    .edit-row{display:flex;gap:8px;flex-wrap:wrap}
+    .edit-f{flex:1;min-width:110px}
+    .edit-lbl{font-size:9px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--text3);margin-bottom:4px}
+    .edit-sel,.edit-ta{width:100%;padding:6px 8px;background:var(--surface3);border:1px solid var(--border);border-radius:var(--r-sm);color:var(--text);font-size:11px;outline:none;font-family:inherit;transition:border-color 0.13s}
+    .edit-sel:focus,.edit-ta:focus{border-color:var(--accent)}
+    .edit-ta{resize:vertical;min-height:52px;line-height:1.5}
+    .empty-msg{text-align:center;padding:36px 20px;color:var(--text3);font-size:12px;grid-column:1/-1}
+    .toast{position:fixed;bottom:22px;right:22px;background:var(--surface2);border:1px solid var(--border2);border-radius:var(--r);padding:9px 14px;font-size:12px;color:var(--text);box-shadow:0 4px 16px rgba(0,0,0,0.5);transform:translateY(16px);opacity:0;transition:all 0.18s;z-index:9999;pointer-events:none;max-width:280px}
+    .toast.show{transform:translateY(0);opacity:1} .toast.t-ok{border-left:3px solid var(--green)} .toast.t-err{border-left:3px solid var(--red)}
+    .footer{margin-top:48px;padding-top:18px;border-top:1px solid var(--border);text-align:center;font-size:11px;color:var(--text3)}
+    @media(max-width:800px){.header{flex-direction:column}.hd-right{align-items:flex-start}.vgroup-body{grid-template-columns:1fr}.controls{flex-direction:column}.ctrl-actions{margin-left:0;width:100%;justify-content:flex-start}.vg-prog{display:none}}
+    @media(max-width:480px){.wrap{padding:0 12px 48px}.stats{flex-wrap:wrap}.stat{min-width:54px}}
+
+    /* ── PUBLIC MODE: clean minimal cards ── */
+    body.pub-mode .tc-desc{display:none}
+    body.pub-mode .tc-cats{display:none}
+    body.pub-mode .tc-meta{display:none}
+    body.pub-mode .bd-critical,body.pub-mode .bd-high,body.pub-mode .bd-medium,body.pub-mode .bd-low{display:none}
+    body.pub-mode .tc-pub-note .tc-note-lbl{display:none}
+    body.pub-mode .tc-pub-note{margin-bottom:0;border-left:none;background:transparent;padding:4px 0 0;font-size:12px;color:var(--text3)}
+    body.pub-mode .tcard{padding:12px 14px 12px;gap:0}
+    body.pub-mode .tc-top{margin-bottom:4px}
+    body.pub-mode .vgroup-body{grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px}
+    body.pub-mode .controls .ctrl-actions .btn-danger{display:none}
+    body.pub-mode .hd-sub::after{content:" — public view"}
+    /* ── PROMPT MODAL ── */
+    .pm-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:10000;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(2px)}
+    .pm-overlay.open{display:flex}
+    .pm-box{background:var(--surface2);border:1px solid var(--border2);border-radius:var(--r);max-width:700px;width:100%;max-height:82vh;display:flex;flex-direction:column;box-shadow:0 8px 32px rgba(0,0,0,0.6)}
+    .pm-hd{padding:13px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-shrink:0}
+    .pm-hd-left{display:flex;flex-direction:column;gap:2px}
+    .pm-title{font-size:12px;font-weight:700;color:var(--text)}
+    .pm-sub{font-size:10px;color:var(--text3)}
+    .pm-body{padding:14px 16px;overflow-y:auto;flex:1}
+    .pm-pre{font-family:'SF Mono','Fira Code',Consolas,monospace;font-size:11px;color:var(--text2);white-space:pre-wrap;word-break:break-word;line-height:1.65;background:var(--surface3);border:1px solid var(--border);border-radius:var(--r-sm);padding:12px 14px}
+    .pm-ft{padding:10px 16px;border-top:1px solid var(--border);display:flex;gap:8px;justify-content:flex-end;flex-shrink:0}
+    .btn-sm-prompt{background:var(--accent-dim);color:var(--accent);border-color:rgba(249,115,22,0.2)}
+    .btn-sm-prompt:hover{background:var(--accent-glow)}
+    
+    /* ── DRAG & DROP ── */
+    body:not(.pub-mode) .tcard{cursor:grab}
+    body:not(.pub-mode) .tcard:active{cursor:grabbing}
+    .tcard.dragging{opacity:0.35;transform:scale(0.98)}
+    .tcard.drag-over{border-color:var(--accent)!important;box-shadow:0 0 0 1px var(--accent),0 4px 16px rgba(249,115,22,0.15);transform:translateY(-2px)}
+    .drag-handle{position:absolute;top:50%;right:-18px;transform:translateY(-50%);color:var(--text3);font-size:11px;letter-spacing:2px;opacity:0;transition:opacity 0.15s;pointer-events:none;user-select:none}
+    body:not(.pub-mode) .tcard:hover .drag-handle{opacity:1}
+    .tcard{position:relative}
+        #importFile{display:none}
+  </style>
+</head>
+<body class="pub-mode">
+<div class="toast" id="toast"></div>
+
+<div class="wrap">
+  <header class="header">
+    <div>
+      <div class="hd-brand">Beka Forge</div>
+      <h1 class="hd-title">Dialogue Graph System</h1>
+      <p class="hd-sub">What&rsquo;s built, what&rsquo;s coming next.</p>
+    </div>
+    <div class="hd-right">
+      <div class="stats" id="stats"></div>
+      <div class="mode-row" style="display:none">
+        <span class="mode-lbl">View:</span>
+        <div class="mode-toggle">
+          <button class="mode-btn active" data-mode="internal" onclick="setMode('internal')">Internal</button>
+          <button class="mode-btn" data-mode="public" onclick="setMode('public')">Public</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="controls">
+    <div class="ctrl-search">
+      <span class="ctrl-search-ico">&#8981;</span>
+      <input class="ctrl-input" type="text" id="searchInput" placeholder="Search tasks&hellip;" oninput="applyFilters()">
+    </div>
+    <select class="ctrl-select" id="fVersion" onchange="applyFilters()"><option value="">All Versions</option></select>
+    <select class="ctrl-select" id="fStatus" onchange="applyFilters()">
+      <option value="">All Statuses</option>
+      <option>Done</option><option>In Progress</option><option>Planned</option><option>On Hold</option><option>Maybe Later</option>
+    </select>
+    <select class="ctrl-select" id="fPriority" style="display:none" onchange="applyFilters()">
+      <option value="">All Priorities</option>
+      <option>Critical</option><option>High</option><option>Medium</option><option>Low</option>
+    </select>
+    <select class="ctrl-select" id="fCategory" style="display:none" onchange="applyFilters()"><option value="">All Categories</option></select>
+    <div class="ctrl-actions">
+
+
+
+
+    </div>
+  </div>
+
+
+  <main id="main"></main>
+  <footer class="footer">
+    <p>Dialogue Graph System &nbsp;&middot;&nbsp; <a href="https://bekaforge.com" target="_blank">Beka Forge</a></p>
+  </footer>
+</div>
+<script>
+const VERSIONS=[
+  {id:'v2.0',name:'DGS v2.0',sub:'Current Public Release',tag:'released',order:0},
+  {id:'v2.1',name:'DGS v2.1',sub:'Logic & Runtime Foundation',tag:'planned',order:1},
+  {id:'v2.2',name:'DGS v2.2',sub:'Localization & CSV Workflow',tag:'planned',order:2},
+  {id:'v2.3',name:'DGS v2.3',sub:'Graph UX & Productivity',tag:'planned',order:3},
+  {id:'ai-ext-2.0',name:'AI Extension 2.0',sub:'Graph-Aware AI Authoring',tag:'addon',order:4},
+  {id:'ui-theme-1.0',name:'UI Theme Pack 1.0',sub:'Premium UI Add-on',tag:'addon',order:5},
+  {id:'cinematics-1.0',name:'Cinematics 1.0',sub:'Cinematic Dialogue Add-on',tag:'addon',order:6},
+  {id:'integrations',name:'Integrations',sub:'Optional Add-ons & Samples',tag:'addon',order:7}
+];
+const DEFAULT_TASKS=[
+  {id:'v20-001',version:'v2.0',status:'Done',priority:'Critical',complexity:'XL',title:'Visual Dialogue Graph Editor',description:'Visual node-based authoring workflow inside Unity. Node canvas, node connections, dialogue graph asset workflow, save/load graph data.',category:['Core','Editor'],publicNote:'Visual dialogue authoring is available in the current release.',internalNote:'',valueReason:'Foundation of the product. Users must create and connect dialogue without writing authoring code.'},
+  {id:'v20-002',version:'v2.0',status:'Done',priority:'Critical',complexity:'L',title:'Dialogue Node',description:'Author spoken dialogue lines. Speaker name, dialogue text, portrait/icon support, audio clip support, display timing, and auto-play configuration.',category:['Core','Editor','Runtime'],publicNote:'Dialogue nodes are available in the current release.',internalNote:'',valueReason:'Core node type. The product does not function without it.'},
+  {id:'v20-003',version:'v2.0',status:'Done',priority:'Critical',complexity:'L',title:'Branching Choices',description:'Player choices that branch dialogue flow. Multiple choice options, choice-to-node linking, runtime choice UI, and choice selection flow.',category:['Core','Editor','Runtime'],publicNote:'Branching dialogue choices are available in the current release.',internalNote:'',valueReason:'Choices define a dialogue system. Without branching it is just a cutscene player.'},
+  {id:'v20-004',version:'v2.0',status:'Done',priority:'Critical',complexity:'L',title:'Runtime Dialogue UI',description:'Ready-to-use runtime dialogue interface. UGUI runtime panel, TextMeshPro support, speaker text, portrait display, and choice buttons.',category:['Runtime','UI'],publicNote:'A runtime dialogue UI is included in the base system.',internalNote:'',valueReason:'Users need a working runtime UI out of the box. Reduces setup time and boosts store reviews.'},
+  {id:'v20-005',version:'v2.0',status:'Done',priority:'High',complexity:'M',title:'Typewriter, Skip, Auto-Play & History',description:'Runtime quality-of-life features: typewriter text effect, skip current line, auto-play support, and dialogue history view.',category:['Runtime','UI'],publicNote:'Runtime dialogue playback includes typewriter, skip, auto-play, and history support.',internalNote:'',valueReason:'Expected baseline features for any modern dialogue system.'},
+  {id:'v20-006',version:'v2.0',status:'Done',priority:'High',complexity:'M',title:'Runtime Themes',description:'Swap dialogue UI appearance through theme data/prefabs. Multiple included themes, theme configuration, and runtime theme selection.',category:['UI','Runtime'],publicNote:'Theme support is included and will expand in future releases.',internalNote:'',valueReason:'Themes differentiate DGS from bare-minimum tools and support diverse art styles.'},
+  {id:'v20-007',version:'v2.0',status:'Done',priority:'High',complexity:'S',title:'JSON Import / Export',description:'Export/import dialogue graph data for backup, tooling, and pipeline use. Preserves node layout and connection data.',category:['Core','Editor','Integrations'],publicNote:'JSON import/export is included in the current release.',internalNote:'',valueReason:'Enables backup workflows, version control readability, and external tooling.'},
+  {id:'v20-008',version:'v2.0',status:'Done',priority:'High',complexity:'L',title:'AI Extension — Rewrite & Generate Dialogue',description:'AI-assisted authoring: rewrite selected dialogue, generate dialogue nodes, suggest choices, with approval flow before applying AI output.',category:['AI Add-on'],publicNote:'AI-assisted authoring is available through the optional AI Extension.',internalNote:'',valueReason:'Unique differentiator in the Unity dialogue tool space. Strong marketing angle.'},
+  {id:'v20-011',version:'v2.0',status:'Done',priority:'Critical',complexity:'M',title:'Action Node',description:'Runtime side-effect node. Carries an actionId, payloadJson for arbitrary parameters, optional pre-delay, and optional wait-for-completion behavior. Resolved at runtime by the registered IDialogActionRunner.',category:['Core','Runtime','Integrations'],publicNote:'Action Node is included in the current release — trigger any gameplay event directly from a dialogue graph.',internalNote:'',valueReason:'Dialogue becomes far more useful when it can open doors, start quests, trigger animations, and grant rewards.'},
+  {id:'v21-004',version:'v2.1',status:'Planned',priority:'Critical',complexity:'M',title:'Condition / If Node',description:'Branch dialogue based on variables or game state. True/false outputs with operators: equals, not equals, greater, less, contains, is true/false. Supports bool, int, float, string.',category:['Core','Runtime'],publicNote:'Conditional dialogue branching is planned.',internalNote:'',valueReason:'The single biggest missing feature for serious narrative workflows.'},
+  {id:'v21-005',version:'v2.1',status:'Planned',priority:'Critical',complexity:'M',title:'Variable System',description:'Runtime dialogue variables for conditions, state tracking, and text injection. DialogVariableSO data asset, bool/int/float/string, runtime store, public get/set API.',category:['Core','Runtime'],publicNote:'Dialogue variables are planned as part of the logic update.',internalNote:'',valueReason:'Required foundation for conditions, reactivity, and game state integration.'},
+  {id:'v21-006',version:'v2.1',status:'Planned',priority:'High',complexity:'S',title:'Set Variable Node',description:'Modify variable values from the dialogue graph. Set variable, add/subtract numeric values, toggle bool, clear string.',category:['Core','Runtime'],publicNote:'Variable-setting nodes are planned.',internalNote:'',valueReason:'Dialogue must be able to remember player decisions and update state.'},
+  {id:'v21-007',version:'v2.1',status:'Planned',priority:'High',complexity:'S',title:'Variable Injection in Dialogue Text',description:'Display runtime variable values inside dialogue text using {playerName}, {coins} syntax. Missing variable fallback. Works in both dialogue text and choice text.',category:['Core','Runtime','Localization'],publicNote:'Dynamic variable text injection is planned.',internalNote:'',valueReason:'Dynamic text makes dialogue feel reactive and reduces duplicate content.'},
+  {id:'v20-012',version:'v2.0',status:'Done',priority:'High',complexity:'S',title:'Dialogue ID Registry',description:'DialogManager.dialogGraphs maps each stable dialogID to a graph asset. Gameplay code starts conversations by ID rather than direct asset reference, enabling branch-path persistence and transcript lookup by ID.',category:['Core','Runtime'],publicNote:'Dialogue ID registry is included in the current release — start any conversation by a stable string ID.',internalNote:'',valueReason:'Runtime systems and save/load flows need stable references that survive asset moves.'},
+  {id:'v20-013',version:'v2.0',status:'Done',priority:'High',complexity:'M',title:'Settings System',description:'Centralised runtime settings via DialogSystemSettings and sub-assets: DialogTextSettings, DialogChoiceSettings, DialogInputSettings, and DialogAudioSettings. Covers reveal speed, skip, autoplay, choice navigation, hotkeys, audio volume, and UI SFX. Managed through the Tools > Dialog System > Settings editor window.',category:['Core','Editor','Runtime'],publicNote:'A full settings system for text, choices, input, and audio is included in the current release.',internalNote:'',valueReason:'Settings scattered across prefabs and scripts become a support nightmare. Centralised config reduces setup errors and bad store reviews.'},
+  {id:'v20-014',version:'v2.0',status:'Done',priority:'Medium',complexity:'M',title:'Transcript Reconstruction',description:'DialogGraphTranscriptBuilder reconstructs the exact played branch from a DialogGraph and the stored branch-path indices. Accessible via DialogManager.GetLastPlayedDialogTranscript(dialogID). Distinct from DialogueHistory — transcripts are deterministic; history is for UI backlog display.',category:['Core','Runtime'],publicNote:'Exact branch transcript reconstruction is included in the current release.',internalNote:'',valueReason:'Deterministic branch replay is essential for QA, narrative debugging, and any save/load system that needs to restore conversation state.'},
+  {id:'v20-015',version:'v2.0',status:'Done',priority:'Medium',complexity:'S',title:'Characters & Actions Sidebar',description:'Graph editor sidebars for managing speaker/portrait assignments (Characters tab) and available action IDs (Actions tab) without leaving the graph editor. Action definitions registered here are used by the AI extension and runtime validation.',category:['Editor'],publicNote:'Speaker character management and action registry are built into the graph editor.',internalNote:'',valueReason:'Keeping speaker and action data close to the graph editor reduces context switching and keeps action IDs consistent across the project.'},
+  {id:'v21-009',version:'v2.1',status:'Planned',priority:'High',complexity:'M',title:'Validation Panel',description:'Professional graph validation. Error/warning/info severity, click-to-focus node, detects missing connections, duplicate IDs, missing actions/variables, unreachable nodes.',category:['Editor','Core'],publicNote:'A graph validation panel is planned.',internalNote:'',valueReason:'Users need to find broken nodes and invalid logic before runtime. Reduces support tickets.'},
+  {id:'v22-001',version:'v2.2',status:'Planned',priority:'Critical',complexity:'M',title:'Localized Line IDs',description:'Stable localization IDs for dialogue lines and choices. Auto-generate missing IDs, prevent duplicates, IDs survive text changes.',category:['Localization','Core'],publicNote:'Stable localization IDs are planned.',internalNote:'',valueReason:'Required foundation for any localization workflow.'},
+  {id:'v22-002',version:'v2.2',status:'Planned',priority:'High',complexity:'M',title:'Language Dropdown in Editor',description:'Edit dialogue text per language in the graph editor. Default language, active editing language dropdown, fallback preview, missing translation indicator.',category:['Localization','Editor'],publicNote:'Multi-language editing in the editor is planned.',internalNote:'',valueReason:'Important for global/mobile games. Competitor tools already support this.'},
+  {id:'v22-003',version:'v2.2',status:'Planned',priority:'High',complexity:'S',title:'CSV Export',description:'Export dialogue text to CSV for translation workflows. Single or multiple graphs, includes graph ID, node ID, line ID, speaker, text, and notes.',category:['Localization','Integrations'],publicNote:'CSV localization export is planned.',internalNote:'',valueReason:'Many teams use spreadsheets or external translators. CSV is the universal handoff format.'},
+  {id:'v22-004',version:'v2.2',status:'Planned',priority:'High',complexity:'S',title:'CSV Import',description:'Import translated CSV data back into dialogue graphs. Single/multiple graph import, line ID validation, report missing/unknown rows without destroying graph structure.',category:['Localization','Integrations'],publicNote:'CSV localization import is planned.',internalNote:'',valueReason:'Completes the localization pipeline.'},
+  {id:'v22-005',version:'v2.2',status:'Planned',priority:'Medium',complexity:'S',title:'Missing Translation Validation',description:'Warn users when selected languages have missing dialogue text. Language-specific validation, optional ignore flag, integrates with the validation panel.',category:['Localization','Editor'],publicNote:'Missing translation checks are planned.',internalNote:'',valueReason:'Missing translations cause broken user experience and bad store reviews.'},
+  {id:'v22-006',version:'v2.2',status:'Planned',priority:'Medium',complexity:'M',title:'Unity Localization Integration',description:'Optional bridge for Unity Localization package. Export/import compatible data path, optional package detection, no hard dependency in base runtime.',category:['Localization','Integrations'],publicNote:'Unity Localization integration is planned after the core CSV workflow.',internalNote:'',valueReason:'Professional Unity projects often already use Unity Localization.'},
+  {id:'v23-001',version:'v2.3',status:'Planned',priority:'High',complexity:'M',title:'Node Groups',description:'Visually organize large graphs. Create/rename group, group color, move grouped nodes together, select group contents, optional collapse/expand.',category:['Editor'],publicNote:'Graph organization groups are planned.',internalNote:'',valueReason:'Large dialogue graphs become unreadable without grouping.'},
+  {id:'v23-002',version:'v2.3',status:'Planned',priority:'Medium',complexity:'S',title:'Comments / Sticky Notes',description:'Leave design notes inside the graph. Comment/note block, free text, color or label. Comments save/reload and do not affect runtime.',category:['Editor'],publicNote:'Graph comments and sticky notes are planned.',internalNote:'',valueReason:'Narrative graphs need context, TODOs, and explanations for collaboration.'},
+  {id:'v23-003',version:'v2.3',status:'Planned',priority:'Medium',complexity:'S',title:'Search-Based Node Creation',description:'Speed up node creation via a right-click searchable menu. Categorized node types, keyboard navigation, node appears at cursor position.',category:['Editor'],publicNote:'Search-based node creation is planned.',internalNote:'',valueReason:'Large node type lists become slow with context menus alone.'},
+  {id:'v23-004',version:'v2.3',status:'Planned',priority:'High',complexity:'M',title:'Copy / Paste Nodes',description:'Faster authoring via clipboard operations. Copy selected nodes, paste at cursor, generate new GUIDs, preserve internal copied connections.',category:['Editor'],publicNote:'Improved copy/paste for nodes is planned.',internalNote:'',valueReason:'Writers and designers often need repeated structures.'},
+  {id:'v23-005',version:'v2.3',status:'Planned',priority:'Medium',complexity:'M',title:'Graph Explorer',description:'Searchable panel of nodes, groups, issues, and entry points. Search by text, speaker, or ID; jump to node; filter by node type.',category:['Editor'],publicNote:'A graph explorer and search panel is planned.',internalNote:'',valueReason:'Large graphs need navigation beyond pan/zoom.'},
+  {id:'v23-006',version:'v2.3',status:'Planned',priority:'High',complexity:'S',title:'Runtime Debug Highlight',description:'Highlight the currently playing node during Play Mode. Current node highlight, optional last-path indicator, Play Mode only. Clears when dialogue ends.',category:['Editor','Runtime'],publicNote:'Runtime graph debugging highlight is planned.',internalNote:'',valueReason:'Makes debugging dialogue flow significantly faster. Frequently requested.'},
+  {id:'v23-007',version:'v2.3',status:'Planned',priority:'High',complexity:'S',title:'Play From Selected Node',description:'Test a branch without replaying the whole graph. Context menu Play from here, runtime test API, editor-only helper that does not affect the saved start node.',category:['Editor','Runtime'],publicNote:'Play-from-node testing is planned.',internalNote:'',valueReason:'Essential for debugging large conversations.'},
+  {id:'ai20-001',version:'ai-ext-2.0',status:'Planned',priority:'High',complexity:'M',title:'Continue Branch From Selected Node',description:'Generate follow-up dialogue from a selected node. Uses node context to generate 2-5 next nodes with optional choices. Approval preview before applying.',category:['AI Add-on'],publicNote:'Graph-aware AI continuation is planned.',internalNote:'',valueReason:'AI becomes far more useful when it understands the current graph context.'},
+  {id:'ai20-002',version:'ai-ext-2.0',status:'Planned',priority:'High',complexity:'M',title:'Generate Choices With Consequences',description:'Generate player choices implying different narrative outcomes. Suggests choices with follow-up outcome nodes and optional variable change hints.',category:['AI Add-on'],publicNote:'AI-assisted branching with consequences is planned.',internalNote:'',valueReason:'Meaningful branches are harder and more valuable than simple choices.'},
+  {id:'ai20-003',version:'ai-ext-2.0',status:'Planned',priority:'Medium',complexity:'M',title:'Suggest Conditions and Variables',description:'AI analyzes a graph/branch and suggests where condition/variable logic could improve it. Suggestions previewed before optional insertion.',category:['AI Add-on','Core'],publicNote:'AI suggestions for dialogue logic are planned.',internalNote:'',valueReason:'Makes the AI add-on more than a writing tool.'},
+  {id:'ai20-004',version:'ai-ext-2.0',status:'Planned',priority:'Medium',complexity:'S',title:'AI Graph Validation Explanation',description:'AI explains validation issues in plain language and suggests fixes. Reads validation results, explains impact, suggests repair steps, optional auto-fix for safe cases.',category:['AI Add-on','Editor'],publicNote:'AI-assisted graph review and explanation is planned.',internalNote:'',valueReason:'Useful for beginners and speeds up debugging for experienced users.'},
+  {id:'ai20-005',version:'ai-ext-2.0',status:'Planned',priority:'Medium',complexity:'M',title:'Character Voice Consistency',description:'Help users keep character dialogue consistent. Character style profile, rewrite line in character voice, detect inconsistent tone.',category:['AI Add-on'],publicNote:'Character-aware AI writing assistance is planned.',internalNote:'',valueReason:'Dialogue quality depends heavily on character voice.'},
+  {id:'ai20-006',version:'ai-ext-2.0',status:'Planned',priority:'Medium',complexity:'M',title:'AI Localization Draft',description:'Generate first-pass translations for supported dialogue languages. Preserves variables and inline commands, marks output as AI draft not final translation.',category:['AI Add-on','Localization'],publicNote:'AI-assisted draft localization is planned.',internalNote:'',valueReason:'Strong productivity feature. Must be positioned as draft translation, not guaranteed final quality.'},
+  {id:'uth-001',version:'ui-theme-1.0',status:'Planned',priority:'High',complexity:'M',title:'Theme Preview Window',description:'Preview dialogue themes without entering Play Mode. Theme list, sample speaker/text/choices preview, portrait preview, apply selected theme.',category:['UI','Editor'],publicNote:'A theme preview workflow is planned for the UI Theme Pack.',internalNote:'',valueReason:'Theme packs need a professional browsing workflow.'},
+  {id:'uth-002',version:'ui-theme-1.0',status:'Planned',priority:'High',complexity:'XL',title:'Premium Theme Library',description:'20-30 polished dialogue UI styles over time: RPG dialogue box, visual novel layout, sci-fi terminal, pixel style, minimal subtitle, mobile choice-heavy, and accessibility variants.',category:['UI'],publicNote:'Premium dialogue UI themes are planned as a separate add-on.',internalNote:'',valueReason:'Many users buy assets to save design time.'},
+  {id:'uth-003',version:'ui-theme-1.0',status:'Planned',priority:'Medium',complexity:'S',title:'Runtime Theme Switching Demo',description:'Sample showing runtime theme switching: settings menu example, theme selector, and persistent selection via simple storage.',category:['UI','Samples'],publicNote:'Runtime theme switching examples are planned.',internalNote:'',valueReason:'Makes themes feel like a system, not just prefabs.'},
+  {id:'cin-001',version:'cinematics-1.0',status:'Planned',priority:'High',complexity:'L',title:'Timeline Integration',description:'Integrate dialogue with Unity Timeline. Start dialogue from Timeline, pause Timeline until choice is selected, resume after node/event, Timeline marker support.',category:['Cinematics Add-on','Integrations'],publicNote:'Timeline integration is planned as part of the Cinematics add-on.',internalNote:'',valueReason:'Cinematic dialogue and cutscenes often require Timeline support.'},
+  {id:'cin-002',version:'cinematics-1.0',status:'Planned',priority:'High',complexity:'M',title:'Camera Node',description:'Trigger camera changes from the dialogue graph. Camera target ID, blend duration, optional Cinemachine support. Runtime camera resolver handles requests.',category:['Cinematics Add-on'],publicNote:'Camera control nodes are planned for the Cinematics add-on.',internalNote:'',valueReason:'Camera changes make dialogue feel cinematic and directed.'},
+  {id:'cin-003',version:'cinematics-1.0',status:'Planned',priority:'Medium',complexity:'M',title:'Animation / Expression Node',description:'Trigger actor animations or expression changes from dialogue. Actor ID, animation trigger/state, expression/emotion ID, optional wait for completion.',category:['Cinematics Add-on'],publicNote:'Actor animation and expression nodes are planned.',internalNote:'',valueReason:'Character reactions are important for cinematic quality dialogue.'},
+  {id:'cin-004',version:'cinematics-1.0',status:'Planned',priority:'Medium',complexity:'M',title:'Fade / Sound / Wait Nodes',description:'Common cinematic timing and presentation effects. Fade in/out, play sound/music, wait for seconds, continue after completion.',category:['Cinematics Add-on'],publicNote:'Cinematic timing and audio nodes are planned.',internalNote:'',valueReason:'Cutscenes need pacing and audio/visual transitions.'},
+  {id:'int-001',version:'integrations',status:'Planned',priority:'Medium',complexity:'S',title:'Text Animator Integration',description:'Support advanced animated text workflows. Sample integration with optional adapter, no hard dependency in base package.',category:['Integrations','UI'],publicNote:'Text Animator integration is planned.',internalNote:'',valueReason:'Text Animator is popular for polished dialogue presentation in Unity.'},
+  {id:'int-002',version:'integrations',status:'Planned',priority:'Medium',complexity:'S',title:'Easy Save Integration',description:'Show how to save dialogue state and variables with Easy Save. Sample save/load script, dialogue state export/import, variable storage example.',category:['Integrations','Runtime'],publicNote:'Easy Save integration is planned.',internalNote:'',valueReason:'Many Unity users rely on Easy Save for persistence.'},
+  {id:'int-003',version:'integrations',status:'Planned',priority:'Medium',complexity:'M',title:'Playmaker Integration',description:'Allow Playmaker users to start dialogues and react to dialogue events. Start dialogue action, listen for dialogue complete, set/read dialogue variable.',category:['Integrations'],publicNote:'Playmaker integration is planned.',internalNote:'',valueReason:'Playmaker users are common in the Unity Asset Store ecosystem.'},
+  {id:'int-004',version:'integrations',status:'Planned',priority:'High',complexity:'M',title:'New Input System Support',description:"Keyboard/gamepad/mobile navigation via Unity's Input System. Continue, skip, choice navigation, and cancel/history input across all control schemes.",category:['Integrations','Runtime','UI'],publicNote:'New Input System support is planned.',internalNote:'',valueReason:"The new Input System is now the Unity standard. Dialogue UI should work cleanly across all control schemes."}
+];
+let tasks=[],openEdits=new Set(),collapsedVers=new Set(),isPublicMode=false;
+let filters={search:'',version:'',status:'',priority:'',category:''};
+function loadState(){try{const r=localStorage.getItem('dgs-roadmap-v2');if(r){const d=JSON.parse(r);tasks=d.tasks||JSON.parse(JSON.stringify(DEFAULT_TASKS));collapsedVers=new Set(d.collapsed||[]);}else tasks=JSON.parse(JSON.stringify(DEFAULT_TASKS));}catch(e){tasks=JSON.parse(JSON.stringify(DEFAULT_TASKS));}}
+function save(){try{localStorage.setItem('dgs-roadmap-v2',JSON.stringify({tasks,collapsed:Array.from(collapsedVers)}));}catch(e){}}
+function applyFilters(){filters.search=document.getElementById('searchInput').value.toLowerCase();filters.version=document.getElementById('fVersion').value;filters.status=document.getElementById('fStatus').value;filters.priority=document.getElementById('fPriority').value;filters.category=document.getElementById('fCategory').value;render();}
+function matchTask(t){if(filters.search&&!t.title.toLowerCase().includes(filters.search)&&!t.description.toLowerCase().includes(filters.search))return false;if(filters.version&&t.version!==filters.version)return false;if(filters.status&&t.status!==filters.status)return false;if(filters.priority&&t.priority!==filters.priority)return false;if(filters.category&&!t.category.includes(filters.category))return false;return true;}
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function statusClass(s){return{'Done':'done','In Progress':'inprog','Planned':'planned','On Hold':'onhold','Maybe Later':'maybe'}[s]||'planned';}
+function priorityClass(p){return{'Critical':'critical','High':'high','Medium':'medium','Low':'low'}[p]||'low';}
+function renderStats(){const total=tasks.length,done=tasks.filter(t=>t.status==='Done').length,wip=tasks.filter(t=>t.status==='In Progress').length,plan=tasks.filter(t=>t.status==='Planned').length,pct=total>0?Math.round(done/total*100):0;document.getElementById('stats').innerHTML=`<div class="stat s-total"><div class="stat-val">${total}</div><div class="stat-lbl">Total</div></div><div class="stat s-done stat-active"><div class="stat-val">${done}</div><div class="stat-lbl">Done</div></div><div class="stat s-wip"><div class="stat-val">${wip}</div><div class="stat-lbl">In Progress</div></div><div class="stat s-plan"><div class="stat-val">${plan}</div><div class="stat-lbl">Planned</div></div><div class="stat s-pct"><div class="stat-val">${pct}%</div><div class="stat-lbl">Complete</div></div>`;}
+function renderCard(t){const sc=statusClass(t.status),pc=priorityClass(t.priority),cats=t.category.map(c=>`<span class="cat-pill">${esc(c)}</span>`).join(''),hasPub=t.publicNote&&t.publicNote.trim(),hasInt=t.internalNote&&t.internalNote.trim(),hasVal=t.valueReason&&t.valueReason.trim(),editOpen=openEdits.has(t.id);return`<div class="tcard st-${sc}" data-id="${esc(t.id)}" draggable="true"><div class="tc-top"><div class="tc-title">${esc(t.title)}</div><div class="tc-badges"><span class="badge bd-${sc}" title="Click to cycle status" onclick="cycleStatus('${esc(t.id)}')">${esc(t.status)}</span><span class="badge bd-${pc}" title="Click to cycle priority" onclick="cyclePriority('${esc(t.id)}')">${esc(t.priority)}</span></div></div><div class="tc-desc">${esc(t.description)}</div><div class="tc-cats">${cats}</div>${hasPub?`<div class="tc-pub-note"><div class="tc-note-lbl">Public Note</div>${esc(t.publicNote)}</div>`:''} ${hasInt?`<div class="tc-int-note int-only"><div class="tc-note-lbl">Internal Note</div>${esc(t.internalNote)}</div>`:''}<div class="tc-meta">${t.complexity?`<span class="tc-meta-item"><span>Complexity:</span><span class="tc-meta-val">${esc(t.complexity)}</span></span>`:''} ${hasVal?`<span class="tc-meta-item int-only" title="${esc(t.valueReason)}"><span>Value:</span><span class="tc-meta-val" style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${esc(t.valueReason.slice(0,55))}${t.valueReason.length>55?'…':''}</span></span>`:''}</div><div class="tc-actions int-only"><button class="btn-sm btn-sm-done" onclick="markDone('${esc(t.id)}')">&#10003; Done</button><button class="btn-sm btn-sm-prompt" onclick="pmOpen('${esc(t.id)}')" title="Generate LLM prompt for this feature">&#9881; Prompt</button><button class="btn-sm btn-sm-edit" onclick="toggleEdit('${esc(t.id)}')">&#9998; Edit</button></div><div class="tc-edit ${editOpen?'open':''}" id="edit-${esc(t.id)}"><div class="edit-row"><div class="edit-f"><div class="edit-lbl">Status</div><select class="edit-sel" onchange="updateField('${esc(t.id)}','status',this.value)">${['Done','In Progress','Planned','On Hold','Maybe Later'].map(s=>`<option ${t.status===s?'selected':''}>${s}</option>`).join('')}</select></div><div class="edit-f"><div class="edit-lbl">Priority</div><select class="edit-sel" onchange="updateField('${esc(t.id)}','priority',this.value)">${['Critical','High','Medium','Low'].map(p=>`<option ${t.priority===p?'selected':''}>${p}</option>`).join('')}</select></div></div><div class="edit-f"><div class="edit-lbl">Public Note</div><textarea class="edit-ta" onblur="saveField('${esc(t.id)}','publicNote',this.value)" placeholder="Visible to users…">${esc(t.publicNote)}</textarea></div><div class="edit-f"><div class="edit-lbl">Internal Note</div><textarea class="edit-ta" onblur="saveField('${esc(t.id)}','internalNote',this.value)" placeholder="Private planning notes…">${esc(t.internalNote)}</textarea></div></div></div>`;}
+function renderVersionGroup(ver){const vTasks=tasks.filter(t=>t.version===ver.id),filtered=vTasks.filter(matchTask),hasFilters=filters.search||filters.status||filters.priority||filters.category;if(filters.version&&filters.version!==ver.id)return'';if(hasFilters&&filtered.length===0)return'';const show=hasFilters?filtered:vTasks,done=vTasks.filter(t=>t.status==='Done').length,total=vTasks.length,pct=total>0?Math.round(done/total*100):0,collapsed=collapsedVers.has(ver.id),tagClass={'released':'vtag-released','planned':'vtag-planned','addon':'vtag-addon'}[ver.tag]||'vtag-planned',tagLabel={'released':'Released','planned':'Planned','addon':'Add-on'}[ver.tag]||'Planned';return`<div class="vgroup ${collapsed?'collapsed':''}" id="vg-${ver.id}"><div class="vgroup-hd" onclick="toggleVer('${ver.id}')"><span class="vg-arrow">&#9660;</span><span class="vg-name">${esc(ver.name)}</span><span class="vtag ${tagClass}">${tagLabel}</span><span class="vg-sub">${esc(ver.sub)}</span><div class="vg-prog"><div class="vg-prog-bar"><div class="vg-prog-fill" style="width:${pct}%"></div></div><span class="vg-prog-lbl">${done}/${total}</span></div></div><div class="vgroup-body">${show.length?show.map(renderCard).join(''):'<div class="empty-msg">No tasks match the current filters.</div>'}</div></div>`;}
+function render(){renderStats();document.getElementById('main').innerHTML=VERSIONS.map(renderVersionGroup).join('');initDrag();}
+function toggleVer(id){collapsedVers.has(id)?collapsedVers.delete(id):collapsedVers.add(id);save();render();}
+function findTask(id){return tasks.find(t=>t.id===id);}
+function markDone(id){const t=findTask(id);if(t&&t.status!=='Done'){t.status='Done';save();render();toast('Marked as done ✓','ok');}}
+function cycleStatus(id){if(isPublicMode)return;const order=['Planned','In Progress','Done','On Hold','Maybe Later'],t=findTask(id);if(t){const i=order.indexOf(t.status);t.status=order[(i+1)%order.length];save();render();}}
+function cyclePriority(id){if(isPublicMode)return;const order=['Critical','High','Medium','Low'],t=findTask(id);if(t){const i=order.indexOf(t.priority);t.priority=order[(i+1)%order.length];save();render();}}
+function toggleEdit(id){openEdits.has(id)?openEdits.delete(id):openEdits.add(id);const el=document.getElementById('edit-'+id);if(el)el.classList.toggle('open',openEdits.has(id));}
+function updateField(id,field,value){const t=findTask(id);if(t){t[field]=value;save();openEdits.add(id);render();}}
+function saveField(id,field,value){const t=findTask(id);if(t){t[field]=value;save();}}
+function setMode(mode){isPublicMode=mode==='public';document.body.classList.toggle('pub-mode',isPublicMode);document.querySelectorAll('.mode-btn').forEach(b=>{b.classList.toggle('active',b.dataset.mode===mode);});}
+function exportJSON(){const data={_info:'Dialogue Graph System Roadmap — Beka Forge',exportedAt:new Date().toISOString(),tasks};dl(JSON.stringify(data,null,2),`dgs-roadmap-${today()}.json`,'application/json');toast('Exported as JSON','ok');}
+function importJSON(){const f=document.getElementById('importFile');if(!f.files.length)return;const r=new FileReader();r.onload=e=>{try{const d=JSON.parse(e.target.result);if(Array.isArray(d.tasks)){tasks=d.tasks;save();render();toast('Import successful','ok');}else throw new Error();}catch(e){toast('Invalid file format','err');}f.value='';};r.readAsText(f.files[0]);}
+function exportMD(){let md=`# Dialogue Graph System — Public Roadmap\n\n*Generated ${new Date().toLocaleDateString()}*\n\n`;VERSIONS.forEach(ver=>{const vt=tasks.filter(t=>t.version===ver.id);if(!vt.length)return;md+=`## ${ver.name} — ${ver.sub}\n\n`;vt.forEach(t=>{const ico={'Done':'✅','In Progress':'\u{1F504}','Planned':'\u{1F4CB}','On Hold':'⏸','Maybe Later':'\u{1F4AD}'}[t.status]||'\u{1F4CB}';md+=`### ${ico} ${t.title}\n\n`;if(t.publicNote)md+=`> ${t.publicNote}\n\n`;md+=`**Status:** ${t.status} &nbsp; **Priority:** ${t.priority} &nbsp; **Complexity:** ${t.complexity||'—'}\n\n---\n\n`;});});dl(md,`dgs-public-roadmap-${today()}.md`,'text/markdown');toast('Public roadmap exported as Markdown','ok');}
+function resetData(){if(!confirm('Reset all roadmap data to defaults? Your edits will be lost.'))return;tasks=JSON.parse(JSON.stringify(DEFAULT_TASKS));collapsedVers=new Set();openEdits=new Set();save();render();toast('Reset to default data','ok');}
+function dl(content,filename,type){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([content],{type}));a.download=filename;a.click();}
+function today(){return new Date().toISOString().slice(0,10);}
+let _tt;function toast(msg,type='ok'){const el=document.getElementById('toast');el.textContent=msg;el.className=`toast t-${type} show`;clearTimeout(_tt);_tt=setTimeout(()=>el.classList.remove('show'),2800);}
+function populateFilters(){const vs=document.getElementById('fVersion');VERSIONS.forEach(v=>{const o=document.createElement('option');o.value=v.id;o.textContent=v.name;vs.appendChild(o);});const cats=new Set();DEFAULT_TASKS.forEach(t=>t.category.forEach(c=>cats.add(c)));const cs=document.getElementById('fCategory');Array.from(cats).sort().forEach(c=>{const o=document.createElement('option');o.value=o.textContent=c;cs.appendChild(o);});}
+
+function buildPrompt(id){
+  const t=findTask(id);if(!t)return'';
+  const ver=VERSIONS.find(v=>v.id===t.version);
+  const verName=ver?`${ver.name} — ${ver.sub}`:t.version;
+  return `You are a senior Unity C# developer implementing a feature for a commercial Unity Asset Store product called "Dialogue Graph System" by Beka Forge.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FEATURE TO IMPLEMENT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Title:      ${t.title}
+Version:    ${verName}
+Category:   ${t.category.join(', ')}
+Priority:   ${t.priority}
+Complexity: ${t.complexity||'—'}
+
+DESCRIPTION
+${t.description}
+
+WHY THIS MATTERS
+${t.valueReason}${t.internalNote?'\n\nINTERNAL NOTES\n'+t.internalNote:''}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SYSTEM CONTEXT — Dialogue Graph System
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+DGS is a visual node-based dialogue authoring tool for Unity built with Unity's GraphView API.
+
+Core architecture:
+- DialogueGraphSO          ScriptableObject storing all node + connection data
+- BaseDialogueNode         Abstract base class for all node data (serializable C#)
+- DialogueNode             Spoken dialogue lines (speaker, text, portrait, audio)
+- ChoiceNode               Branching player choices
+- DialogueGraphEditorWindow  Custom EditorWindow using GraphView
+- DialogueGraphView        GraphView subclass — canvas, nodes, edges
+- DialogueNodeView         Visual wrapper around node data
+- DialogueRunner           MonoBehaviour — executes a DialogueGraphSO at runtime
+- DialogueUI               UGUI/TextMeshPro runtime display (speaker, text, choices)
+- IDialogueNode            Interface all executable runtime nodes implement
+- DialogueVariableStore    Runtime key-value store for bool/int/float/string (v2.1)
+- JSON import/export via JsonUtility or Newtonsoft.Json
+
+Node execution flow:
+  DialogueRunner.StartDialogue(DialogueGraphSO)
+    → finds StartNode → iterates via IDialogueNode.Execute(context)
+    → DialogueUI displays results → waits for player input → advances
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+YOUR TASK
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Implement the feature described above. Please provide:
+
+1. DATA CLASSES
+   New ScriptableObjects, serializable C# classes, or enums required.
+
+2. EDITOR SCRIPTS
+   Custom node views, inspector drawers, EditorWindows, or context menu actions.
+
+3. RUNTIME SCRIPTS
+   MonoBehaviours, interfaces, coroutines, or runtime logic.
+
+4. INTEGRATION
+   How this connects to DialogueGraphSO, DialogueRunner, existing nodes, and DialogueUI.
+
+5. MIGRATION
+   If existing saved DialogueGraphSO assets need updating, describe how.
+
+6. TEST STEPS
+   Brief steps to verify the feature works correctly in the Unity Editor.
+
+Code requirements:
+- Clean, idiomatic Unity C# (no Unity-version-specific hacks)
+- No hard package dependencies unless the feature explicitly requires one
+- Safe for Unity Asset Store submission
+- Add XML doc comments on public API`;
+}
+function pmOpen(id){
+  const t=findTask(id);if(!t)return;
+  document.getElementById('pmTitle').textContent=t.title;
+  document.getElementById('pmText').textContent=buildPrompt(id);
+  document.getElementById('pmOverlay').classList.add('open');
+}
+function pmClose(){document.getElementById('pmOverlay').classList.remove('open');}
+function pmClickOutside(e){if(e.target===document.getElementById('pmOverlay'))pmClose();}
+function pmCopy(){
+  const txt=document.getElementById('pmText').textContent;
+  navigator.clipboard.writeText(txt).then(()=>toast('Prompt copied to clipboard','ok')).catch(()=>{
+    const ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();toast('Prompt copied','ok');
+  });
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')pmClose();});
+
+/* ── DRAG & DROP ── */
+let dragSrcId=null;
+function initDrag(){
+  if(isPublicMode)return;
+  document.querySelectorAll('.tcard').forEach(card=>{
+    card.addEventListener('dragstart',function(e){
+      dragSrcId=this.dataset.id;
+      this.classList.add('dragging');
+      e.dataTransfer.effectAllowed='move';
+      e.dataTransfer.setData('text/plain',dragSrcId);
+    });
+    card.addEventListener('dragover',function(e){
+      e.preventDefault();
+      e.dataTransfer.dropEffect='move';
+      if(this.dataset.id!==dragSrcId)this.classList.add('drag-over');
+    });
+    card.addEventListener('dragleave',function(){
+      this.classList.remove('drag-over');
+    });
+    card.addEventListener('drop',function(e){
+      e.preventDefault();
+      this.classList.remove('drag-over');
+      const destId=this.dataset.id;
+      if(!dragSrcId||dragSrcId===destId)return;
+      const src=findTask(dragSrcId),dest=findTask(destId);
+      if(!src||!dest||src.version!==dest.version)return;
+      const si=tasks.indexOf(src),di=tasks.indexOf(dest);
+      tasks.splice(si,1);
+      tasks.splice(di,0,src);
+      save();render();
+    });
+    card.addEventListener('dragend',function(){
+      this.classList.remove('dragging');
+      document.querySelectorAll('.tcard').forEach(c=>c.classList.remove('drag-over'));
+      dragSrcId=null;
+    });
+  });
+}
+document.getElementById('importFile').addEventListener('change',importJSON);
+loadState();populateFilters();isPublicMode=true;render();
+</script>
+</body>
+</html>
