@@ -150,10 +150,10 @@
       align-items: center;
       gap: 6px;
       background-color: var(--bf-forge);
-      color: #fff;
+      color: #ffffff;
       font-family: 'Inter', sans-serif;
       font-size: 13px;
-      font-weight: 500;
+      font-weight: 600;
       padding: 8px 16px;
       border-radius: 6px;
       text-decoration: none;
@@ -163,6 +163,9 @@
       white-space: nowrap;
     }
     .btn-nav-cta:hover { background-color: var(--bf-forge-light); }
+    /* Override .nav-links a color for the CTA button */
+    .nav-links .btn-nav-cta,
+    .nav-links .btn-nav-cta:hover { color: #ffffff; }
 
     /* Hamburger */
     .nav-mobile-toggle {

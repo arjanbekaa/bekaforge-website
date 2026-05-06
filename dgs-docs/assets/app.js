@@ -45,8 +45,7 @@
       items: [
         { id: "troubleshooting", label: "Troubleshooting", href: "troubleshooting.html", search: "troubleshooting issues problems setup broken choices transcript json ai" },
         { id: "faq", label: "FAQ", href: "faq.html", search: "faq questions answers runtime editor ui ai" },
-        { id: "maintainer-notes", label: "Maintainer Notes", href: "maintainer-notes.html", search: "maintainer notes contributors fragile areas conventions refactor" },
-        { id: "roadmap", label: "Roadmap", href: "roadmap.html", search: "roadmap future improvements testing package separation docs" }
+        { id: "maintainer-notes", label: "Maintainer Notes", href: "maintainer-notes.html", search: "maintainer notes contributors fragile areas conventions refactor" }
       ]
     }
   ];
@@ -266,6 +265,22 @@
     });
   }
 
+  function renderRoadmapButton() {
+    const actions = document.querySelector(".top-actions");
+    if (!actions) return;
+    const btn = document.createElement("a");
+    btn.href = withBase("../roadmap.html");
+    btn.className = "roadmap-header-btn";
+    btn.textContent = "Roadmap";
+    // Insert before the back-to-site link so it sits between search and ← BekaForge
+    const backLink = actions.querySelector(".back-to-site");
+    if (backLink) {
+      actions.insertBefore(btn, backLink);
+    } else {
+      actions.appendChild(btn);
+    }
+  }
+
   renderSidebar();
   renderPrevNext();
   renderToc();
@@ -273,4 +288,5 @@
   setupMenu();
   setYear();
   fadeInPanels();
+  renderRoadmapButton();
 })();

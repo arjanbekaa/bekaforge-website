@@ -187,6 +187,17 @@ blockquote{
 }
 .back-to-site:hover{color:var(--bf-ash);border-color:var(--bf-slate)}
 
+.roadmap-header-btn{
+  font-family:'Inter',sans-serif;font-size:12px;font-weight:600;
+  color:#fff;text-decoration:none;
+  padding:0.42rem 0.85rem;
+  background:var(--bf-forge);
+  border:1px solid var(--bf-forge);border-radius:6px;
+  white-space:nowrap;letter-spacing:0.01em;
+  transition:background 180ms ease,border-color 180ms ease;
+}
+.roadmap-header-btn:hover{background:var(--bf-forge-light);border-color:var(--bf-forge-light);color:#fff;}
+
 .menu-toggle{
   display:none;
   border:1px solid var(--bf-steel-mid);background:var(--bf-steel);
@@ -314,7 +325,7 @@ blockquote{
   border:1px solid transparent;text-decoration:none;
   transition:background 180ms ease,border-color 180ms ease;
 }
-.button-primary{background:var(--bf-forge);color:#fff;border-color:var(--bf-forge)}
+.button-primary{background:var(--bf-forge);color:#fff;border-color:var(--bf-forge);font-weight:600;}
 .button-primary:hover{background:var(--bf-forge-light);color:#fff;border-color:var(--bf-forge-light)}
 .button-secondary{background:transparent;border-color:var(--bf-steel-mid);color:var(--bf-ash)}
 .button-secondary:hover{border-color:var(--bf-slate);color:#fff}
