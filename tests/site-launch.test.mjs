@@ -148,3 +148,14 @@ test("legacy DGS documentation URLs redirect to the 3.0 documentation", async ()
     assert.match(source, /Dialogue Graph System/);
   }
 });
+
+test("whole-site validator completes successfully", async () => {
+  const { spawnSync } = await import("node:child_process");
+  const result = spawnSync(process.execPath, ["scripts/validate-site.mjs"], {
+    cwd: new URL("..", import.meta.url),
+    encoding: "utf8"
+  });
+
+  assert.equal(result.status, 0, `${result.stdout}\n${result.stderr}`);
+  assert.match(result.stdout, /SITE_VALIDATION_OK/);
+});
