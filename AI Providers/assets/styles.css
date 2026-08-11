@@ -76,9 +76,14 @@ code{
 }
 
 pre code{background:transparent;border:none;padding:0;color:inherit;font-size:inherit}
+:not(pre) > code{
+  overflow-wrap:anywhere;
+  word-break:break-word;
+}
 
 table{
   width:100%;
+  table-layout:fixed;
   border-collapse:collapse;
   margin:1.5rem 0;
   overflow:hidden;
@@ -102,6 +107,11 @@ th{
   text-transform:uppercase;
 }
 td{color:var(--bf-slate)}
+td code{
+  white-space:normal;
+  overflow-wrap:anywhere;
+  word-break:break-word;
+}
 
 blockquote{
   margin:1.5rem 0;

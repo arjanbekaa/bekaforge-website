@@ -78,6 +78,8 @@ test("root pages present the approved release matrix", async () => {
   const publicPages = `${home}\n${docs}\n${roadmap}`;
 
   assert.match(home, /Build branching dialogue visually in Unity/);
+  assert.match(home, /data-resource-src="products\.dialogueGraphSystem\.iconPath"/);
+  assert.match(home, /\.hero-visual img\s*\{[^}]*object-fit:\s*contain/s);
   assert.match(home, /Available Free/);
   assert.match(home, /Coming Soon/);
   assert.match(docs, /Which documentation do you need/);
@@ -158,4 +160,16 @@ test("whole-site validator completes successfully", async () => {
 
   assert.equal(result.status, 0, `${result.stdout}\n${result.stderr}`);
   assert.match(result.stdout, /SITE_VALIDATION_OK/);
+});
+
+test("documentation tables wrap long code paths on mobile", async () => {
+  for (const stylesheet of [
+    "Dialogue Graph System/assets/styles.css",
+    "AI Providers/assets/styles.css"
+  ]) {
+    const source = await read(stylesheet);
+    assert.match(source, /table-layout:\s*fixed/);
+    assert.match(source, /td code\s*\{[^}]*overflow-wrap:\s*anywhere/s);
+    assert.match(source, /:not\(pre\)\s*>\s*code\s*\{[^}]*overflow-wrap:\s*anywhere/s);
+  }
 });
