@@ -129,3 +129,22 @@ test("Providers is available free and AI Extension is teaser-only", async () => 
   );
   assert.doesNotMatch(extension, /production.ready|install|purchase|price/i);
 });
+
+test("legacy DGS documentation URLs redirect to the 3.0 documentation", async () => {
+  const legacyPages = [
+    "dgs-docs/index.html",
+    "dgs-docs/installation.html",
+    "dgs-docs/quick-tutorial.html",
+    "dgs-docs/troubleshooting.html",
+    "dgs-docs/changelog.html",
+    "dgs-docs/license.html",
+    "dgs-docs/support.html"
+  ];
+
+  for (const page of legacyPages) {
+    const source = await read(page);
+    assert.match(source, /http-equiv="refresh"/i, `${page} needs a redirect`);
+    assert.match(source, /rel="canonical"/i, `${page} needs a canonical URL`);
+    assert.match(source, /Dialogue Graph System/);
+  }
+});

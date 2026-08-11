@@ -1,70 +1,13 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Runtime Dialog Flow | Dialog Graph System Docs</title>
-  <meta name="description" content="DialogManager traversal, events, runtime usage, and extension guidance.">
-  <link rel="stylesheet" href="../assets/styles.css">
-  <!-- Favicons -->
-  <link rel="icon" type="image/x-icon" href="../../favicon/favicon.ico">
-  <link rel="icon" type="image/png" sizes="32x32" href="../../favicon/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="../../favicon/favicon-16x16.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="../../favicon/apple-touch-icon.png">
-  <meta name="theme-color" content="#E8541A">
+  <meta http-equiv="refresh" content="0; url=../../Dialogue%20Graph%20System/modules/runtime-dialog-flow.html">
+  <link rel="canonical" href="https://bekaforge.com/Dialogue%20Graph%20System/modules/runtime-dialog-flow.html">
+  <title>Documentation moved | Dialogue Graph System</title>
 </head>
-<body data-page="runtime-dialog-flow" data-base="../">
-  <a class="skip-link" href="#main-content">Skip to content</a>
-  <div class="site-shell">
-    <header class="topbar"><div class="topbar-inner"><a class="brand" href="../index.html"><img src="../brand/logo-primary-transparent-dark@1x.png" alt="BekaForge Dialogue Graph System" height="34" style="display:block;"></a><div class="topbar-spacer"></div><div class="top-actions"><div class="search-wrap"><input class="search-input" type="search" placeholder="Filter pages from the sidebar" readonly></div><a class="back-to-site" href="../../index.html">&#8592; BekaForge</a><button class="menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-controls="sidebar">Menu</button></div></div></header>
-    <div class="page-layout">
-      <aside class="sidebar" id="sidebar"><div class="sidebar-inner" data-sidebar-nav></div></aside>
-      <main class="content-shell" id="main-content">
-        <article class="doc-article" data-doc-content>
-          <nav class="breadcrumb"><a href="../index.html">Home</a> / <a href="../architecture.html">Architecture</a> / <span>Runtime Dialog Flow</span></nav>
-          <h1>Runtime Dialog Flow</h1>
-          <p class="lede">This module turns a <code>DialogGraph</code> asset into an interactive runtime conversation. The central orchestrator is <code>DialogManager</code>.</p>
-          <h2>Key files</h2>
-          <ul>
-            <li><code>Assets/DialogGraphSystem/Scripts/Runtime/Core/DialogManager.cs</code></li>
-            <li><code>Assets/DialogGraphSystem/Scripts/Runtime/Core/DialogActionRunner.cs</code></li>
-            <li><code>Assets/DialogGraphSystem/Scripts/Runtime/Core/DialogPlayer.cs</code></li>
-            <li><code>Assets/DialogGraphSystem/Scripts/Runtime/Core/Effects/*</code></li>
-          </ul>
-          <h2>Main responsibilities</h2>
-          <ul>
-            <li>resolve a graph by <code>dialogID</code></li>
-            <li>move between GUID-linked nodes</li>
-            <li>display the current line or choice prompt</li>
-            <li>handle input, skip, and autoplay</li>
-            <li>invoke action nodes</li>
-            <li>raise events for history and integration</li>
-            <li>record branch paths for transcript rebuilding</li>
-          </ul>
-          <h2>Public usage</h2>
-<pre><code>DialogManager.Instance.PlayDialogByID("intro_guard");</code></pre>
-<pre><code>public DialogGraph introGraph;
-
-void StartConversation()
-{
-    DialogManager.Instance.StartDialog(introGraph);
-}</code></pre>
-          <h2>Events</h2>
-          <p>The manager exposes <code>OnLineShown</code>, <code>OnChoicePicked</code>, <code>OnConversationReset</code>, <code>onDialogEnter</code>, and <code>onDialogExit</code>. These are the main integration points for analytics, history, UI reactions, or game systems.</p>
-          <h2>Common mistakes</h2>
-          <ul>
-            <li>forgetting to assign <code>uiPanel</code></li>
-            <li>starting by <code>dialogID</code> without adding a graph mapping</li>
-            <li>using action nodes without assigning <code>actionRunner</code></li>
-            <li>assuming history alone is authoritative for exact branch reconstruction</li>
-          </ul>
-          <nav class="page-nav" data-prev-next></nav>
-        </article>
-      </main>
-      <aside class="page-toc" data-page-toc></aside>
-    </div>
-    <footer class="footer"><div class="footer-inner"><span>Dialogue Graph System v2.0.0 &mdash; AI Extension v1.0.0</span><span>&copy; <span data-current-year></span></span></div></footer>
-  </div>
-  <script src="../assets/app.js"></script>
+<body>
+  <p>This Dialogue Graph System page moved to <a href="../../Dialogue%20Graph%20System/modules/runtime-dialog-flow.html">modules/runtime-dialog-flow.html</a>.</p>
 </body>
 </html>

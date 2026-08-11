@@ -1,68 +1,13 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>DialogActionRunner API | Dialog Graph System Docs</title>
-  <meta name="description" content="Action bindings, async handlers, conversation sets, and convenience methods.">
-  <link rel="stylesheet" href="../assets/styles.css">
-  <!-- Favicons -->
-  <link rel="icon" type="image/x-icon" href="../../favicon/favicon.ico">
-  <link rel="icon" type="image/png" sizes="32x32" href="../../favicon/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="../../favicon/favicon-16x16.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="../../favicon/apple-touch-icon.png">
-  <meta name="theme-color" content="#E8541A">
+  <meta http-equiv="refresh" content="0; url=../../Dialogue%20Graph%20System/api/dialog-action-runner.html">
+  <link rel="canonical" href="https://bekaforge.com/Dialogue%20Graph%20System/api/dialog-action-runner.html">
+  <title>Documentation moved | Dialogue Graph System</title>
 </head>
-<body data-page="dialog-action-runner" data-base="../">
-  <a class="skip-link" href="#main-content">Skip to content</a>
-  <div class="site-shell">
-    <header class="topbar"><div class="topbar-inner"><a class="brand" href="../index.html"><img src="../brand/logo-primary-transparent-dark@1x.png" alt="BekaForge Dialogue Graph System" height="34" style="display:block;"></a><div class="topbar-spacer"></div><div class="top-actions"><div class="search-wrap"><input class="search-input" type="search" placeholder="Filter pages from the sidebar" readonly></div><a class="back-to-site" href="../../index.html">&#8592; BekaForge</a><button class="menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-controls="sidebar">Menu</button></div></div></header>
-    <div class="page-layout">
-      <aside class="sidebar" id="sidebar"><div class="sidebar-inner" data-sidebar-nav></div></aside>
-      <main class="content-shell" id="main-content">
-        <article class="doc-article" data-doc-content>
-          <nav class="breadcrumb"><a href="../index.html">Home</a> / <span>DialogActionRunner API</span></nav>
-          <h1>DialogActionRunner API</h1>
-          <p class="lede"><code>DialogActionRunner</code> is the runtime dispatcher for action nodes and manual action invocation.</p>
-          <h2>Responsibilities</h2>
-          <ul>
-            <li>invoke synchronous UnityEvent bindings by <code>actionId</code></li>
-            <li>run coroutine-based asynchronous handlers through <code>IActionHandler</code></li>
-            <li>support per-conversation action sets keyed by <code>dialogID</code></li>
-            <li>optionally fall back to a global action set</li>
-          </ul>
-          <h2>Convenience methods</h2>
-<pre><code>StartCoroutine(actionRunner.RunActionGlobal(
-    actionId: "PlaySfx",
-    payloadJson: "{\"clip\":\"ding\"}",
-    waitForCompletion: false));</code></pre>
-<pre><code>StartCoroutine(actionRunner.RunActionForConversation(
-    dialogId: "intro_guard",
-    actionId: "UnlockGate",
-    payloadJson: "{\"gateId\":\"north\"}",
-    waitForCompletion: true));</code></pre>
-          <h2>Async handler example</h2>
-<pre><code>using System.Collections;
-using DialogSystem.Runtime.Interfaces;
-using UnityEngine;
-
-public class UnlockGateHandler : MonoBehaviour, IActionHandler
-{
-    public bool CanHandle(string actionId) => actionId == "UnlockGate";
-
-    public IEnumerator Handle(string actionId, string payloadJson)
-    {
-        Debug.Log($"Unlock gate with payload: {payloadJson}");
-        yield return null;
-    }
-}</code></pre>
-          <nav class="page-nav" data-prev-next></nav>
-        </article>
-      </main>
-      <aside class="page-toc" data-page-toc></aside>
-    </div>
-    <footer class="footer"><div class="footer-inner"><span>Dialogue Graph System v2.0.0 &mdash; AI Extension v1.0.0</span><span>&copy; <span data-current-year></span></span></div></footer>
-  </div>
-  <script src="../assets/app.js"></script>
+<body>
+  <p>This Dialogue Graph System page moved to <a href="../../Dialogue%20Graph%20System/api/dialog-action-runner.html">api/dialog-action-runner.html</a>.</p>
 </body>
 </html>

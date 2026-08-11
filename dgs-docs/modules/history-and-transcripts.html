@@ -1,53 +1,13 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>History and Transcripts | Dialog Graph System Docs</title>
-  <meta name="description" content="History/backlog UI versus exact branch transcript reconstruction.">
-  <link rel="stylesheet" href="../assets/styles.css">
-  <!-- Favicons -->
-  <link rel="icon" type="image/x-icon" href="../../favicon/favicon.ico">
-  <link rel="icon" type="image/png" sizes="32x32" href="../../favicon/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="../../favicon/favicon-16x16.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="../../favicon/apple-touch-icon.png">
-  <meta name="theme-color" content="#E8541A">
+  <meta http-equiv="refresh" content="0; url=../../Dialogue%20Graph%20System/modules/history-and-transcripts.html">
+  <link rel="canonical" href="https://bekaforge.com/Dialogue%20Graph%20System/modules/history-and-transcripts.html">
+  <title>Documentation moved | Dialogue Graph System</title>
 </head>
-<body data-page="history-and-transcripts" data-base="../">
-  <a class="skip-link" href="#main-content">Skip to content</a>
-  <div class="site-shell">
-    <header class="topbar"><div class="topbar-inner"><a class="brand" href="../index.html"><img src="../brand/logo-primary-transparent-dark@1x.png" alt="BekaForge Dialogue Graph System" height="34" style="display:block;"></a><div class="topbar-spacer"></div><div class="top-actions"><div class="search-wrap"><input class="search-input" type="search" placeholder="Filter pages from the sidebar" readonly></div><a class="back-to-site" href="../../index.html">&#8592; BekaForge</a><button class="menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-controls="sidebar">Menu</button></div></div></header>
-    <div class="page-layout">
-      <aside class="sidebar" id="sidebar"><div class="sidebar-inner" data-sidebar-nav></div></aside>
-      <main class="content-shell" id="main-content">
-        <article class="doc-article" data-doc-content>
-          <nav class="breadcrumb"><a href="../index.html">Home</a> / <span>History and Transcripts</span></nav>
-          <h1>History and Transcripts</h1>
-          <p class="lede">This module covers the player-facing backlog view and the exact branch transcript reconstruction added for deterministic review.</p>
-          <h2>DialogueHistory</h2>
-          <p><code>DialogueHistory</code> subscribes to <code>DialogManager</code> events such as <code>OnLineShown</code>, <code>OnChoicePicked</code>, and <code>OnConversationReset</code>. It records lightweight history entries and updates <code>DialogueHistoryView</code> when the panel is open.</p>
-          <h2>Transcript builder</h2>
-          <p><code>DialogGraphTranscriptBuilder</code> rebuilds a transcript directly from the <code>DialogGraph</code> and the stored branch path, traversing the graph deterministically in <code>SpecificBranchPath</code> mode.</p>
-<pre><code>string transcript = DialogManager.Instance.GetLastPlayedDialogTranscript("intro_guard");
-Debug.Log(transcript);</code></pre>
-<pre><code>Guard: Halt. State your business.
-Your Choice: I am here to help.
-Guard: Then you may enter.</code></pre>
-          <h2>Best practices</h2>
-          <ul>
-            <li>use <code>DialogueHistory</code> for UI display</li>
-            <li>use transcript reconstruction for exact branch reporting or debugging</li>
-          </ul>
-          <div class="placeholder-grid">
-            <article class="placeholder-card"><h3>History panel</h3><img class="screenshot-img" src="../assets/images/runtime-history-panel.png" alt="Runtime History Panel" loading="lazy"><p>Best visual for this page.</p></article><article class="placeholder-card screenshot-card"><h3>Branch reconstruction</h3><img class="screenshot-img" src="../assets/images/review-branch-continuation.png" alt="Branch reconstruction" loading="lazy"><p>Inspecting how a transcript rebuilds the exact played branch from recorded choice indices.</p></article>
-          </div>
-          <nav class="page-nav" data-prev-next></nav>
-        </article>
-      </main>
-      <aside class="page-toc" data-page-toc></aside>
-    </div>
-    <footer class="footer"><div class="footer-inner"><span>Dialogue Graph System v2.0.0 &mdash; AI Extension v1.0.0</span><span>&copy; <span data-current-year></span></span></div></footer>
-  </div>
-  <script src="../assets/app.js"></script>
+<body>
+  <p>This Dialogue Graph System page moved to <a href="../../Dialogue%20Graph%20System/modules/history-and-transcripts.html">modules/history-and-transcripts.html</a>.</p>
 </body>
 </html>

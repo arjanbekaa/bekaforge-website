@@ -1,63 +1,13 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Guide: AI-Assisted Authoring Workflow | Dialog Graph System Docs</title>
-  <meta name="description" content="Use command-based AI assistance inside the graph editor to rewrite lines, insert nodes, and extend dialogue — with a preview-first confirmation step.">
-  <link rel="stylesheet" href="../assets/styles.css">
-  <!-- Favicons -->
-  <link rel="icon" type="image/x-icon" href="../../favicon/favicon.ico">
-  <link rel="icon" type="image/png" sizes="32x32" href="../../favicon/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="../../favicon/favicon-16x16.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="../../favicon/apple-touch-icon.png">
-  <meta name="theme-color" content="#E8541A">
+  <meta http-equiv="refresh" content="0; url=../../Dialogue%20Graph%20System/guides/ai-generation-workflow.html">
+  <link rel="canonical" href="https://bekaforge.com/Dialogue%20Graph%20System/guides/ai-generation-workflow.html">
+  <title>Documentation moved | Dialogue Graph System</title>
 </head>
-<body data-page="ai-generation-workflow" data-base="../">
-  <a class="skip-link" href="#main-content">Skip to content</a>
-  <div class="site-shell">
-    <header class="topbar"><div class="topbar-inner"><a class="brand" href="../index.html"><img src="../brand/logo-primary-transparent-dark@1x.png" alt="BekaForge Dialogue Graph System" height="34" style="display:block;"></a><div class="topbar-spacer"></div><div class="top-actions"><div class="search-wrap"><input class="search-input" type="search" placeholder="Filter pages from the sidebar" readonly></div><a class="back-to-site" href="../../index.html">&#8592; BekaForge</a><button class="menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-controls="sidebar">Menu</button></div></div></header>
-    <div class="page-layout">
-      <aside class="sidebar" id="sidebar"><div class="sidebar-inner" data-sidebar-nav></div></aside>
-      <main class="content-shell" id="main-content">
-        <article class="doc-article" data-doc-content>
-          <nav class="breadcrumb"><a href="../index.html">Home</a> / <span>AI-Assisted Authoring Workflow</span></nav>
-          <h1>Guide: AI-Assisted Authoring Workflow</h1>
-          <p class="lede">Use command-based AI assistance inside the graph editor to rewrite dialogue, insert nodes, and extend branches — with a draft preview step before any change is applied.</p>
-          <h2>Authoring loop</h2>
-          <ol>
-            <li>Open an existing <code>DialogGraph</code> asset in the graph editor.</li>
-            <li>Configure <code>DialogAISettings</code> and a provider asset if you have not already.</li>
-            <li>Create a provider asset under <code>Assets/DialogSystemAIExtension/ProviderAssets</code>, duplicate one from <code>Assets/DialogSystemAIExtension/Samples/ExampleAssets/Provider</code>, or use your own folder.</li>
-            <li>Select an anchor node in the graph (optional — helps the AI target the right location).</li>
-            <li>Open the <strong>AI</strong> tab in the right sidebar and type a free-text instruction.</li>
-            <li>Review the draft preview that appears before anything is written to the graph.</li>
-            <li>Click <strong>Apply</strong> to confirm, or discard the draft. Use Ctrl+Z to undo any applied change.</li>
-          </ol>
-          <h2>Example instructions</h2>
-          <ul>
-            <li><code>Rewrite this line so the character sounds more nervous</code></li>
-            <li><code>Add three more dialog lines before the end</code></li>
-            <li><code>Insert a PlaySound action after the selected dialog node</code></li>
-            <li><code>Check the graph for structural problems</code></li>
-          </ul>
-          <h2>What the AI may not produce</h2>
-          <p>The AI layer is validated before any draft reaches the graph. It is not permitted to return GUIDs, node positions, edge definitions, or serialised graph JSON. Any response containing these fields is rejected by the safety validator and a failure notice is shown instead of a preview.</p>
-          <h2>Best practices</h2>
-          <ul>
-            <li>select an anchor node before issuing positional commands ("insert after this node")</li>
-            <li>review all proposed action node IDs before confirming — the AI suggests from the registered action list but does not validate game-side bindings</li>
-            <li>treat all AI output as a draft for human review, not the final source of truth</li>
-            <li>for OpenAI-compatible services, prefer the <code>OpenAI</code> provider asset with a root <code>baseUrl</code> plus <code>/v1/chat/completions</code></li>
-            <li>if a hosted provider returns prose instead of structured output, try a model with structured-output support or use Ollama locally</li>
-          </ul>
-          <nav class="page-nav" data-prev-next></nav>
-        </article>
-      </main>
-      <aside class="page-toc" data-page-toc></aside>
-    </div>
-    <footer class="footer"><div class="footer-inner"><span>Dialogue Graph System v2.0.0 &mdash; AI Extension v1.0.0</span><span>&copy; <span data-current-year></span></span></div></footer>
-  </div>
-  <script src="../assets/app.js"></script>
+<body>
+  <p>This Dialogue Graph System page moved to <a href="../../Dialogue%20Graph%20System/guides/ai-generation-workflow.html">guides/ai-generation-workflow.html</a>.</p>
 </body>
 </html>
