@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" fill="none">
+  <rect width="1600" height="900" fill="#0E1117"/>
+  <defs>
+    <linearGradient id="g1" x1="327" y1="149" x2="1215" y2="744" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#E8541A" stop-opacity="0.22"/>
+      <stop offset="1" stop-color="#3B82F6" stop-opacity="0.16"/>
+    </linearGradient>
+  </defs>
+  <rect x="120" y="110" width="1360" height="680" rx="28" fill="url(#g1)" stroke="#252E42"/>
+  <rect x="196" y="182" width="350" height="536" rx="24" fill="#1C2333" stroke="#252E42"/>
+  <rect x="590" y="182" width="808" height="170" rx="24" fill="#1C2333" stroke="#252E42"/>
+  <rect x="590" y="382" width="808" height="154" rx="24" fill="#1C2333" stroke="#252E42"/>
+  <rect x="590" y="566" width="808" height="152" rx="24" fill="#1C2333" stroke="#252E42"/>
+  <text x="196" y="130" fill="#E8541A" font-family="Inter, Arial, sans-serif" font-size="20" font-weight="700" letter-spacing="5.6">AI PROVIDERS / AI CONNECTOR</text>
+  <text x="196" y="255" fill="#F0F2F5" font-family="Space Grotesk, Arial, sans-serif" font-size="68" font-weight="700">Provider Setup</text>
+  <text x="196" y="317" fill="#8892A4" font-family="Inter, Arial, sans-serif" font-size="28">Reusable transport, provider assets, local keys, and test requests.</text>
+  <text x="232" y="436" fill="#F0F2F5" font-family="Space Grotesk, Arial, sans-serif" font-size="34" font-weight="700">Built-in Providers</text>
+  <text x="232" y="486" fill="#8892A4" font-family="Inter, Arial, sans-serif" font-size="24">OpenAI</text>
+  <text x="232" y="526" fill="#8892A4" font-family="Inter, Arial, sans-serif" font-size="24">DeepSeek</text>
+  <text x="232" y="566" fill="#8892A4" font-family="Inter, Arial, sans-serif" font-size="24">Gemini</text>
+  <text x="232" y="606" fill="#8892A4" font-family="Inter, Arial, sans-serif" font-size="24">Ollama</text>
+  <text x="232" y="646" fill="#8892A4" font-family="Inter, Arial, sans-serif" font-size="24">Custom JSON</text>
+  <circle cx="989" cy="468" r="18" fill="#E8541A"/>
+  <circle cx="1050" cy="468" r="18" fill="#3B82F6"/>
+  <circle cx="1111" cy="468" r="18" fill="#E8541A"/>
+  <text x="640" y="269" fill="#F0F2F5" font-family="Space Grotesk, Arial, sans-serif" font-size="40" font-weight="700">Provider assets and shared DTOs</text>
+  <text x="640" y="313" fill="#8892A4" font-family="Inter, Arial, sans-serif" font-size="24">Model selection, endpoint configuration, request options, and response parsing.</text>
+  <text x="640" y="451" fill="#F0F2F5" font-family="Space Grotesk, Arial, sans-serif" font-size="40" font-weight="700">Editor setup and local key handling</text>
+  <text x="640" y="495" fill="#8892A4" font-family="Inter, Arial, sans-serif" font-size="24">Local key entry is supported. Real product screenshots should replace this placeholder.</text>
+  <text x="640" y="635" fill="#F0F2F5" font-family="Space Grotesk, Arial, sans-serif" font-size="40" font-weight="700">Testing and transport</text>
+  <text x="640" y="679" fill="#8892A4" font-family="Inter, Arial, sans-serif" font-size="24">Blocking and coroutine send paths, timeout/retry settings, and test requests.</text>
+</svg>

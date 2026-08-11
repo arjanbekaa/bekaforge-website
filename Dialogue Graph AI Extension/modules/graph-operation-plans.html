@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Graph Operation Plans | Dialogue Graph AI Extension Docs</title>
+  <meta name="description" content="Structured plan-based authoring in Dialogue Graph AI Extension, including plan DTOs, safety limits, preview/apply, and rollback behavior.">
+  <link rel="stylesheet" href="../assets/styles.css">
+  <link rel="icon" type="image/x-icon" href="../favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="../favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../favicon/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../favicon/apple-touch-icon.png">
+  <meta name="theme-color" content="#E8541A">
+</head>
+<body data-page="graph-operation-plans" data-base="../">
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <div class="site-shell">
+    <header class="topbar">
+      <div class="topbar-inner">
+        <a class="brand" href="../index.html" aria-label="Dialogue Graph AI Extension docs home"><img src="../brand/ai-extension-icon-160x160.png" alt="Dialogue Graph AI Extension" height="34" style="display:block;border-radius:8px;"></a>
+        <div class="topbar-spacer"></div>
+        <div class="top-actions">
+          <div class="search-wrap"><input class="search-input" type="search" placeholder="Use the sidebar to filter pages" aria-label="Search hint" readonly></div>
+          <a class="back-to-site" href="../../index.html">&#8592; Beka Forge</a>
+          <button class="menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-controls="sidebar">Menu</button>
+        </div>
+      </div>
+    </header>
+    <div class="page-layout">
+      <aside class="sidebar" id="sidebar"><div class="sidebar-inner" data-sidebar-nav></div></aside>
+      <main class="content-shell" id="main-content">
+        <article class="doc-article" data-doc-content>
+          <nav class="breadcrumb"><a href="../index.html">Home</a> / <span>Graph Operation Plans</span></nav>
+          <h1>Graph Operation Plans</h1>
+          <p class="lede">The graph operation plan system is the high-safety path for broad requests. Instead of directly mutating the graph from raw model output, the extension asks for a structured plan, checks it, previews it, and only then applies it.</p>
+
+          <h2>What the plan object contains</h2>
+<pre><code class="language-csharp">[Serializable]
+public sealed class GraphOperationPlan
+{
+    public int schemaVersion;
+    public string planId;
+    public GraphOperationStatus status;
+    public string summary;
+    public string clarificationQuestion;
+    public List&lt;GraphOperation&gt; operations;
+    public List&lt;GraphOperationWarning&gt; warnings;
+    public List&lt;GraphOperationCouldNotApply&gt; couldNotApply;
+    public bool wasJsonRecovered;
+}</code></pre>
+
+          <h2>What it intentionally does not contain</h2>
+          <p>The plan DTO is symbolic. It does not carry GUIDs, port IDs, positions, or serialized graph data. The editor resolves those local mechanical details later during apply.</p>
+
+          <h2>Pipeline stages</h2>
+          <ol>
+            <li>Route the request into the plan system.</li>
+            <li>Normalize natural language into a structured plan response.</li>
+            <li>Post-process deterministic omissions that are safe to infer locally.</li>
+            <li>Validate forbidden properties, symbolic references, capability constraints, and safety caps.</li>
+            <li>Show ordered operations, warnings, and blocked items in a preview window.</li>
+            <li>Apply through a single transaction boundary with re-validation and rollback support.</li>
+          </ol>
+
+          <h2>Safety limit surface</h2>
+          <p>The plan path is backed by <code>GraphOperationPlanSafetyLimits</code> on the shared <code>DialogAISettings</code> asset. Defaults are intentionally conservative and cap operations, new graph nodes, choice constructs, action nodes, and dependency depth.</p>
+
+<pre><code class="language-csharp">public const int DefaultMaxOperationsPerPlan = 12;
+public const int DefaultMaxNewGraphNodes = 8;
+public const int DefaultMaxDialogueNodes = 6;
+public const int DefaultMaxChoices = 4;</code></pre>
+
+          <h2>Strict vs partial apply</h2>
+          <p>The preview surface can expose operations that could not safely apply. That is why this page distinguishes strict apply from partial apply instead of implying every broad prompt is fully executable.</p>
+
+          <h2>Residual limitation</h2>
+          <p>Rollback is graph-focused and undo-backed, but newly created asset artifacts may still remain after a failed apply. That limitation is worth documenting because it affects real editor cleanup work.</p>
+
+          <div class="placeholder-grid">
+            <article class="placeholder-card">
+              <h3>Detected graph plan route</h3>
+              <img class="screenshot-img" src="../assets/images/ai-command-graph-plan.png" alt="AI command routed to a graph plan" loading="lazy">
+              <p>Broad prompts are surfaced as detected graph plans first so the author can review structure before any graph mutation applies.</p>
+            </article>
+          </div>
+
+          <nav class="page-nav" data-prev-next></nav>
+        </article>
+      </main>
+      <aside class="page-toc" data-page-toc></aside>
+    </div>
+    <footer class="footer"><div class="footer-inner"><span>Dialogue Graph AI Extension docs</span><span>&copy; <span data-current-year></span> Beka Forge</span></div></footer>
+  </div>
+  <script src="../assets/app.js"></script>
+</body>
+</html>

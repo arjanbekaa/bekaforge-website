@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Troubleshooting | AI Providers Docs</title>
+  <meta name="description" content="Troubleshooting for AI Providers: local key storage, endpoint errors, blocking/runtime behavior, Ollama connectivity, and security limits.">
+  <link rel="stylesheet" href="assets/styles.css">
+  <link rel="icon" type="image/x-icon" href="favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
+  <meta name="theme-color" content="#E8541A">
+</head>
+<body data-page="troubleshooting" data-base="">
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <div class="site-shell">
+    <header class="topbar">
+      <div class="topbar-inner">
+        <a class="brand" href="index.html" aria-label="AI Providers docs home"><img src="brand/ai-providers-icon-1254x1254.png" alt="AI Providers" height="34" style="display:block;border-radius:8px;"></a>
+        <div class="topbar-spacer"></div>
+        <div class="top-actions">
+          <div class="search-wrap"><input class="search-input" type="search" placeholder="Use the sidebar to filter pages" aria-label="Search hint" readonly></div>
+          <a class="back-to-site" href="../index.html">&#8592; Beka Forge</a>
+          <button class="menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-controls="sidebar">Menu</button>
+        </div>
+      </div>
+    </header>
+    <div class="page-layout">
+      <aside class="sidebar" id="sidebar"><div class="sidebar-inner" data-sidebar-nav></div></aside>
+      <main class="content-shell" id="main-content">
+        <article class="doc-article" data-doc-content>
+          <nav class="breadcrumb"><a href="index.html">Home</a> / <span>Troubleshooting</span></nav>
+          <h1>Troubleshooting</h1>
+          <p class="lede">Most provider issues are configuration problems rather than code problems: the wrong endpoint, a missing local key, or using the blocking transport path in the wrong place.</p>
+
+          <h2>Common failure buckets</h2>
+          <ul>
+            <li><strong>HTTP errors</strong>: verify base URL, endpoint, auth header behavior, and model name.</li>
+            <li><strong>Local key mismatch</strong>: duplicating a provider asset creates a new GUID and requires a new local key entry.</li>
+            <li><strong>Ollama offline</strong>: verify the local service is running and the model is pulled.</li>
+            <li><strong>Runtime stalls</strong>: prefer the coroutine request path instead of the blocking editor path.</li>
+          </ul>
+
+          <h2>Security reality</h2>
+          <p>Keys are intentionally local and not serialized into asset files, but they are not encrypted at rest. The docs should continue to frame this as convenience storage rather than as hardened credential management.</p>
+
+          <h2>Custom JSON caveat</h2>
+          <p>The Custom JSON provider is intentionally flexible and correspondingly less strongly typed. If parsing fails, check the response shape your endpoint actually returns rather than assuming it matches the fallback text extraction rules.</p>
+
+          <nav class="page-nav" data-prev-next></nav>
+        </article>
+      </main>
+      <aside class="page-toc" data-page-toc></aside>
+    </div>
+    <footer class="footer"><div class="footer-inner"><span>AI Providers docs</span><span>&copy; <span data-current-year></span> Beka Forge</span></div></footer>
+  </div>
+  <script src="assets/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI Providers for Unity Docs | Beka Forge</title>
+  <meta name="description" content="Documentation for the free AI Providers for Unity package: provider setup, request transport, local key handling, API usage, and operational constraints.">
+  <link rel="stylesheet" href="assets/styles.css">
+  <link rel="icon" type="image/x-icon" href="favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
+  <meta name="theme-color" content="#E8541A">
+  <script src="../assets/data/textresources.js"></script>
+</head>
+<body data-page="home" data-base="">
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <div class="site-shell">
+    <header class="topbar">
+      <div class="topbar-inner">
+        <a class="brand" href="index.html" aria-label="AI Providers docs home"><img src="brand/ai-providers-icon-1254x1254.png" alt="AI Providers" height="34" style="display:block;border-radius:8px;"></a>
+        <div class="topbar-spacer"></div>
+        <div class="top-actions">
+          <div class="search-wrap">
+            <input class="search-input" type="search" placeholder="Use the sidebar to filter pages" aria-label="Search hint" readonly>
+          </div>
+          <a class="back-to-site" href="../index.html">&#8592; Beka Forge</a>
+          <button class="menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-controls="sidebar">Menu</button>
+        </div>
+      </div>
+    </header>
+
+    <div class="page-layout">
+      <aside class="sidebar" id="sidebar">
+        <div class="sidebar-inner" data-sidebar-nav></div>
+      </aside>
+
+      <main class="content-shell" id="main-content">
+        <section class="page-hero">
+          <span class="eyebrow">Available Free | Standalone provider layer | Reusable across tools</span>
+          <h1 class="hero-title">AI Providers for Unity documentation.</h1>
+          <p class="hero-subtitle">
+            Product-specific documentation for the reusable provider connectivity layer behind Beka Forge AI-enabled tools.
+            It covers provider assets, request transport, local key handling, runtime/editor request paths, and the public API core.
+          </p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="https://assetstore.unity.com/packages/package/384482" data-resource-href="products.aiProviders.assetStoreUrl" target="_blank" rel="noopener">Get free on Asset Store</a>
+            <a class="button button-primary" href="getting-started.html">Start with Getting Started</a>
+            <a class="button button-secondary" href="architecture.html">Open Architecture</a>
+            <a class="button button-secondary" href="../docs.html">Beka Forge Docs Hub</a>
+            <a class="button button-secondary" href="https://github.com/arjanbekaa/bekaforge-website/issues/new/choose" data-resource-href="support.reportIssueUrl" target="_blank" rel="noopener">Report a docs issue</a>
+          </div>
+
+          <div class="hero-grid">
+            <article class="hero-card">
+              <h2>What this product owns</h2>
+              <p>
+                AI Providers owns provider assets, request DTOs, request execution, local project-scoped key lookup,
+                timeout/retry behavior, and provider-specific response extraction. It does not own graph authoring workflows.
+              </p>
+              <div class="stat-grid">
+                <div class="stat"><strong>5</strong><span>Built-in provider families</span></div>
+                <div class="stat"><strong>2</strong><span>Request modes: blocking + coroutine</span></div>
+                <div class="stat"><strong>0</strong><span>Dependencies on DGS or AI Extension</span></div>
+              </div>
+            </article>
+
+            <article class="hero-card">
+              <h3>Provider layer overview</h3>
+              <img class="screenshot-img" src="assets/images/provider-settings-overview.png" alt="AI Providers settings overview" loading="lazy">
+            </article>
+          </div>
+        </section>
+
+        <section class="homepage-section panel">
+          <h2>Documentation map</h2>
+          <div class="feature-grid">
+            <article class="doc-card"><h3>Setup and first request</h3><p>Import flow, provider asset creation, local API key entry, and the first editor/runtime prompt send.</p></article>
+            <article class="doc-card"><h3>Provider assets and transport</h3><p>Built-in provider families, request DTOs, service ownership, and response extraction boundaries.</p></article>
+            <article class="doc-card"><h3>Keys, APIs, and limits</h3><p>PlayerPrefs-based local secret storage, public API surfaces, blocking/runtime tradeoffs, and security caveats.</p></article>
+          </div>
+        </section>
+
+        <section class="homepage-section panel">
+          <h2>Key product boundaries</h2>
+          <div class="card-grid">
+            <article class="doc-card"><h3>Standalone transport layer</h3><p>The package is dependency-free and can be reused by tools outside Dialogue Graph System.</p></article>
+            <article class="doc-card"><h3>Provider assets over hardcoded switches</h3><p>Each provider subclass owns its request shape and response parsing instead of relying on one monolithic service switch.</p></article>
+            <article class="doc-card"><h3>Local secrets, shared config</h3><p>Provider assets are shareable, but keys stay local and are scoped by project hash plus provider GUID.</p></article>
+            <article class="doc-card"><h3>Runtime caveat</h3><p><code>TrySendPrompt</code> is blocking and best described as editor-oriented. Runtime callers should generally use the coroutine path.</p></article>
+          </div>
+        </section>
+
+        <section class="homepage-section panel">
+          <h2>Start here</h2>
+          <div class="link-grid">
+            <a class="doc-card" href="getting-started.html"><h3>Getting Started</h3><p>Import the asset, create a provider asset, and send the first request.</p></a>
+            <a class="doc-card" href="architecture.html"><h3>Architecture</h3><p>Service-driven transport, provider abstraction, and DTO ownership.</p></a>
+            <a class="doc-card" href="modules/provider-assets.html"><h3>Provider Assets</h3><p>Built-in provider families and what their asset layer actually stores.</p></a>
+            <a class="doc-card" href="modules/request-pipeline.html"><h3>Request Pipeline</h3><p>Blocking and coroutine request paths, timeout options, and response normalization.</p></a>
+            <a class="doc-card" href="modules/settings-and-keys.html"><h3>Settings and Keys</h3><p>Shared asset config, local keys, and editor-only preference state.</p></a>
+            <a class="doc-card" href="api/public-api.html"><h3>Public API</h3><p>The reusable service, provider base class, DTOs, and built-in provider types.</p></a>
+          </div>
+        </section>
+      </main>
+
+      <aside class="page-toc">
+        <div class="toc-card">
+          <p class="toc-title">Portal map</p>
+          <ul class="toc-list">
+            <li class="toc-section-label">Overview</li>
+            <li><a class="toc-link" href="index.html">Home</a></li>
+            <li><a class="toc-link" href="getting-started.html">Getting Started</a></li>
+            <li><a class="toc-link" href="architecture.html">Architecture</a></li>
+            <li class="toc-section-label">Modules</li>
+            <li><a class="toc-link" href="modules/provider-assets.html">Provider Assets</a></li>
+            <li><a class="toc-link" href="modules/request-pipeline.html">Request Pipeline</a></li>
+            <li><a class="toc-link" href="modules/settings-and-keys.html">Settings and Keys</a></li>
+            <li class="toc-section-label">API &amp; Ops</li>
+            <li><a class="toc-link" href="api/public-api.html">Public API</a></li>
+            <li><a class="toc-link" href="troubleshooting.html">Troubleshooting</a></li>
+          </ul>
+        </div>
+      </aside>
+    </div>
+    <footer class="footer"><div class="footer-inner"><span>AI Providers for Unity · Available Free</span><span>&copy; <span data-current-year></span> Beka Forge</span></div></footer>
+  </div>
+  <script src="assets/app.js"></script>
+</body>
+</html>

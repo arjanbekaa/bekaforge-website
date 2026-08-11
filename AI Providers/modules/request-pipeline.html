@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Request Pipeline | AI Providers Docs</title>
+  <meta name="description" content="Request and response pipeline for AI Providers, including blocking and coroutine paths, timeout options, and response normalization.">
+  <link rel="stylesheet" href="../assets/styles.css">
+  <link rel="icon" type="image/x-icon" href="../favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="../favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../favicon/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../favicon/apple-touch-icon.png">
+  <meta name="theme-color" content="#E8541A">
+</head>
+<body data-page="request-pipeline" data-base="../">
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <div class="site-shell">
+    <header class="topbar">
+      <div class="topbar-inner">
+        <a class="brand" href="../index.html" aria-label="AI Providers docs home"><img src="../brand/ai-providers-icon-1254x1254.png" alt="AI Providers" height="34" style="display:block;border-radius:8px;"></a>
+        <div class="topbar-spacer"></div>
+        <div class="top-actions">
+          <div class="search-wrap"><input class="search-input" type="search" placeholder="Use the sidebar to filter pages" aria-label="Search hint" readonly></div>
+          <a class="back-to-site" href="../../index.html">&#8592; Beka Forge</a>
+          <button class="menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-controls="sidebar">Menu</button>
+        </div>
+      </div>
+    </header>
+    <div class="page-layout">
+      <aside class="sidebar" id="sidebar"><div class="sidebar-inner" data-sidebar-nav></div></aside>
+      <main class="content-shell" id="main-content">
+        <article class="doc-article" data-doc-content>
+          <nav class="breadcrumb"><a href="../index.html">Home</a> / <span>Request Pipeline</span></nav>
+          <h1>Request Pipeline</h1>
+          <p class="lede">AI Providers exposes both a blocking request path and a coroutine-based runtime path. Both use the same provider asset abstraction and the same service-level timeout and retry options.</p>
+
+          <h2>Blocking editor path</h2>
+<pre><code class="language-csharp">public static bool TrySendPrompt(
+    LlmProviderDefinitionBase provider,
+    LlmChatRequest chat,
+    out string responseText,
+    out string error,
+    RequestOptions options)</code></pre>
+
+          <p>This path is synchronous and editor-oriented. The service builds the request, sends it through <code>UnityWebRequest</code>, reads the raw response, and then asks the provider to extract provider-specific text.</p>
+
+          <h2>Coroutine runtime path</h2>
+<pre><code class="language-csharp">StartCoroutine(AiProvidersService.SendPromptCoroutine(
+    provider,
+    chat,
+    result =>
+    {
+        if (result.Success) Debug.Log(result.ResponseText);
+        else Debug.LogError(result.Error);
+    },
+    new AiProvidersService.RequestOptions
+    {
+        timeoutSeconds = 30,
+        retryCount = 1,
+        retryDelaySeconds = 0.5f
+    }));</code></pre>
+
+          <h2>Request options</h2>
+          <p><code>RequestOptions</code> currently exposes timeout seconds, retry count, and retry delay seconds. The defaults are conservative: 120 seconds, zero retries, zero delay.</p>
+
+          <h2>Response normalization</h2>
+          <p>The service owns common response normalization fallbacks for generic <code>"content"</code> or <code>"text"</code> shapes after provider-specific extraction runs. That makes the transport layer slightly more forgiving while keeping provider ownership of real parsing logic.</p>
+
+          <h2>Reality check</h2>
+          <p>The blocking path still busy-waits and is best treated as editor-oriented tooling rather than ideal runtime behavior.</p>
+
+          <nav class="page-nav" data-prev-next></nav>
+        </article>
+      </main>
+      <aside class="page-toc" data-page-toc></aside>
+    </div>
+    <footer class="footer"><div class="footer-inner"><span>AI Providers docs</span><span>&copy; <span data-current-year></span> Beka Forge</span></div></footer>
+  </div>
+  <script src="../assets/app.js"></script>
+</body>
+</html>

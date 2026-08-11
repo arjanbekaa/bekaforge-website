@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Settings and Providers | Dialogue Graph AI Extension Docs</title>
+  <meta name="description" content="Settings layers for Dialogue Graph AI Extension: local editor preferences, shared DialogAISettings asset, and provider integration through AI Providers.">
+  <link rel="stylesheet" href="../assets/styles.css">
+  <link rel="icon" type="image/x-icon" href="../favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="../favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../favicon/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../favicon/apple-touch-icon.png">
+  <meta name="theme-color" content="#E8541A">
+</head>
+<body data-page="settings-and-providers" data-base="../">
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <div class="site-shell">
+    <header class="topbar">
+      <div class="topbar-inner">
+        <a class="brand" href="../index.html" aria-label="Dialogue Graph AI Extension docs home"><img src="../brand/ai-extension-icon-160x160.png" alt="Dialogue Graph AI Extension" height="34" style="display:block;border-radius:8px;"></a>
+        <div class="topbar-spacer"></div>
+        <div class="top-actions">
+          <div class="search-wrap"><input class="search-input" type="search" placeholder="Use the sidebar to filter pages" aria-label="Search hint" readonly></div>
+          <a class="back-to-site" href="../../index.html">&#8592; Beka Forge</a>
+          <button class="menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-controls="sidebar">Menu</button>
+        </div>
+      </div>
+    </header>
+    <div class="page-layout">
+      <aside class="sidebar" id="sidebar"><div class="sidebar-inner" data-sidebar-nav></div></aside>
+      <main class="content-shell" id="main-content">
+        <article class="doc-article" data-doc-content>
+          <nav class="breadcrumb"><a href="../index.html">Home</a> / <span>Settings and Providers</span></nav>
+          <h1>Settings and Providers</h1>
+          <p class="lede">The extension deliberately separates shared project defaults from local authoring preferences and local provider secrets. That separation matters for both team setup and machine-local behavior.</p>
+
+          <h2>Layer 1: local editor settings</h2>
+          <p>Local authoring preferences live in <code>DialogAiEditorLocalSettings</code> via <code>EditorPrefs</code>. These are machine-local values such as selected provider GUID, prompt sections, max tokens, temperature, structured prompt fields, and debug flags.</p>
+
+          <h2>Layer 2: shared project asset</h2>
+          <p>Shared defaults live in the project asset <code>DialogAISettings</code>. It provides the default provider reference, optional prompt logging behavior, and graph plan safety limits.</p>
+
+          <h2>Local prompt structure</h2>
+          <p>The effective system prompt can be assembled from named sections instead of one giant free-text field. The documented sections are Context, Persona, Goals, Constraints, Strict Constraints, and Response.</p>
+
+          <h2>Provider integration boundary</h2>
+          <p>The AI Extension does not own transport. It relies on AI Providers for provider assets, HTTP requests, and local key storage. The extension stores the selected provider GUID locally and resolves the actual provider asset when it needs to run a command.</p>
+
+          <h2>Default provider and safety caps</h2>
+<pre><code class="language-csharp">public class DialogAISettings : ScriptableObject
+{
+    [SerializeField] private Object defaultProvider;
+    [SerializeField] private bool logPromptsInEditor = true;
+    [SerializeField] private GraphOperationPlanSafetyLimits graphPlanSafetyLimits;
+}</code></pre>
+
+          <h2>Important behavior to document accurately</h2>
+          <ul>
+            <li>API keys are not serialized into the shared settings asset.</li>
+            <li>The selected provider is local editor state first, shared default second.</li>
+            <li>Safety limits are part of the product behavior, not just a hidden internal default.</li>
+            <li>If multiple <code>DialogAISettings</code> resources exist, the first match wins and a warning is logged.</li>
+          </ul>
+
+          <div class="placeholder-grid">
+            <article class="placeholder-card">
+              <h3>Provider-backed configuration</h3>
+              <img class="screenshot-img" src="../../AI Providers/assets/images/provider-settings-overview.png" alt="AI Providers settings panel used by the extension" loading="lazy">
+              <p>The extension keeps selected-provider state locally, but actual provider assets, API key entry, and connection testing live in AI Providers.</p>
+            </article>
+          </div>
+
+          <nav class="page-nav" data-prev-next></nav>
+        </article>
+      </main>
+      <aside class="page-toc" data-page-toc></aside>
+    </div>
+    <footer class="footer"><div class="footer-inner"><span>Dialogue Graph AI Extension docs</span><span>&copy; <span data-current-year></span> Beka Forge</span></div></footer>
+  </div>
+  <script src="../assets/app.js"></script>
+</body>
+</html>

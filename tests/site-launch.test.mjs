@@ -114,3 +114,18 @@ test("DGS public docs are consistently version 3.0.0", async () => {
   );
   assert.doesNotMatch(combined, /fed to the AI extension|shipped AI extension/i);
 });
+
+test("Providers is available free and AI Extension is teaser-only", async () => {
+  const providers = await read("AI Providers/index.html");
+  const extension = await read("Dialogue Graph AI Extension/index.html");
+
+  assert.match(providers, /Available Free/);
+  assert.match(providers, /products\.aiProviders\.assetStoreUrl/);
+  assert.match(providers, /package\/384482/);
+  assert.match(extension, /Coming Soon/);
+  assert.doesNotMatch(
+    extension,
+    /(getting-started|architecture|modules\/|api\/public-api)\.html/
+  );
+  assert.doesNotMatch(extension, /production.ready|install|purchase|price/i);
+});

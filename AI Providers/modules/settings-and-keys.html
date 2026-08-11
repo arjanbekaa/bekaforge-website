@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Settings and Keys | AI Providers Docs</title>
+  <meta name="description" content="Settings layers and local key handling in AI Providers, including provider assets, PlayerPrefs-based local keys, and editor-only panel preferences.">
+  <link rel="stylesheet" href="../assets/styles.css">
+  <link rel="icon" type="image/x-icon" href="../favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="../favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../favicon/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../favicon/apple-touch-icon.png">
+  <meta name="theme-color" content="#E8541A">
+</head>
+<body data-page="settings-and-keys" data-base="../">
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <div class="site-shell">
+    <header class="topbar">
+      <div class="topbar-inner">
+        <a class="brand" href="../index.html" aria-label="AI Providers docs home"><img src="../brand/ai-providers-icon-1254x1254.png" alt="AI Providers" height="34" style="display:block;border-radius:8px;"></a>
+        <div class="topbar-spacer"></div>
+        <div class="top-actions">
+          <div class="search-wrap"><input class="search-input" type="search" placeholder="Use the sidebar to filter pages" aria-label="Search hint" readonly></div>
+          <a class="back-to-site" href="../../index.html">&#8592; Beka Forge</a>
+          <button class="menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-controls="sidebar">Menu</button>
+        </div>
+      </div>
+    </header>
+    <div class="page-layout">
+      <aside class="sidebar" id="sidebar"><div class="sidebar-inner" data-sidebar-nav></div></aside>
+      <main class="content-shell" id="main-content">
+        <article class="doc-article" data-doc-content>
+          <nav class="breadcrumb"><a href="../index.html">Home</a> / <span>Settings and Keys</span></nav>
+          <h1>Settings and Keys</h1>
+          <p class="lede">AI Providers separates three concerns: shared provider asset configuration, local API key storage, and editor-only preferences. Those layers should be understood separately because the storage and security properties are different.</p>
+
+          <h2>Layer 1: provider asset</h2>
+          <p>The asset stores shared configuration such as display name, base URL, endpoint behavior, default model, and provider GUID.</p>
+
+          <h2>Layer 2: local API key storage</h2>
+          <p>Keys are stored in <code>PlayerPrefs</code>, scoped by project hash and provider GUID. That keeps keys out of the asset file, but it does not encrypt them at rest.</p>
+
+<pre><code class="language-csharp">public string GetApiKey()
+{
+    if (!string.IsNullOrWhiteSpace(apiKey)) return apiKey;
+    return ProviderApiKeyStorage.GetProviderApiKey(providerGuid);
+}</code></pre>
+
+          <h2>Layer 3: editor preferences</h2>
+          <p>Editor panel preferences live separately in <code>AiProvidersEditorLocalSettings</code> via <code>EditorPrefs</code>. That includes selected provider GUID, prompt preferences, and connection-test UI state.</p>
+
+          <h2>Security posture</h2>
+          <ul>
+            <li>Secrets stay out of the serialized asset files.</li>
+            <li>Secrets are local to the machine/project combination.</li>
+            <li>Secrets are not an encrypted vault.</li>
+            <li>Do not describe this as encrypted or vault-backed storage.</li>
+          </ul>
+
+          <div class="placeholder-grid">
+            <article class="placeholder-card">
+              <h3>Local key and shared config surface</h3>
+              <img class="screenshot-img" src="../assets/images/provider-settings-overview.png" alt="AI Providers panel with hidden API key and connection test" loading="lazy">
+              <p>The shared provider asset fields stay editable while the key remains machine-local and visually masked in the editor.</p>
+            </article>
+          </div>
+
+          <nav class="page-nav" data-prev-next></nav>
+        </article>
+      </main>
+      <aside class="page-toc" data-page-toc></aside>
+    </div>
+    <footer class="footer"><div class="footer-inner"><span>AI Providers docs</span><span>&copy; <span data-current-year></span> Beka Forge</span></div></footer>
+  </div>
+  <script src="../assets/app.js"></script>
+</body>
+</html>

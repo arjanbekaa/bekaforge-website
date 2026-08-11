@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Public API | AI Providers Docs</title>
+  <meta name="description" content="Public-facing API surface for AI Providers: service class, provider base class, DTOs, built-in provider types, and request result types.">
+  <link rel="stylesheet" href="../assets/styles.css">
+  <link rel="icon" type="image/x-icon" href="../favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="../favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../favicon/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../favicon/apple-touch-icon.png">
+  <meta name="theme-color" content="#E8541A">
+</head>
+<body data-page="public-api" data-base="../">
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <div class="site-shell">
+    <header class="topbar">
+      <div class="topbar-inner">
+        <a class="brand" href="../index.html" aria-label="AI Providers docs home"><img src="../brand/ai-providers-icon-1254x1254.png" alt="AI Providers" height="34" style="display:block;border-radius:8px;"></a>
+        <div class="topbar-spacer"></div>
+        <div class="top-actions">
+          <div class="search-wrap"><input class="search-input" type="search" placeholder="Use the sidebar to filter pages" aria-label="Search hint" readonly></div>
+          <a class="back-to-site" href="../../index.html">&#8592; Beka Forge</a>
+          <button class="menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-controls="sidebar">Menu</button>
+        </div>
+      </div>
+    </header>
+    <div class="page-layout">
+      <aside class="sidebar" id="sidebar"><div class="sidebar-inner" data-sidebar-nav></div></aside>
+      <main class="content-shell" id="main-content">
+        <article class="doc-article" data-doc-content>
+          <nav class="breadcrumb"><a href="../index.html">Home</a> / <span>Public API</span></nav>
+          <h1>Public API</h1>
+          <p class="lede">The strongest public surface in AI Providers is the service plus provider-asset abstraction. Editor panels and inspectors matter for usability, but the reusable runtime contract is the real API core.</p>
+
+          <h2>Main reusable APIs</h2>
+          <table>
+            <thead><tr><th>API</th><th>Purpose</th><th>Practical stability</th></tr></thead>
+            <tbody>
+              <tr><td><code>AiProvidersService</code></td><td>Shared prompt transport and normalized request execution.</td><td>High</td></tr>
+              <tr><td><code>LlmProviderDefinitionBase</code></td><td>Base class for all provider assets.</td><td>High</td></tr>
+              <tr><td><code>LlmChatRequest</code></td><td>Chat payload with messages, temperature, max tokens, and model override.</td><td>High</td></tr>
+              <tr><td><code>LlmMessage</code></td><td>Role/content chat message item.</td><td>High</td></tr>
+              <tr><td><code>AiLocalSettings</code></td><td>Project-scoped local provider key storage helper.</td><td>Medium</td></tr>
+            </tbody>
+          </table>
+
+          <h2>DTO surface</h2>
+<pre><code class="language-csharp">public class LlmChatRequest
+{
+    public List&lt;LlmMessage&gt; messages = new List&lt;LlmMessage&gt;();
+    public float temperature = 0.7f;
+    public int maxTokens = 512;
+    public string modelOverride;
+}</code></pre>
+
+          <h2>Built-in provider types</h2>
+          <p>The product ships concrete provider asset types for OpenAI, DeepSeek, Gemini, Ollama, and Custom JSON. Those are the public provider families to document, rather than hidden internal editor helper classes.</p>
+
+          <nav class="page-nav" data-prev-next></nav>
+        </article>
+      </main>
+      <aside class="page-toc" data-page-toc></aside>
+    </div>
+    <footer class="footer"><div class="footer-inner"><span>AI Providers docs</span><span>&copy; <span data-current-year></span> Beka Forge</span></div></footer>
+  </div>
+  <script src="../assets/app.js"></script>
+</body>
+</html>

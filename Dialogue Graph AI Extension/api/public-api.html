@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Public API | Dialogue Graph AI Extension Docs</title>
+  <meta name="description" content="Public-facing API concepts for Dialogue Graph AI Extension, including the bridge interface, command enum, settings asset, and graph plan DTO.">
+  <link rel="stylesheet" href="../assets/styles.css">
+  <link rel="icon" type="image/x-icon" href="../favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="../favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../favicon/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../favicon/apple-touch-icon.png">
+  <meta name="theme-color" content="#E8541A">
+</head>
+<body data-page="public-api" data-base="../">
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <div class="site-shell">
+    <header class="topbar">
+      <div class="topbar-inner">
+        <a class="brand" href="../index.html" aria-label="Dialogue Graph AI Extension docs home"><img src="../brand/ai-extension-icon-160x160.png" alt="Dialogue Graph AI Extension" height="34" style="display:block;border-radius:8px;"></a>
+        <div class="topbar-spacer"></div>
+        <div class="top-actions">
+          <div class="search-wrap"><input class="search-input" type="search" placeholder="Use the sidebar to filter pages" aria-label="Search hint" readonly></div>
+          <a class="back-to-site" href="../../index.html">&#8592; Beka Forge</a>
+          <button class="menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-controls="sidebar">Menu</button>
+        </div>
+      </div>
+    </header>
+    <div class="page-layout">
+      <aside class="sidebar" id="sidebar"><div class="sidebar-inner" data-sidebar-nav></div></aside>
+      <main class="content-shell" id="main-content">
+        <article class="doc-article" data-doc-content>
+          <nav class="breadcrumb"><a href="../index.html">Home</a> / <span>Public API</span></nav>
+          <h1>Public API</h1>
+          <p class="lede">The cleanest public-facing concepts are the bridge contract, the command enum, the shared settings asset, and the plan DTO. Many preview windows and pipeline helpers are architecturally important but are not the strongest long-term extension surface.</p>
+
+          <h2>Primary integration contract</h2>
+          <table>
+            <thead><tr><th>API</th><th>Purpose</th><th>Practical stability</th></tr></thead>
+            <tbody>
+              <tr><td><code>IDialogGraphAiBridge</code></td><td>Injects AI UI and quick actions into the DGS editor host.</td><td>High</td></tr>
+              <tr><td><code>AiGraphCommandType</code></td><td>Names the major command categories exposed by routing and execution.</td><td>Medium</td></tr>
+              <tr><td><code>DialogAISettings</code></td><td>Shared project defaults and graph plan safety limits.</td><td>Medium</td></tr>
+              <tr><td><code>GraphOperationPlan</code></td><td>Structured review/apply DTO for broad authoring requests.</td><td>Medium</td></tr>
+            </tbody>
+          </table>
+
+          <h2>Bridge-owned quick actions</h2>
+<pre><code class="language-csharp">public enum DialogGraphAiQuickAction
+{
+    ContinueBranch,
+    SuggestChoices,
+    RewriteDialog,
+    GrammarFix,
+    ValidateGraph,
+}</code></pre>
+
+          <h2>Settings asset load behavior</h2>
+          <p><code>DialogAISettings.LoadFromResources()</code> loads the first matching asset named <code>DialogAISettings</code> from any <code>Resources</code> folder. The source code warns when multiple matches exist.</p>
+
+          <h2>What not to over-promise</h2>
+          <p>Preview window classes, route detector heuristics, prompt builders, and apply pipeline internals matter for maintainers, but they are not the strongest public compatibility surface. The public docs here intentionally keep the API emphasis on the concepts other systems actually integrate with.</p>
+
+          <nav class="page-nav" data-prev-next></nav>
+        </article>
+      </main>
+      <aside class="page-toc" data-page-toc></aside>
+    </div>
+    <footer class="footer"><div class="footer-inner"><span>Dialogue Graph AI Extension docs</span><span>&copy; <span data-current-year></span> Beka Forge</span></div></footer>
+  </div>
+  <script src="../assets/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Architecture | AI Providers Docs</title>
+  <meta name="description" content="Architecture for AI Providers: service-driven request transport, provider assets, DTOs, and normalized response extraction.">
+  <link rel="stylesheet" href="assets/styles.css">
+  <link rel="icon" type="image/x-icon" href="favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
+  <meta name="theme-color" content="#E8541A">
+</head>
+<body data-page="architecture" data-base="">
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <div class="site-shell">
+    <header class="topbar">
+      <div class="topbar-inner">
+        <a class="brand" href="index.html" aria-label="AI Providers docs home"><img src="brand/ai-providers-icon-1254x1254.png" alt="AI Providers" height="34" style="display:block;border-radius:8px;"></a>
+        <div class="topbar-spacer"></div>
+        <div class="top-actions">
+          <div class="search-wrap"><input class="search-input" type="search" placeholder="Use the sidebar to filter pages" aria-label="Search hint" readonly></div>
+          <a class="back-to-site" href="../index.html">&#8592; Beka Forge</a>
+          <button class="menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-controls="sidebar">Menu</button>
+        </div>
+      </div>
+    </header>
+    <div class="page-layout">
+      <aside class="sidebar" id="sidebar"><div class="sidebar-inner" data-sidebar-nav></div></aside>
+      <main class="content-shell" id="main-content">
+        <article class="doc-article" data-doc-content>
+          <nav class="breadcrumb"><a href="index.html">Home</a> / <span>Architecture</span></nav>
+          <h1>Architecture</h1>
+          <p class="lede">AI Providers is a provider-asset abstraction plus a shared request service. The design stays intentionally independent of Dialogue Graph System and AI Extension so other tools can reuse the same provider and transport layer.</p>
+
+          <h2>High-level architecture</h2>
+<pre><code>Caller
+  -&gt; AiProvidersService
+  -&gt; LlmProviderDefinitionBase
+  -&gt; LlmHttpRequest
+  -&gt; UnityWebRequest
+  -&gt; Provider API
+  -&gt; provider-specific response extraction</code></pre>
+
+          <h2>Division of ownership</h2>
+          <ul>
+            <li><strong>Provider asset</strong> builds the concrete HTTP request and parses the provider-specific response.</li>
+            <li><strong>Service layer</strong> owns transport execution, timeout/retry behavior, and normalized HTTP error handling.</li>
+            <li><strong>DTO layer</strong> carries chat messages, model overrides, and the built request definition.</li>
+          </ul>
+
+          <h2>Base class contract</h2>
+<pre><code class="language-csharp">public abstract class LlmProviderDefinitionBase : ScriptableObject
+{
+    public abstract LlmHttpRequest BuildHttpRequest(LlmChatRequest chat);
+    public abstract string ExtractTextFromResponse(string responseJson);
+}</code></pre>
+
+          <h2>Why provider assets matter</h2>
+          <p>New providers are added as assets and subclasses rather than as giant switch statements in the service. That keeps endpoint rules, model defaults, and response parsing close to the specific provider implementation.</p>
+
+          <nav class="page-nav" data-prev-next></nav>
+        </article>
+      </main>
+      <aside class="page-toc" data-page-toc></aside>
+    </div>
+    <footer class="footer"><div class="footer-inner"><span>AI Providers docs</span><span>&copy; <span data-current-year></span> Beka Forge</span></div></footer>
+  </div>
+  <script src="assets/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Getting Started | AI Providers Docs</title>
+  <meta name="description" content="Quick start for AI Providers: import the asset, create a provider asset, store a local key, and send the first prompt from editor or runtime code.">
+  <link rel="stylesheet" href="assets/styles.css">
+  <link rel="icon" type="image/x-icon" href="favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
+  <meta name="theme-color" content="#E8541A">
+</head>
+<body data-page="getting-started" data-base="">
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <div class="site-shell">
+    <header class="topbar">
+      <div class="topbar-inner">
+        <a class="brand" href="index.html" aria-label="AI Providers docs home"><img src="brand/ai-providers-icon-1254x1254.png" alt="AI Providers" height="34" style="display:block;border-radius:8px;"></a>
+        <div class="topbar-spacer"></div>
+        <div class="top-actions">
+          <div class="search-wrap"><input class="search-input" type="search" placeholder="Use the sidebar to filter pages" aria-label="Search hint" readonly></div>
+          <a class="back-to-site" href="../index.html">&#8592; Beka Forge</a>
+          <button class="menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-controls="sidebar">Menu</button>
+        </div>
+      </div>
+    </header>
+    <div class="page-layout">
+      <aside class="sidebar" id="sidebar"><div class="sidebar-inner" data-sidebar-nav></div></aside>
+      <main class="content-shell" id="main-content">
+        <article class="doc-article" data-doc-content>
+          <nav class="breadcrumb"><a href="index.html">Home</a> / <span>Getting Started</span></nav>
+          <h1>Getting Started</h1>
+          <p class="lede">AI Providers is independent. You can import it alone or alongside other Beka Forge tools. The first successful setup is: create or select a provider asset, enter a local API key, and send a minimal prompt.</p>
+
+          <h2>Requirements and scope</h2>
+          <ul>
+            <li>Unity 2021.3 LTS or newer.</li>
+            <li>No hard dependency on Dialogue Graph System or AI Extension.</li>
+            <li>Runtime assembly: <code>AiProviders.Runtime</code>.</li>
+            <li>Editor assembly: <code>AiProviders.Editor</code>.</li>
+          </ul>
+
+          <h2>First-time editor flow</h2>
+          <ol>
+            <li>Import <code>Assets/AiProviders</code>.</li>
+            <li>Open <code>Tools &gt; BekaForge &gt; AI Providers</code>.</li>
+            <li>Create or select a provider asset.</li>
+            <li>Store the API key locally for that provider GUID.</li>
+            <li>Run the provider test request.</li>
+            <li>Use the provider asset from editor tooling or runtime code.</li>
+          </ol>
+
+          <div class="placeholder-grid">
+            <article class="placeholder-card">
+              <h3>Provider settings panel</h3>
+              <img class="screenshot-img" src="assets/images/provider-settings-overview.png" alt="AI Providers panel with provider selection and local API key" loading="lazy">
+              <p>This is the first editor surface most users touch: choose a provider, enter a local key, test the connection, and save the default configuration.</p>
+            </article>
+          </div>
+
+          <h2>Minimal blocking request</h2>
+<pre><code class="language-csharp">using AiProviders.Runtime;
+using System.Collections.Generic;
+
+var chat = new LlmChatRequest
+{
+    messages = new List&lt;LlmMessage&gt;
+    {
+        new LlmMessage { role = LlmMessageRole.System, content = "You are a helpful assistant." },
+        new LlmMessage { role = LlmMessageRole.User, content = "Hello!" }
+    }
+};
+
+if (AiProvidersService.TrySendPrompt(provider, chat, out string response, out string error))
+{
+    Debug.Log(response);
+}</code></pre>
+
+          <h2>When to prefer the coroutine path</h2>
+          <p>The blocking path is primarily editor-oriented. For runtime usage, prefer <code>SendPromptCoroutine</code> so the caller is not stuck inside a busy wait loop.</p>
+
+          <nav class="page-nav" data-prev-next></nav>
+        </article>
+      </main>
+      <aside class="page-toc" data-page-toc></aside>
+    </div>
+    <footer class="footer"><div class="footer-inner"><span>AI Providers docs</span><span>&copy; <span data-current-year></span> Beka Forge</span></div></footer>
+  </div>
+  <script src="assets/app.js"></script>
+</body>
+</html>

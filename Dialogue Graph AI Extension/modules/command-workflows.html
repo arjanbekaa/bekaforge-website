@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Command Workflows | Dialogue Graph AI Extension Docs</title>
+  <meta name="description" content="Detailed floating-panel command workflows for Dialogue Graph AI Extension: rewrite, grammar fix, branch continuation, choices, translation, repair, and plan-based routes.">
+  <link rel="stylesheet" href="../assets/styles.css">
+  <link rel="icon" type="image/x-icon" href="../favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="../favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../favicon/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../favicon/apple-touch-icon.png">
+  <meta name="theme-color" content="#E8541A">
+</head>
+<body data-page="command-workflows" data-base="../">
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <div class="site-shell">
+    <header class="topbar">
+      <div class="topbar-inner">
+        <a class="brand" href="../index.html" aria-label="Dialogue Graph AI Extension docs home"><img src="../brand/ai-extension-icon-160x160.png" alt="Dialogue Graph AI Extension" height="34" style="display:block;border-radius:8px;"></a>
+        <div class="topbar-spacer"></div>
+        <div class="top-actions">
+          <div class="search-wrap"><input class="search-input" type="search" placeholder="Use the sidebar to filter pages" aria-label="Search hint" readonly></div>
+          <a class="back-to-site" href="../../index.html">&#8592; Beka Forge</a>
+          <button class="menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-controls="sidebar">Menu</button>
+        </div>
+      </div>
+    </header>
+    <div class="page-layout">
+      <aside class="sidebar" id="sidebar"><div class="sidebar-inner" data-sidebar-nav></div></aside>
+      <main class="content-shell" id="main-content">
+        <article class="doc-article" data-doc-content>
+          <nav class="breadcrumb"><a href="../index.html">Home</a> / <span>Command Workflows</span></nav>
+          <h1>Command Workflows</h1>
+          <p class="lede">The floating AI Assistant panel exposes a wide command surface, but the commands are still grouped by clear workflow types: narrow rewrites, draft generation, branch extension, translation, repair, and plan-style graph authoring.</p>
+
+          <h2>What the floating AI Assistant panel includes</h2>
+          <ul>
+            <li>provider and status summary</li>
+            <li>rewrite options and quick action buttons</li>
+            <li>natural-language command box</li>
+            <li>context mode selector</li>
+            <li>AI context preview</li>
+          </ul>
+
+          <h2>Command families</h2>
+          <table>
+            <thead><tr><th>Family</th><th>Examples</th><th>Result shape</th></tr></thead>
+            <tbody>
+              <tr><td>Single-node rewrite</td><td>Rewrite dialog, grammar fix</td><td>Current vs proposed text preview</td></tr>
+              <tr><td>Branch growth</td><td>Continue branch, add dialog nodes, expand selected node</td><td>Draft node preview before apply</td></tr>
+              <tr><td>Choice assistance</td><td>Suggest choices, add choice node</td><td>Choice draft list or inserted choice structure</td></tr>
+              <tr><td>Action assistance</td><td>Insert action node, generate payload JSON</td><td>Draft payload or node insertion preview</td></tr>
+              <tr><td>Editor assistance</td><td>Repair layout, localization redirects</td><td>Editor tool route or guided translation flow</td></tr>
+              <tr><td>Broad authoring</td><td>Generate flow draft, graph operation plan</td><td>Structured review surface</td></tr>
+            </tbody>
+          </table>
+
+          <h2>Command reference: what users can do with it</h2>
+          <table>
+            <thead><tr><th>Command</th><th>What users can do</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Rewrite Selected Dialog</strong></td><td>Rewrite one selected dialog line while keeping the graph structure unchanged. Useful for tone, wording, brevity, or style changes.</td></tr>
+              <tr><td><strong>Fix Grammar</strong></td><td>Clean up grammar and punctuation on a selected line without asking for broader structural changes.</td></tr>
+              <tr><td><strong>Continue Branch</strong></td><td>Extend the currently selected branch with more dialogue after the anchor node.</td></tr>
+              <tr><td><strong>Add Dialog Nodes</strong></td><td>Insert one or more new dialog nodes after a selected anchor, such as "add 3 lines after this."</td></tr>
+              <tr><td><strong>Suggest Choices</strong></td><td>Create choice ideas or a choice node with candidate answers and optional follow-up structure.</td></tr>
+              <tr><td><strong>Insert Action Node</strong></td><td>Insert an action node after the selected node, including suggested action IDs and payload assistance.</td></tr>
+              <tr><td><strong>Batch Rewrite By Speaker</strong></td><td>Rewrite many lines for one speaker in one review pass while still approving the output before apply.</td></tr>
+              <tr><td><strong>Generate Dialog Flow Draft</strong></td><td>Draft a structured conversation flow using the current graph context or a selected <code>DialogSpecificationSO</code>.</td></tr>
+              <tr><td><strong>Generate Narrative Scene</strong></td><td>Scaffold a higher-level narrative scene draft before graph content is committed.</td></tr>
+              <tr><td><strong>Smart Continue Branch</strong></td><td>Continue a selected branch using more graph context than a simple continuation command.</td></tr>
+              <tr><td><strong>Scaffold Quest Dialogue</strong></td><td>Generate quest-oriented dialogue structure with setup, objective framing, and resolution beats.</td></tr>
+              <tr><td><strong>Repair Layout</strong></td><td>Run graph layout cleanup from the editor workflow to re-space nodes more cleanly.</td></tr>
+              <tr><td><strong>Translation Commands</strong></td><td>Translate a selected node, a branch, a whole graph, or localization rows through the localization workflow rather than the generic command path.</td></tr>
+            </tbody>
+          </table>
+
+          <h2>Representative command surface</h2>
+<pre><code class="language-csharp">public static readonly string[] PublicCommandSurface =
+{
+    "RewriteDialog",
+    "GrammarFix",
+    "ContinueBranch",
+    "AddDialogNodesAfter",
+    "SuggestChoices",
+    "AddChoiceNodeAfter",
+    "InsertActionNode",
+    "BatchRewriteBySpeaker",
+    "GenerateDialogFlowDraft",
+    "GenerateNarrativeScene",
+    "SmartContinueBranch",
+    "ScaffoldQuestDialogue",
+    "RepairLayout",
+    "TranslateSelectedNode",
+    "TranslateSelectedBranch",
+    "TranslateWholeGraph",
+    "BatchTranslate"
+};</code></pre>
+
+          <h2>Preview-first behavior</h2>
+          <p>Implemented command flows are intentionally draft-first. The extension does not silently apply text or graph mutations in the background. The preview window is part of the workflow contract.</p>
+
+          <h2>Anchor-sensitive commands</h2>
+          <p>Several routes rely on a selected anchor node or an unambiguous starting point. If the route is valid but the anchor is unclear, the workflow stops and asks for clearer selection or intent instead of guessing.</p>
+
+          <h2>Commands that usually need one selected node</h2>
+          <ul>
+            <li>rewrite selected dialog</li>
+            <li>fix grammar</li>
+            <li>continue branch</li>
+            <li>add dialog nodes after anchor</li>
+            <li>suggest choices</li>
+            <li>insert action node</li>
+          </ul>
+
+          <h2>Localization and editor-tool routes</h2>
+          <p>Not every AI-sounding request goes through content generation. Translation and localization prompts intentionally redirect to dedicated localization tooling, while layout repair and similar actions can route into editor-owned tools instead of freeform text generation.</p>
+
+          <div class="placeholder-grid">
+            <article class="placeholder-card">
+              <h3>Command in graph context</h3>
+              <img class="screenshot-img" src="../assets/images/ai-command-graph-plan.png" alt="AI command panel with detected graph plan" loading="lazy">
+              <p>Natural-language commands are interpreted in graph context, with route detection visible before the command runs.</p>
+            </article>
+            <article class="placeholder-card">
+              <h3>Preview window</h3>
+              <img class="screenshot-img" src="../assets/images/ai-translate-preview.png" alt="AI preview window" loading="lazy">
+              <p>Preview windows keep the author in control before text or node changes are committed.</p>
+            </article>
+          </div>
+
+          <nav class="page-nav" data-prev-next></nav>
+        </article>
+      </main>
+      <aside class="page-toc" data-page-toc></aside>
+    </div>
+    <footer class="footer"><div class="footer-inner"><span>Dialogue Graph AI Extension docs</span><span>&copy; <span data-current-year></span> Beka Forge</span></div></footer>
+  </div>
+  <script src="../assets/app.js"></script>
+</body>
+</html>

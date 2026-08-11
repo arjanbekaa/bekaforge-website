@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Architecture | Dialogue Graph AI Extension Docs</title>
+  <meta name="description" content="Architecture for Dialogue Graph AI Extension: bridge integration, command routing, prompt pipeline, preview windows, and graph mutation boundaries.">
+  <link rel="stylesheet" href="assets/styles.css">
+  <link rel="icon" type="image/x-icon" href="favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
+  <meta name="theme-color" content="#E8541A">
+</head>
+<body data-page="architecture" data-base="">
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <div class="site-shell">
+    <header class="topbar">
+      <div class="topbar-inner">
+        <a class="brand" href="index.html" aria-label="Dialogue Graph AI Extension docs home"><img src="brand/ai-extension-icon-160x160.png" alt="Dialogue Graph AI Extension" height="34" style="display:block;border-radius:8px;"></a>
+        <div class="topbar-spacer"></div>
+        <div class="top-actions">
+          <div class="search-wrap"><input class="search-input" type="search" placeholder="Use the sidebar to filter pages" aria-label="Search hint" readonly></div>
+          <a class="back-to-site" href="../index.html">&#8592; Beka Forge</a>
+          <button class="menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-controls="sidebar">Menu</button>
+        </div>
+      </div>
+    </header>
+    <div class="page-layout">
+      <aside class="sidebar" id="sidebar"><div class="sidebar-inner" data-sidebar-nav></div></aside>
+      <main class="content-shell" id="main-content">
+        <article class="doc-article" data-doc-content>
+          <nav class="breadcrumb"><a href="index.html">Home</a> / <span>Architecture</span></nav>
+          <h1>Architecture</h1>
+          <p class="lede">The AI Extension is not a raw "send prompt, mutate graph" feature. It layers floating-panel UI, bridge integration, routing, prompt construction, draft parsing, preview review, and only then controlled graph mutation.</p>
+
+          <h2>High-level flow</h2>
+<pre><code>User instruction
+  -&gt; DGS bridge surface
+  -&gt; route detector
+  -&gt; prompt builder
+  -&gt; AI Providers transport
+  -&gt; draft parser
+  -&gt; preview window
+  -&gt; mutation service after approval</code></pre>
+
+          <h2>DGS owns the host editor</h2>
+          <p>The core integration contract is <code>IDialogGraphAiBridge</code>. DGS owns the graph editor host. The AI Extension implements the bridge and injects the floating AI Assistant workflow and quick actions without taking over the whole editor.</p>
+
+          <h2>Code naming versus user-facing naming</h2>
+          <p>The main implementation class still uses the name <code>DialogGraphAiSidebarContent</code>, but the product surface presented to users is the <strong>floating AI Assistant panel</strong>. This documentation uses the panel wording for product behavior and keeps the older sidebar name only when referring to code.</p>
+
+<pre><code class="language-csharp">public interface IDialogGraphAiBridge
+{
+    bool IsAvailable { get; }
+    VisualElement CreateAiSidebarContent(IDialogGraphOwner owner);
+    bool TryRunQuickAction(IDialogGraphOwner owner, DialogGraphAiQuickAction action, out string error);
+    void OpenSettings();
+}</code></pre>
+
+          <h2>Routing is multi-stage</h2>
+          <p>The prompt field does not represent one uniform workflow. Routing is split between editor tool routes, graph operation plans, and legacy direct command execution.</p>
+          <ul>
+            <li><strong>Editor tool routing</strong> opens tabs, repairs layout, or redirects localization work.</li>
+            <li><strong>Graph operation plan routing</strong> handles broad multi-step authoring requests.</li>
+            <li><strong>Legacy direct commands</strong> handle targeted rewrite, grammar, branch continuation, action insertion, and similar narrow flows.</li>
+          </ul>
+
+          <h2>Preview before mutation</h2>
+          <p>The preview/apply boundary is the central design rule. The AI produces drafts and plans. The editor owns GUIDs, positions, links, undo, integrity checks, save state, and final graph mutation.</p>
+
+          <h2>Graph mutation boundaries</h2>
+          <p>Forbidden properties are filtered before the graph is touched. The model is not allowed to author GUIDs, coordinates, ports, or serialized graph JSON. That boundary is part of the safety contract, not just a UI preference.</p>
+
+          <h2>Why this matters publicly</h2>
+          <p>This architecture explains why the extension can be described as an authoring assistant instead of a freeform graph generator. The implementation is deliberately constrained, reviewable, and editor-owned.</p>
+
+          <nav class="page-nav" data-prev-next></nav>
+        </article>
+      </main>
+      <aside class="page-toc" data-page-toc></aside>
+    </div>
+    <footer class="footer"><div class="footer-inner"><span>Dialogue Graph AI Extension docs</span><span>&copy; <span data-current-year></span> Beka Forge</span></div></footer>
+  </div>
+  <script src="assets/app.js"></script>
+</body>
+</html>

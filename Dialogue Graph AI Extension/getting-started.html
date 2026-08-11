@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Getting Started | Dialogue Graph AI Extension Docs</title>
+  <meta name="description" content="Setup checklist for Dialogue Graph AI Extension, including define constraints, provider requirements, and the editor-side AI entry points.">
+  <link rel="stylesheet" href="assets/styles.css">
+  <link rel="icon" type="image/x-icon" href="favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
+  <meta name="theme-color" content="#E8541A">
+</head>
+<body data-page="getting-started" data-base="">
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <div class="site-shell">
+    <header class="topbar">
+      <div class="topbar-inner">
+        <a class="brand" href="index.html" aria-label="Dialogue Graph AI Extension docs home"><img src="brand/ai-extension-icon-160x160.png" alt="Dialogue Graph AI Extension" height="34" style="display:block;border-radius:8px;"></a>
+        <div class="topbar-spacer"></div>
+        <div class="top-actions">
+          <div class="search-wrap"><input class="search-input" type="search" placeholder="Use the sidebar to filter pages" aria-label="Search hint" readonly></div>
+          <a class="back-to-site" href="../index.html">&#8592; Beka Forge</a>
+          <button class="menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-controls="sidebar">Menu</button>
+        </div>
+      </div>
+    </header>
+    <div class="page-layout">
+      <aside class="sidebar" id="sidebar"><div class="sidebar-inner" data-sidebar-nav></div></aside>
+      <main class="content-shell" id="main-content">
+        <article class="doc-article" data-doc-content>
+          <nav class="breadcrumb"><a href="index.html">Home</a> / <span>Getting Started</span></nav>
+          <h1>Getting Started</h1>
+          <p class="lede">Dialogue Graph AI Extension is an optional editor-side add-on. It sits on top of Dialogue Graph System, relies on AI Providers for the actual transport layer, and is currently opened through the floating AI Assistant panel.</p>
+
+          <h2>What must already exist</h2>
+          <ul>
+            <li>Dialogue Graph System imported and compiling.</li>
+            <li>AI Providers imported if you want real provider-backed requests.</li>
+            <li>The compile define <code>BEKA_FORGE_DGS_AI_EXTENSION_READY_V3</code> present so the editor-side AI surfaces compile in.</li>
+          </ul>
+
+          <h2>Core assemblies and location</h2>
+          <table>
+            <thead><tr><th>Area</th><th>Value</th></tr></thead>
+            <tbody>
+              <tr><td>Runtime assembly</td><td><code>DialogSystemAIExtension.Runtime</code></td></tr>
+              <tr><td>Editor assembly</td><td><code>DialogSystemAIExtension.Editor</code></td></tr>
+              <tr><td>Root folder</td><td><code>Assets/DialogSystemAIExtension/</code></td></tr>
+              <tr><td>Main shared settings asset</td><td><code>DialogAISettings</code> in a <code>Resources</code> folder</td></tr>
+            </tbody>
+          </table>
+
+          <h2>First-time setup flow</h2>
+          <ol>
+            <li>Open a <code>DialogGraph</code> asset in the Dialogue Graph System editor.</li>
+            <li>Open the floating AI Assistant panel from the graph editor AI launcher.</li>
+            <li>Open the AI settings panel if no provider is configured yet.</li>
+            <li>Select or create a provider asset through the AI Providers tooling.</li>
+            <li>Store the provider API key locally on the current machine.</li>
+            <li>Return to the graph editor and run a narrow preview-first command such as rewrite or grammar fix.</li>
+          </ol>
+
+          <h2>Settings model: local plus shared</h2>
+          <p>The extension uses two layers intentionally. Local authoring preferences, selected provider GUID, prompt sections, and debug flags live in <code>EditorPrefs</code>. Shared defaults and graph plan safety caps live in the project asset <code>DialogAISettings</code>.</p>
+
+<pre><code class="language-csharp">using DialogSystemAIExtension.Runtime.ScriptableObjects;
+
+var settings = DialogAISettings.LoadFromResources();
+
+if (settings == null)
+{
+    Debug.LogWarning("Create a DialogAISettings asset in a Resources folder.");
+}</code></pre>
+
+          <h2>Where the feature shows up in the editor</h2>
+          <div class="placeholder-grid">
+            <article class="placeholder-card">
+              <h3>Command surface</h3>
+              <img class="screenshot-img" src="assets/images/ai-command-graph-plan.png" alt="AI command prompt building a graph plan" loading="lazy">
+              <p>The panel combines prompt entry, detected route, scope, and preview-first command execution in one place.</p>
+            </article>
+            <article class="placeholder-card">
+              <h3>Floating AI Assistant panel</h3>
+              <img class="screenshot-img" src="assets/images/ai-assistant-floating-window.png" alt="Floating AI Assistant panel" loading="lazy">
+              <p>The floating panel stays attached to the editor workflow without taking ownership away from Dialogue Graph System.</p>
+            </article>
+          </div>
+
+          <h2>Conservative first command</h2>
+          <p>Start with a single-node rewrite or grammar fix. These routes exercise provider setup, prompt building, response parsing, and preview apply without immediately invoking the broader graph operation plan pipeline.</p>
+
+          <nav class="page-nav" data-prev-next></nav>
+        </article>
+      </main>
+      <aside class="page-toc" data-page-toc></aside>
+    </div>
+    <footer class="footer"><div class="footer-inner"><span>Dialogue Graph AI Extension docs</span><span>&copy; <span data-current-year></span> Beka Forge</span></div></footer>
+  </div>
+  <script src="assets/app.js"></script>
+</body>
+</html>
