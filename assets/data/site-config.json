@@ -1,0 +1,37 @@
+{
+  "publisher": {
+    "assetStoreUrl": "https://assetstore.unity.com/publishers/121154",
+    "youtubeUrl": "https://www.youtube.com/@BekaForge",
+    "githubUrl": "https://github.com/arjanbekaa/bekaforge-website"
+  },
+  "support": {
+    "emailUrl": "mailto:bekaforge@gmail.com",
+    "reportIssueUrl": "https://github.com/arjanbekaa/bekaforge-website/issues/new/choose"
+  },
+  "products": {
+    "dialogueGraphSystem": {
+      "status": "Available",
+      "price": "$24.99",
+      "version": "3.0.0",
+      "assetStoreUrl": "https://assetstore.unity.com/packages/tools/gui/dialogue-graph-system-332234",
+      "youtubeUrl": "https://www.youtube.com/watch?v=1K7-WWIBjD0",
+      "docsPath": "Dialogue Graph System/index.html"
+    },
+    "aiProviders": {
+      "status": "Available Free",
+      "price": "Free",
+      "version": "1.0.0",
+      "assetStoreUrl": "https://assetstore.unity.com/packages/package/384482",
+      "youtubeUrl": "",
+      "docsPath": "AI Providers/index.html"
+    },
+    "aiExtension": {
+      "status": "Coming Soon",
+      "price": "",
+      "version": "",
+      "assetStoreUrl": "",
+      "youtubeUrl": "",
+      "docsPath": "Dialogue Graph AI Extension/index.html"
+    }
+  }
+}
