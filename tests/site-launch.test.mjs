@@ -70,3 +70,22 @@ test("public reports use GitHub Issue Forms without a token", async () => {
     /(github[_-]?token|api[_-]?key|password|webhook[_-]?secret)\s*:/i
   );
 });
+
+test("root pages present the approved release matrix", async () => {
+  const home = await read("index.html");
+  const docs = await read("docs.html");
+  const roadmap = await read("roadmap.html");
+  const publicPages = `${home}\n${docs}\n${roadmap}`;
+
+  assert.match(home, /Build branching dialogue visually in Unity/);
+  assert.match(home, /Available Free/);
+  assert.match(home, /Coming Soon/);
+  assert.match(docs, /Which documentation do you need/);
+  assert.match(publicPages, /support\.reportIssueUrl/);
+  assert.match(home, /products\.aiProviders\.assetStoreUrl/);
+  assert.doesNotMatch(
+    publicPages,
+    /store link pending|public asset placeholders|own public folder/i
+  );
+  assert.doesNotMatch(docs, /modules\/command-workflows\.html/);
+});

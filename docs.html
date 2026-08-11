@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Beka Forge Docs Hub</title>
+  <meta name="description" content="Documentation for Dialogue Graph System 3.0 and AI Providers for Unity, with a coming-soon preview of the Dialogue Graph AI Extension.">
+  <link rel="icon" type="image/x-icon" href="favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+  <script src="assets/data/textresources.js"></script>
+  <style>
+    :root{--forge:#E8541A;--forge-light:#FF7A40;--obsidian:#0E1117;--steel:#1C2333;--steel-mid:#252E42;--slate:#8892A4;--ash:#F0F2F5;--blue:#3B82F6}
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;background:var(--obsidian);color:var(--ash);font-family:Inter,Segoe UI,sans-serif;line-height:1.7}
+    a{color:inherit;text-decoration:none}
+    .shell{min-height:100vh;background:radial-gradient(circle at 20% 0,rgba(232,84,26,.16),transparent 34rem),linear-gradient(180deg,rgba(37,46,66,.18),transparent 18rem)}
+    .nav{position:sticky;top:0;z-index:10;background:rgba(14,17,23,.9);backdrop-filter:blur(12px);border-bottom:1px solid var(--steel-mid)}
+    .nav-inner,.section,.footer-inner{max-width:1180px;margin:0 auto;padding:0 24px}
+    .nav-inner{height:64px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+    .brand{display:flex;align-items:center;gap:10px;font-family:"Space Grotesk",sans-serif;font-weight:700}
+    .brand span:last-child{color:var(--forge)}
+    .nav-links{display:flex;align-items:center;gap:18px;color:var(--slate);font-size:14px;font-weight:600}
+    .nav-links a:hover{color:var(--ash)}
+    .hero{padding:96px 0 54px}
+    .eyebrow{color:var(--forge);font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase}
+    h1,h2,h3{font-family:"Space Grotesk",sans-serif;line-height:1.08;letter-spacing:-.025em}
+    h1{font-size:clamp(42px,7vw,76px);max-width:860px;margin:16px 0}
+    .lead{max-width:720px;color:var(--slate);font-size:18px;margin:0}
+    .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin:34px 0 70px}
+    .card{background:rgba(28,35,51,.86);border:1px solid var(--steel-mid);border-radius:18px;padding:22px;box-shadow:0 18px 60px rgba(0,0,0,.22)}
+    .card.featured{border-color:rgba(232,84,26,.5);box-shadow:0 20px 70px rgba(232,84,26,.08)}
+    .status{display:inline-flex;border:1px solid rgba(136,146,164,.26);border-radius:999px;padding:5px 10px;color:var(--slate);font-size:12px;font-weight:700;margin-bottom:20px}
+    .card h2{font-size:25px;margin:0 0 10px}
+    .card p{color:var(--slate);font-size:14px;margin:0 0 18px}
+    .actions{display:flex;flex-wrap:wrap;gap:10px}
+    .btn{display:inline-flex;align-items:center;justify-content:center;border-radius:8px;padding:10px 14px;font-size:13px;font-weight:700;border:1px solid var(--steel-mid);color:var(--ash)}
+    .btn.primary{background:var(--forge);border-color:var(--forge);color:#fff}
+    .btn:hover{border-color:var(--slate)}
+    .btn.primary:hover{background:var(--forge-light);border-color:var(--forge-light)}
+    .section-block{padding:38px 0;border-top:1px solid var(--steel-mid)}
+    .section-block h2{font-size:32px;margin:0 0 12px}
+    .note{background:rgba(232,84,26,.08);border:1px solid rgba(232,84,26,.22);border-radius:14px;padding:16px;color:var(--slate)}
+    .list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:18px}
+    .list a,.list div{background:var(--steel);border:1px solid var(--steel-mid);border-radius:14px;padding:16px}
+    .list strong{display:block;color:var(--ash);margin-bottom:4px}
+    .list span{color:var(--slate);font-size:14px}
+    footer{border-top:3px solid var(--forge);background:var(--steel);margin-top:60px}
+    .footer-inner{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;padding-top:34px;padding-bottom:34px;color:var(--slate);font-size:13px}
+    @media(max-width:860px){.grid,.list{grid-template-columns:1fr}.nav-links{gap:12px;font-size:13px}.hero{padding-top:68px}}
+    @media(max-width:620px){.nav-inner,.section,.footer-inner{padding-left:16px;padding-right:16px}.nav-links a:nth-child(2){display:none}h1{font-size:40px}}
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header class="nav">
+      <div class="nav-inner">
+        <a class="brand" href="index.html" aria-label="Beka Forge home"><span>Beka</span><span>Forge</span></a>
+        <nav class="nav-links" aria-label="Main navigation">
+          <a href="index.html#products">Products</a>
+          <a href="roadmap.html">Roadmap</a>
+          <a data-resource-href="publisher.assetStoreUrl" target="_blank" rel="noopener">Asset Store</a>
+          <a data-resource-href="publisher.youtubeUrl" target="_blank" rel="noopener">YouTube</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="section hero">
+        <span class="eyebrow">Documentation Hub</span>
+        <h1>Which documentation do you need?</h1>
+        <p class="lead">Build dialogue with the complete DGS 3.0 guides, configure the free AI Providers package, or preview the AI Extension that is coming soon.</p>
+      </section>
+
+      <section class="section">
+        <div class="grid">
+          <article class="card featured" id="dialogue-graph-system">
+            <span class="status">Available · version 3.0.0 · $24.99</span>
+            <h2>Dialogue Graph System 3.0</h2>
+            <p data-resource-text="products.dialogueGraphSystem.description"></p>
+            <div class="actions">
+              <a class="btn primary" data-resource-href="products.dialogueGraphSystem.docsPath">Open DGS docs</a>
+              <a class="btn" data-resource-href="products.dialogueGraphSystem.assetStoreUrl" target="_blank" rel="noopener">Asset Store</a>
+              <a class="btn" data-resource-href="products.dialogueGraphSystem.youtubeUrl" target="_blank" rel="noopener">Watch video</a>
+            </div>
+          </article>
+
+          <article class="card" id="ai-providers">
+            <span class="status">Available Free</span>
+            <h2 data-resource-text="products.aiProviders.name">AI Providers for Unity</h2>
+            <p data-resource-text="products.aiProviders.description"></p>
+            <div class="actions">
+              <a class="btn primary" data-resource-href="products.aiProviders.docsPath">Open provider docs</a>
+              <a class="btn" data-resource-href="products.aiProviders.assetStoreUrl" target="_blank" rel="noopener">Get free</a>
+            </div>
+          </article>
+
+          <article class="card" id="ai-extension">
+            <span class="status">Coming Soon</span>
+            <h2 data-resource-text="products.aiExtension.name">Dialogue Graph AI Extension</h2>
+            <p>Preview the planned optional AI-assisted authoring layer. Setup and technical guides will be published when the extension is ready.</p>
+            <div class="actions">
+              <a class="btn" data-resource-href="products.aiExtension.docsPath">Preview coming soon</a>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section section-block" id="start-here">
+        <h2>Start with your current task</h2>
+        <p class="note">DGS and AI Providers are independent packages. The future AI Extension will add optional authoring assistance on top of DGS and use AI Providers for connectivity.</p>
+        <div class="list">
+          <a href="Dialogue Graph System/installation.html"><strong>Install DGS 3.0</strong><span>Import the package and configure the editor and runtime requirements.</span></a>
+          <a href="Dialogue Graph System/quick-tutorial.html"><strong>Create your first dialogue</strong><span>Build a graph, connect runtime components, and play a branching conversation.</span></a>
+          <a href="AI Providers/getting-started.html"><strong>Configure an AI provider</strong><span>Create a provider asset, add a machine-local key, and test the connection.</span></a>
+          <a data-resource-href="support.reportIssueUrl" target="_blank" rel="noopener"><strong>Report a documentation problem</strong><span>Open a public GitHub report for broken links, incorrect details, or unclear steps.</span></a>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="footer-inner">
+        <span>Beka Forge documentation</span>
+        <a data-resource-href="support.reportIssueUrl" target="_blank" rel="noopener">Report a public issue</a>
+        <span>&copy; <span data-current-year></span> Beka Forge</span>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>
