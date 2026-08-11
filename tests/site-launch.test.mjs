@@ -89,3 +89,28 @@ test("root pages present the approved release matrix", async () => {
   );
   assert.doesNotMatch(docs, /modules\/command-workflows\.html/);
 });
+
+test("DGS public docs are consistently version 3.0.0", async () => {
+  const files = await htmlFiles("Dialogue Graph System");
+  const combined = (await Promise.all(files.map(read))).join("\n");
+  const landing = await read("Dialogue Graph System/index.html");
+
+  assert.doesNotMatch(combined, /Dialogue Graph System v2\.0\.0/);
+  assert.match(landing, /version 3\.0\.0/i);
+  assert.match(landing, /changelog\.html/);
+  assert.match(landing, /license\.html/);
+  assert.match(landing, /support\.html/);
+
+  for (const page of ["changelog.html", "license.html", "support.html"]) {
+    assert.ok(
+      files.includes(`Dialogue Graph System/${page}`),
+      `${page} should exist in the DGS docs`
+    );
+  }
+
+  assert.doesNotMatch(
+    combined,
+    /Dialogue Graph AI Extension\/modules\/command-workflows/
+  );
+  assert.doesNotMatch(combined, /fed to the AI extension|shipped AI extension/i);
+});

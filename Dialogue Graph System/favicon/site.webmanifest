@@ -1,0 +1,12 @@
+{
+  "name": "BekaForge",
+  "short_name": "BekaForge",
+  "description": "Production-ready Unity tools, editor extensions, and AI-assisted systems.",
+  "icons": [
+    { "src": "/favicon/android-chrome-192x192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/favicon/android-chrome-512x512.png", "sizes": "512x512", "type": "image/png" }
+  ],
+  "theme_color": "#E8541A",
+  "background_color": "#0E1117",
+  "display": "standalone"
+}

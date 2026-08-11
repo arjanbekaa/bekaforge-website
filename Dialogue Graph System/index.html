@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dialogue Graph System Docs | Beka Forge</title>
+  <meta name="description" content="Product documentation for Dialogue Graph System, a Unity graph-based dialogue toolkit by Beka Forge.">
+  <link rel="stylesheet" href="assets/styles.css">
+  <!-- Favicons -->
+  <link rel="icon" type="image/x-icon" href="favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
+  <meta name="theme-color" content="#E8541A">
+</head>
+<body data-page="home" data-base="">
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <div class="site-shell">
+    <header class="topbar">
+      <div class="topbar-inner">
+        <a class="brand" href="index.html" aria-label="BekaForge Dialogue Graph System docs home"><img src="brand/logo-primary-transparent-dark@1x.png" alt="BekaForge Dialogue Graph System" height="34" style="display:block;"></a>
+        <div class="topbar-spacer"></div>
+        <div class="top-actions">
+          <div class="search-wrap">
+            <input class="search-input" type="search" placeholder="Use the sidebar to filter pages" aria-label="Search hint" readonly>
+          </div>
+          <a class="back-to-site" href="../index.html">&#8592; BekaForge</a><button class="menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-controls="sidebar">Menu</button>
+        </div>
+      </div>
+    </header>
+
+    <div class="page-layout">
+      <aside class="sidebar" id="sidebar">
+        <div class="sidebar-inner" data-sidebar-nav></div>
+      </aside>
+
+      <main class="content-shell" id="main-content">
+        <section class="page-hero">
+          <span class="eyebrow">Unity Documentation Portal &nbsp;·&nbsp; version 3.0.0</span>
+          <h1 class="hero-title">Dialogue Graph System 3.0 documentation.</h1>
+          <p class="hero-subtitle">
+            Product-specific documentation for Dialogue Graph System. It covers the runtime, editor tooling,
+            settings model, JSON workflow, transcript support, and the core asset workflow.
+          </p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="getting-started.html">Start with Getting Started</a>
+            <a class="button button-secondary" href="architecture.html">Open Architecture</a>
+            <a class="button button-secondary" href="changelog.html">What changed in 3.0</a>
+            <a class="button button-secondary" href="../docs.html">Beka Forge Docs Hub</a>
+          </div>
+
+          <div class="hero-grid">
+            <article class="hero-card">
+              <h2>What the project does</h2>
+              <p>
+                Dialog Graph System is a Unity toolkit for authoring branching conversations in a graph editor and playing them
+                back through a runtime UI. It includes a JSON round-trip workflow, action nodes, a history panel, transcript
+                rebuilding, and theme-driven runtime presentation.
+              </p>
+              <div class="stat-grid">
+                <div class="stat">
+                  <strong>1</strong>
+                  <span>Demo scene, 3 playable graphs</span>
+                </div>
+                <div class="stat">
+                  <strong>5</strong>
+                  <span>Core node types</span>
+                </div>
+                <div class="stat">
+                  <strong>5</strong>
+                  <span>Ready-made UI themes</span>
+                </div>
+              </div>
+            </article>
+
+            <article class="hero-card">
+              <h3>Graph Editor Overview</h3>
+              <img class="screenshot-img" src="assets/images/graph-editor-overview.png" alt="Graph Editor Overview" fetchpriority="high" decoding="async">
+            </article>
+          </div>
+        </section>
+
+        <section class="homepage-section panel">
+          <h2>Who this documentation is for</h2>
+          <div class="feature-grid">
+            <article class="doc-card">
+              <h3>Developers</h3>
+              <p>Learn how to wire <code>DialogManager</code>, play conversations by <code>dialogID</code>, and integrate actions, history, and transcripts.</p>
+            </article>
+            <article class="doc-card">
+              <h3>Contributors</h3>
+              <p>Understand the editor/runtime split, asset model, and the safest extension points before changing the graph workflow.</p>
+            </article>
+            <article class="doc-card">
+              <h3>Reviewers and clients</h3>
+              <p>Inspect the architecture, supported workflows, and major systems without digging through every Unity script first.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="homepage-section panel">
+          <h2>Key features</h2>
+          <div class="card-grid">
+            <article class="doc-card"><h3>Graph-based authoring</h3><p>Author Start, Dialog, Choice, Action, and End nodes through editor-only GraphView tooling. The graph editor overview below is the visual reference for how authors build and connect dialogue content.</p><img class="screenshot-img" src="assets/images/graph-editor-overview.png" alt="Graph Editor Overview" loading="lazy"></article>
+            <article class="doc-card"><h3>Runtime playback</h3><p>Use TextMeshPro-backed UI for speaker names, portraits, typewriter effects, skip, autoplay, and choice handling. The runtime capture shows what a working conversation looks like in Play Mode.</p><img class="screenshot-img" src="assets/images/runtime-dialog-ui.png" alt="Runtime dialogue UI" loading="lazy"></article>
+            <article class="doc-card"><h3>JSON workflows</h3><p>Export and import graph JSON for backup, review, migration, and controlled external tooling.</p></article>
+            <article class="doc-card"><h3>Action nodes</h3><p>Run UnityEvent bindings or coroutine-based gameplay handlers through <code>DialogActionRunner</code> and <code>IActionHandler</code>.</p></article>
+            <article class="doc-card"><h3>History and transcripts</h3><p>Keep a player-facing backlog and rebuild the exact played branch with deterministic transcript generation.</p></article>
+            <article class="doc-card"><h3>Visual themes and settings</h3><p>Swap the entire UI look at runtime with <code>DialogThemeSO</code>. Five ready-made themes are included, and the settings window keeps runtime behavior in one place.</p><img class="screenshot-img" src="assets/images/settings-text.png" alt="Settings window" loading="lazy"></article>
+            <article class="doc-card"><h3>Validation and editor cleanup</h3><p>Use graph validation plus the layout formatter to keep branching graphs readable and structurally safe as they grow.</p><img class="screenshot-img" src="assets/images/graph-editor-branching-example.png" alt="Graph validation and layout example" loading="lazy"></article>
+          </div>
+        </section>
+
+        <section class="homepage-section panel">
+          <h2>Start here</h2>
+          <div class="link-grid">
+            <a class="doc-card" href="getting-started.html"><h3>Getting Started</h3><p>Quick repo orientation, demo scenes, and the smallest runtime setup to get the system running.</p></a>
+            <a class="doc-card" href="installation.html"><h3>Installation</h3><p>Unity requirements, package assumptions, scene setup checklist, and runtime/editor setup basics.</p></a>
+            <a class="doc-card" href="quick-tutorial.html"><h3>Quick Tutorial</h3><p>Create a graph, wire a <code>dialogID</code>, trigger playback, and inspect the branch transcript.</p></a>
+            <a class="doc-card" href="architecture.html"><h3>Architecture</h3><p>Review the editor/runtime split, data flow, extension points, and current coupling boundaries.</p></a>
+            <a class="doc-card" href="changelog.html"><h3>3.0 Changelog</h3><p>Review the headline authoring, runtime, localization, validation, and showcase updates.</p></a>
+            <a class="doc-card" href="support.html"><h3>Support</h3><p>Find troubleshooting, public issue reporting, and private support channels.</p></a>
+            <a class="doc-card" href="license.html"><h3>License</h3><p>Understand the Unity Asset Store license that applies to this package.</p></a>
+          </div>
+        </section>
+
+        <section class="homepage-section panel">
+          <h2>Examples and common workflows</h2>
+          <div class="link-grid">
+            <a class="doc-card" href="guides/creating-a-dialog.html"><h3>Create a dialog graph</h3><p>Build a branching conversation, map it to a <code>dialogID</code>, and trigger it from gameplay code.</p></a>
+            <a class="doc-card" href="guides/integrating-actions.html"><h3>Integrate action nodes</h3><p>Connect action nodes to UnityEvents or async handlers without overloading the dialogue layer.</p></a>
+            <a class="doc-card" href="modules/import-export.html"><h3>Review JSON workflows</h3><p>Understand export/import responsibilities, DTO mapping, and the safest way to move graph content between tools.</p></a>
+            <a class="doc-card" href="modules/history-and-transcripts.html"><h3>Review history and transcripts</h3><p>Understand the difference between the history panel and exact branch transcript reconstruction.</p></a>
+          </div>
+        </section>
+
+        <section class="homepage-section panel">
+          <h2>Demo entry points in this repository</h2>
+          <p>Open <code>Assets/DialogGraphSystem/DemoScenes/DialogueDemo.unity</code> and press Play. The demo menu lets you launch any of the three sample graphs.</p>
+          <table>
+            <thead><tr><th>Graph asset</th><th>Purpose</th></tr></thead>
+            <tbody>
+              <tr><td><code>Assets/DialogGraphSystem/Graphs/Demo_CafeChoices.asset</code></td><td>Branching conversation with choices.</td></tr>
+              <tr><td><code>Assets/DialogGraphSystem/Graphs/Demo_ControlRoomActions.asset</code></td><td>Action nodes and waitable coroutine behavior.</td></tr>
+              <tr><td><code>Assets/DialogGraphSystem/Graphs/Demo_ProductTour.asset</code></td><td>Linear guided tour demonstrating typewriter and portrait effects.</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+      </main>
+
+      <aside class="page-toc">
+        <div class="toc-card">
+          <p class="toc-title">Portal map</p>
+          <ul class="toc-list">
+            <li class="toc-section-label">Overview</li>
+            <li><a class="toc-link" href="index.html">Home</a></li>
+            <li><a class="toc-link" href="getting-started.html">Getting Started</a></li>
+            <li><a class="toc-link" href="installation.html">Installation</a></li>
+            <li><a class="toc-link" href="architecture.html">Architecture</a></li>
+            <li><a class="toc-link" href="core-concepts.html">Core Concepts</a></li>
+            <li><a class="toc-link" href="quick-tutorial.html">Quick Tutorial</a></li>
+            <li class="toc-section-label">Modules</li>
+            <li><a class="toc-link" href="modules/runtime-dialog-flow.html">Runtime Dialog Flow</a></li>
+            <li><a class="toc-link" href="modules/graph-editor.html">Graph Editor</a></li>
+            <li><a class="toc-link" href="modules/import-export.html">JSON Import &amp; Export</a></li>
+            <li><a class="toc-link" href="modules/settings-system.html">Settings System</a></li>
+            <li><a class="toc-link" href="modules/history-and-transcripts.html">History &amp; Transcripts</a></li>
+            <li class="toc-section-label">API &amp; UI</li>
+            <li><a class="toc-link" href="api/dialog-manager.html">DialogManager API</a></li>
+            <li><a class="toc-link" href="api/dialog-action-runner.html">DialogActionRunner API</a></li>
+            <li><a class="toc-link" href="components/runtime-ui.html">Runtime UI Components</a></li>
+            <li class="toc-section-label">Guides</li>
+            <li><a class="toc-link" href="guides/creating-a-dialog.html">Creating a Dialog</a></li>
+            <li><a class="toc-link" href="guides/integrating-actions.html">Integrating Actions</a></li>
+            <li class="toc-section-label">Operations</li>
+            <li><a class="toc-link" href="troubleshooting.html">Troubleshooting</a></li>
+            <li><a class="toc-link" href="faq.html">FAQ</a></li>
+            <li><a class="toc-link" href="maintainer-notes.html">Maintainer Notes</a></li>
+            <li><a class="toc-link" href="changelog.html">Changelog</a></li>
+            <li><a class="toc-link" href="license.html">License</a></li>
+            <li><a class="toc-link" href="support.html">Support</a></li>
+            <li><a class="toc-link" href="roadmap.html">&#128204; Roadmap</a></li>
+          </ul>
+        </div>
+      </aside>
+    </div>
+    <footer class="footer"><div class="footer-inner"><span>Dialogue Graph System v3.0.0</span><span>&copy; <span data-current-year></span></span></div></footer>
+  </div>
+  <script src="assets/app.js"></script>
+</body>
+</html>

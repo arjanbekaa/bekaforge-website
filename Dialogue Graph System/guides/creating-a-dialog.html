@@ -1,0 +1,65 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Guide: Creating a Dialog | Dialog Graph System Docs</title>
+  <meta name="description" content="Create a branching conversation and start it by dialogID.">
+  <link rel="stylesheet" href="../assets/styles.css">
+  <!-- Favicons -->
+  <link rel="icon" type="image/x-icon" href="../favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="../favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../favicon/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../favicon/apple-touch-icon.png">
+  <meta name="theme-color" content="#E8541A">
+</head>
+<body data-page="creating-a-dialog" data-base="../">
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <div class="site-shell">
+    <header class="topbar"><div class="topbar-inner"><a class="brand" href="../index.html"><img src="../brand/logo-primary-transparent-dark@1x.png" alt="BekaForge Dialogue Graph System" height="34" style="display:block;"></a><div class="topbar-spacer"></div><div class="top-actions"><div class="search-wrap"><input class="search-input" type="search" placeholder="Filter pages from the sidebar" readonly></div><a class="back-to-site" href="../../index.html">&#8592; BekaForge</a><button class="menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-controls="sidebar">Menu</button></div></div></header>
+    <div class="page-layout">
+      <aside class="sidebar" id="sidebar"><div class="sidebar-inner" data-sidebar-nav></div></aside>
+      <main class="content-shell" id="main-content">
+        <article class="doc-article" data-doc-content>
+          <nav class="breadcrumb"><a href="../index.html">Home</a> / <span>Creating a Dialog</span></nav>
+          <h1>Guide: Creating a Dialog</h1>
+          <p class="lede">Create a branching conversation that can be started by <code>dialogID</code>.</p>
+          <h2>Workflow</h2>
+          <ol>
+            <li>Open <code>Tools â†’ Dialogue Graph System â†’ Dialogue Graph</code>.</li>
+            <li>Create a new graph.</li>
+            <li>Add nodes and connect them.</li>
+            <li>Save the graph.</li>
+            <li>Add it to <code>DialogManager.dialogGraphs</code>.</li>
+            <li>Start it from gameplay code.</li>
+          </ol>
+          <h2>Example starter script</h2>
+<pre><code>using DialogSystem.Runtime.Core;
+using UnityEngine;
+
+public class TavernNpc : MonoBehaviour
+{
+    public void Talk()
+    {
+        DialogManager.Instance.PlayDialogByID("tavern_npc_intro");
+    }
+}</code></pre>
+          <h2>Validation checklist</h2>
+          <ul>
+            <li><code>Start</code> has an outgoing link</li>
+            <li>every choice option has a valid target</li>
+            <li>the <code>dialogID</code> mapping exists in the manager</li>
+            <li>the scene has a working UI panel</li>
+          </ul>
+          <div class="placeholder-grid"><article class="placeholder-card screenshot-card"><h3>New graph dialog</h3><img class="screenshot-img" src="../assets/images/new-dialogue-popup.png" alt="New graph dialog" loading="lazy"><p>The creation prompt where you name the graph asset and set its dialog ID.</p></article></div>
+          <nav class="page-nav" data-prev-next></nav>
+        </article>
+      </main>
+      <aside class="page-toc" data-page-toc></aside>
+    </div>
+    <footer class="footer"><div class="footer-inner"><span>Dialogue Graph System v3.0.0</span><span>&copy; <span data-current-year></span></span></div></footer>
+  </div>
+  <script src="../assets/app.js"></script>
+</body>
+</html>
+
