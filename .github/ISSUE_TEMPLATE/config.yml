@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Dialogue Graph System documentation
+    url: https://bekaforge.com/Dialogue%20Graph%20System/
+    about: Check the current setup, API, and troubleshooting guides before reporting a documentation problem.
+  - name: Private support by email
+    url: mailto:bekaforge@gmail.com
+    about: Use email when a support request contains purchase information or other details that should not be public.

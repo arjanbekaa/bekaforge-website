@@ -1,0 +1,40 @@
+name: Feature request
+description: Suggest a public website, documentation, or Beka Forge product improvement.
+title: "[Request]: "
+labels: []
+body:
+  - type: dropdown
+    id: product
+    attributes:
+      label: Product area
+      options:
+        - Dialogue Graph System
+        - AI Providers for Unity
+        - Dialogue Graph AI Extension
+        - Beka Forge website and documentation
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem should this solve?
+      description: Explain the workflow or information gap without prescribing implementation details.
+    validations:
+      required: true
+
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Desired outcome
+      description: Describe what a successful improvement would let you do.
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: public_acknowledgement
+    attributes:
+      label: Public request acknowledgement
+      options:
+        - label: This request will be public and contains no credentials, purchase details, or private project data.
+          required: true

@@ -1,0 +1,65 @@
+name: Website or documentation report
+description: Report a broken page, incorrect link, unclear instruction, or accessibility problem.
+title: "[Website]: "
+labels: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping improve Beka Forge. GitHub issues are public, so do not include purchase records, email addresses, API credentials, or private project files.
+
+  - type: dropdown
+    id: report_type
+    attributes:
+      label: Report type
+      options:
+        - Broken page or link
+        - Incorrect product information
+        - Documentation problem
+        - Accessibility or responsive-layout problem
+        - Other public website problem
+    validations:
+      required: true
+
+  - type: input
+    id: page_url
+    attributes:
+      label: Page URL
+      description: Paste the public page where the problem appears.
+      placeholder: https://bekaforge.com/docs.html
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What happened?
+      description: Describe the visible problem and the steps that reproduce it.
+      placeholder: The AI Providers button opens the wrong destination after I...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect?
+      description: Describe the result or wording you expected to see.
+    validations:
+      required: true
+
+  - type: input
+    id: environment
+    attributes:
+      label: Browser and device
+      description: Include the browser, operating system, and device or approximate screen size when relevant.
+      placeholder: Chrome 128, Windows 11, 1440 x 900
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: public_acknowledgement
+    attributes:
+      label: Public report acknowledgement
+      options:
+        - label: This report will be public and contains no credentials, purchase details, or private project data.
+          required: true

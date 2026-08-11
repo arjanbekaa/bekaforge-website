@@ -42,3 +42,31 @@ test("resource loader keeps defaults and fetches same-origin config", async () =
   assert.match(source, /Coming Soon/);
   assert.doesNotMatch(source, /store link pending/i);
 });
+
+test("public reports use GitHub Issue Forms without a token", async () => {
+  const config = JSON.parse(await read("assets/data/site-config.json"));
+  const form = await read(".github/ISSUE_TEMPLATE/website-report.yml");
+  const featureForm = await read(".github/ISSUE_TEMPLATE/feature-request.yml");
+  const chooser = await read(".github/ISSUE_TEMPLATE/config.yml");
+
+  assert.equal(
+    config.support.reportIssueUrl,
+    "https://github.com/arjanbekaa/bekaforge-website/issues/new/choose"
+  );
+  assert.match(form, /^name: Website or documentation report/m);
+  assert.match(form, /required: true/);
+  assert.match(form, /This report will be public/);
+  assert.match(featureForm, /^name: Feature request/m);
+  assert.match(chooser, /blank_issues_enabled: true/);
+
+  const publicFiles = [
+    JSON.stringify(config),
+    form,
+    featureForm,
+    chooser
+  ].join("\n");
+  assert.doesNotMatch(
+    publicFiles,
+    /(github[_-]?token|api[_-]?key|password|webhook[_-]?secret)\s*:/i
+  );
+});
