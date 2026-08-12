@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "configVersion": "2026-08-12.2",
+  "ttlHours": 12,
+  "docsUrl": "https://bekaforge.com/Dialogue%20Graph%20System/index.html",
+  "supportUrl": "mailto:bekaforge@gmail.com",
+  "feedbackEnabled": true,
+  "feedbackEndpoint": "https://dgs-feedback-ingest.bekaforge-dgs-feedback.workers.dev/v1/reports",
+  "links": {
+    "website": "https://bekaforge.com/",
+    "documentation": "https://bekaforge.com/Dialogue%20Graph%20System/index.html",
+    "discord": "https://discord.gg/hD8e6WFFWT",
+    "support": "mailto:bekaforge@gmail.com",
+    "assetStore": "",
+    "review": "",
+    "changelog": "https://bekaforge.com/Dialogue%20Graph%20System/changelog.html"
+  },
+  "feedback": {
+    "enabled": true,
+    "endpoint": "https://dgs-feedback-ingest.bekaforge-dgs-feedback.workers.dev/v1/reports",
+    "endpointVersion": "v1",
+    "showReportPreview": true,
+    "maxStackTraceLength": 6000
+  },
+  "reviewPrompt": {
+    "enabled": false,
+    "minEditorSessions": 3,
+    "minGraphOpens": 5,
+    "minGraphEdits": 10,
+    "cooldownDays": 30
+  },
+  "welcome": {
+    "releaseNotes": "",
+    "footerText": ""
+  }
+}
