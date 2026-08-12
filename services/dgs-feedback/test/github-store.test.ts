@@ -100,6 +100,19 @@ test("storage creates one dated JSON file with a server envelope", async () => {
   assert.deepEqual(envelope.client, validReport);
 });
 
+test("storage removes surrounding whitespace from the GitHub secret", async () => {
+  const captured: CapturedRequest[] = [];
+
+  await storeReport(
+    validReport,
+    { ...config, token: "\r\n  test-token-private  \r\n" },
+    dependencies(captured)
+  );
+
+  const headers = new Headers(captured[0].init.headers);
+  assert.equal(headers.get("authorization"), "Bearer test-token-private");
+});
+
 test("storage retries transient GitHub responses twice with bounded delays", async () => {
   const captured: CapturedRequest[] = [];
   const deps = dependencies(captured, [409, 503, 201]);

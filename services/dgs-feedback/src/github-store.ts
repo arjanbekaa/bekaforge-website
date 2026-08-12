@@ -125,7 +125,7 @@ async function putReport(
     method: "PUT",
     headers: {
       accept: "application/vnd.github+json",
-      authorization: `Bearer ${config.token}`,
+      authorization: `Bearer ${config.token.trim()}`,
       "content-type": "application/json",
       "x-github-api-version": "2022-11-28",
       "user-agent": "BekaForge-DGS-Feedback"
