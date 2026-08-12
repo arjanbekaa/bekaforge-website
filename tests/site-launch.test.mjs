@@ -132,6 +132,64 @@ test("Providers is available free and AI Extension is teaser-only", async () => 
   assert.doesNotMatch(extension, /production.ready|install|purchase|price/i);
 });
 
+test("current screenshot galleries preserve the Coming Soon boundary", async () => {
+  const extension = await read("Dialogue Graph AI Extension/index.html");
+  const dgs = await read("Dialogue Graph System/index.html");
+  const graphEditor = await read("Dialogue Graph System/modules/graph-editor.html");
+  const settings = await read("Dialogue Graph System/modules/settings-system.html");
+  const resources = await read("assets/data/textresources.js");
+
+  assert.match(extension, /\.hero\s*>\s*\*\s*\{[^}]*min-width:\s*0/s);
+  assert.match(extension, /\.preview\s*\{[^}]*min-width:\s*0/s);
+  assert.match(
+    extension,
+    /\.preview img\s*\{[^}]*display:\s*block[^}]*width:\s*100%[^}]*height:\s*auto[^}]*object-fit:\s*contain/s
+  );
+  assert.match(extension, /Planned workflow previews/);
+  for (const image of [
+    "showcase-ai-assistant.png",
+    "showcase-ai-localization.png",
+    "showcase-ai-translation-preview.png"
+  ]) {
+    assert.match(extension, new RegExp(image.replace(".", "\\.")));
+  }
+  assert.doesNotMatch(
+    extension,
+    /(getting-started|architecture|modules\/|api\/public-api)\.html/
+  );
+
+  for (const image of [
+    "showcase-graph.png",
+    "showcase-launcher.png",
+    "showcase-localization.png",
+    "showcase-nodes.png"
+  ]) {
+    assert.match(dgs, new RegExp(image.replace(".", "\\.")));
+  }
+
+  for (const image of [
+    "characters-actions.png",
+    "context-settings.png",
+    "environment-settings.png",
+    "variables-panel.png"
+  ]) {
+    assert.match(graphEditor, new RegExp(image.replace(".", "\\.")));
+  }
+
+  for (const image of [
+    "settings-graph-view.png",
+    "settings-runtime-ui.png",
+    "settings-ai-current.png"
+  ]) {
+    assert.match(settings, new RegExp(image.replace(".", "\\.")));
+  }
+
+  assert.match(
+    resources,
+    /AI Providers\/brand\/ai-providers-card-420x280\.png/
+  );
+});
+
 test("legacy DGS documentation URLs redirect to the 3.0 documentation", async () => {
   const legacyPages = [
     "dgs-docs/index.html",
