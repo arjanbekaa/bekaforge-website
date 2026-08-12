@@ -1,0 +1,169 @@
+import { validateReport } from "./contract.ts";
+import { storeReport, type StoreDependencies } from "./github-store.ts";
+import { MAX_BODY_BYTES, PublicError } from "./types.ts";
+
+export interface DgsFeedbackEnv {
+  GITHUB_REPORTS_TOKEN: string;
+  GITHUB_OWNER: string;
+  GITHUB_REPO: string;
+  GITHUB_BRANCH: string;
+  REPORT_RATE_LIMITER: RateLimit;
+}
+
+export type HandlerDependencies = StoreDependencies;
+
+export interface DgsFeedbackHandler {
+  fetch(request: Request, env: DgsFeedbackEnv): Promise<Response>;
+}
+
+const JSON_HEADERS = {
+  "cache-control": "no-store",
+  "content-type": "application/json; charset=utf-8",
+  "x-content-type-options": "nosniff"
+} as const;
+
+function jsonResponse(
+  status: number,
+  body: Record<string, unknown>,
+  headers?: Record<string, string>
+): Response {
+  return new Response(JSON.stringify(body), {
+    status,
+    headers: { ...JSON_HEADERS, ...headers }
+  });
+}
+
+function errorResponse(error: PublicError): Response {
+  const headers = error.status === 429 ? { "retry-after": "60" } : undefined;
+  return jsonResponse(error.status, { ok: false, error: error.code }, headers);
+}
+
+function isJsonContentType(request: Request): boolean {
+  const value = request.headers.get("content-type") ?? "";
+  return value.split(";", 1)[0].trim().toLowerCase() === "application/json";
+}
+
+function exceedsDeclaredLimit(request: Request): boolean {
+  const value = request.headers.get("content-length");
+  if (value === null) {
+    return false;
+  }
+
+  const length = Number(value);
+  return Number.isFinite(length) && length > MAX_BODY_BYTES;
+}
+
+async function parseBody(request: Request): Promise<unknown> {
+  if (exceedsDeclaredLimit(request)) {
+    throw new PublicError(413, "payload_too_large");
+  }
+
+  const bytes = await request.arrayBuffer();
+  if (bytes.byteLength > MAX_BODY_BYTES) {
+    throw new PublicError(413, "payload_too_large");
+  }
+
+  let text: string;
+  try {
+    text = new TextDecoder("utf-8", { fatal: true }).decode(bytes);
+  } catch {
+    throw new PublicError(400, "invalid_json");
+  }
+
+  try {
+    return JSON.parse(text);
+  } catch {
+    throw new PublicError(400, "invalid_json");
+  }
+}
+
+async function handleReport(
+  request: Request,
+  env: DgsFeedbackEnv,
+  dependencies: HandlerDependencies
+): Promise<Response> {
+  if (!isJsonContentType(request)) {
+    throw new PublicError(415, "unsupported_media_type");
+  }
+
+  const payload = validateReport(await parseBody(request));
+  if (!env.REPORT_RATE_LIMITER?.limit) {
+    throw new PublicError(503, "storage_unavailable");
+  }
+
+  let rateLimitResult: { success: boolean };
+  try {
+    rateLimitResult = await env.REPORT_RATE_LIMITER.limit({
+      key: payload.anonymousInstallId
+    });
+  } catch {
+    throw new PublicError(503, "storage_unavailable");
+  }
+
+  if (!rateLimitResult.success) {
+    throw new PublicError(429, "rate_limited");
+  }
+
+  const result = await storeReport(
+    payload,
+    {
+      owner: env.GITHUB_OWNER ?? "",
+      repo: env.GITHUB_REPO ?? "",
+      branch: env.GITHUB_BRANCH ?? "",
+      token: env.GITHUB_REPORTS_TOKEN ?? ""
+    },
+    dependencies
+  );
+
+  return jsonResponse(201, { ok: true, reportId: result.reportId });
+}
+
+export function createHandler(
+  dependencies: HandlerDependencies
+): DgsFeedbackHandler {
+  return {
+    async fetch(request, env) {
+      const url = new URL(request.url);
+
+      if (url.pathname === "/health" && request.method === "GET") {
+        return jsonResponse(200, {
+          ok: true,
+          service: "dgs-feedback",
+          version: "v1"
+        });
+      }
+
+      if (url.pathname !== "/v1/reports") {
+        return jsonResponse(404, { ok: false, error: "not_found" });
+      }
+
+      if (request.method !== "POST") {
+        return jsonResponse(
+          405,
+          { ok: false, error: "method_not_allowed" },
+          { allow: "POST" }
+        );
+      }
+
+      try {
+        return await handleReport(request, env, dependencies);
+      } catch (error) {
+        if (error instanceof PublicError) {
+          return errorResponse(error);
+        }
+
+        return jsonResponse(500, { ok: false, error: "internal_error" });
+      }
+    }
+  };
+}
+
+const defaultDependencies: HandlerDependencies = {
+  fetch: globalThis.fetch.bind(globalThis),
+  now: () => new Date(),
+  randomBytes: (length) => crypto.getRandomValues(new Uint8Array(length)),
+  sleep: (milliseconds) =>
+    new Promise((resolve) => setTimeout(resolve, milliseconds))
+};
+
+export default createHandler(defaultDependencies) satisfies ExportedHandler<DgsFeedbackEnv>;
