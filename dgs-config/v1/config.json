@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "configVersion": "2026-08-12.1",
+  "configVersion": "2026-08-12.2",
   "ttlHours": 12,
   "docsUrl": "https://bekaforge.com/Dialogue%20Graph%20System/index.html",
   "supportUrl": "mailto:bekaforge@gmail.com",
-  "feedbackEnabled": false,
-  "feedbackEndpoint": "",
+  "feedbackEnabled": true,
+  "feedbackEndpoint": "https://dgs-feedback-ingest.bekaforge-dgs-feedback.workers.dev/v1/reports",
   "links": {
     "website": "https://bekaforge.com/",
     "documentation": "https://bekaforge.com/Dialogue%20Graph%20System/index.html",
@@ -16,8 +16,8 @@
     "changelog": "https://bekaforge.com/Dialogue%20Graph%20System/changelog.html"
   },
   "feedback": {
-    "enabled": false,
-    "endpoint": "",
+    "enabled": true,
+    "endpoint": "https://dgs-feedback-ingest.bekaforge-dgs-feedback.workers.dev/v1/reports",
     "endpointVersion": "v1",
     "showReportPreview": true,
     "maxStackTraceLength": 6000

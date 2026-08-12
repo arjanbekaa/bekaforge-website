@@ -4,17 +4,20 @@ import { readFile } from "node:fs/promises";
 
 const configUrl = new URL("../dgs-config/v1/config.json", import.meta.url);
 
-test("DGS remote config is schema 1 and fail-closed before activation", async () => {
+test("DGS remote config activates the verified private feedback endpoint", async () => {
   const text = await readFile(configUrl, "utf8");
   const config = JSON.parse(text);
+  const endpoint =
+    "https://dgs-feedback-ingest.bekaforge-dgs-feedback.workers.dev/v1/reports";
 
   assert.equal(config.schemaVersion, 1);
-  assert.equal(config.configVersion, "2026-08-12.1");
+  assert.equal(config.configVersion, "2026-08-12.2");
   assert.equal(config.ttlHours, 12);
   assert.ok(config.links && config.feedback && config.reviewPrompt);
-  assert.equal(config.feedbackEnabled, false);
-  assert.equal(config.feedback.enabled, false);
-  assert.equal(config.feedbackEndpoint, config.feedback.endpoint);
+  assert.equal(config.feedbackEnabled, true);
+  assert.equal(config.feedback.enabled, true);
+  assert.equal(config.feedbackEndpoint, endpoint);
+  assert.equal(config.feedback.endpoint, endpoint);
   assert.equal(config.feedback.endpointVersion, "v1");
   assert.equal(config.feedback.showReportPreview, true);
   assert.equal(config.feedback.maxStackTraceLength, 6000);
