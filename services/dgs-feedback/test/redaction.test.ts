@@ -20,6 +20,7 @@ test("redaction removes denied diagnostic content recursively", () => {
   );
   assert.match(json, /\[REDACTED_/);
 });
+
 test("redaction covers common credential and absolute-path forms", () => {
   const result = redactValue({
     github: "ghp_abcdefghijklmnopqrstuvwxyz1234567890",

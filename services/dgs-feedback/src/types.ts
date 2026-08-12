@@ -28,6 +28,7 @@ export interface DgsFeedbackPayload {
   anonymousInstallId: string;
   anonymousSessionId: string;
 }
+
 export interface StoredReportEnvelope {
   storageSchemaVersion: 1;
   reportId: string;
