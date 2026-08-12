@@ -7,7 +7,8 @@ export interface DgsFeedbackEnv {
   GITHUB_OWNER: string;
   GITHUB_REPO: string;
   GITHUB_BRANCH: string;
-  REPORT_RATE_LIMITER: RateLimit;
+  INSTALL_RATE_LIMITER: RateLimit;
+  IP_RATE_LIMITER: RateLimit;
 }
 
 export type HandlerDependencies = StoreDependencies;
@@ -102,6 +103,47 @@ async function parseBody(request: Request): Promise<unknown> {
   }
 }
 
+function normalizeClientIp(request: Request): string {
+  const value = request.headers.get("cf-connecting-ip")?.trim().toLowerCase() ?? "";
+  if (
+    value.length === 0 ||
+    value.length > 128 ||
+    value.includes(",") ||
+    /[\u0000-\u0020\u007f]/.test(value)
+  ) {
+    throw new PublicError(503, "storage_unavailable");
+  }
+
+  return value;
+}
+
+async function hashClientIp(clientIp: string): Promise<string> {
+  try {
+    const digest = await crypto.subtle.digest(
+      "SHA-256",
+      new TextEncoder().encode(clientIp)
+    );
+    return `ip:${Array.from(new Uint8Array(digest), (byte) =>
+      byte.toString(16).padStart(2, "0")
+    ).join("")}`;
+  } catch {
+    throw new PublicError(503, "storage_unavailable");
+  }
+}
+
+async function requireRateLimit(limiter: RateLimit, key: string): Promise<void> {
+  let result: { success: boolean };
+  try {
+    result = await limiter.limit({ key });
+  } catch {
+    throw new PublicError(503, "storage_unavailable");
+  }
+
+  if (!result.success) {
+    throw new PublicError(429, "rate_limited");
+  }
+}
+
 async function handleReport(
   request: Request,
   env: DgsFeedbackEnv,
@@ -112,22 +154,13 @@ async function handleReport(
   }
 
   const payload = validateReport(await parseBody(request));
-  if (!env.REPORT_RATE_LIMITER?.limit) {
+  if (!env.INSTALL_RATE_LIMITER?.limit || !env.IP_RATE_LIMITER?.limit) {
     throw new PublicError(503, "storage_unavailable");
   }
 
-  let rateLimitResult: { success: boolean };
-  try {
-    rateLimitResult = await env.REPORT_RATE_LIMITER.limit({
-      key: payload.anonymousInstallId
-    });
-  } catch {
-    throw new PublicError(503, "storage_unavailable");
-  }
-
-  if (!rateLimitResult.success) {
-    throw new PublicError(429, "rate_limited");
-  }
+  const hashedIp = await hashClientIp(normalizeClientIp(request));
+  await requireRateLimit(env.INSTALL_RATE_LIMITER, payload.anonymousInstallId);
+  await requireRateLimit(env.IP_RATE_LIMITER, hashedIp);
 
   const result = await storeReport(
     payload,

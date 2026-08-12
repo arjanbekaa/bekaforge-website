@@ -15,10 +15,18 @@
   },
   "ratelimits": [
     {
-      "name": "REPORT_RATE_LIMITER",
+      "name": "INSTALL_RATE_LIMITER",
       "namespace_id": "38448201",
       "simple": {
         "limit": 5,
+        "period": 60
+      }
+    },
+    {
+      "name": "IP_RATE_LIMITER",
+      "namespace_id": "38448202",
+      "simple": {
+        "limit": 25,
         "period": 60
       }
     }

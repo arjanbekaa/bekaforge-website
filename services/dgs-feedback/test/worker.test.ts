@@ -11,16 +11,21 @@ interface Harness {
   handler: ReturnType<typeof createHandler>;
   env: DgsFeedbackEnv;
   githubCalls: Array<{ url: string; init?: RequestInit }>;
-  rateLimitKeys: string[];
+  installRateLimitKeys: string[];
+  ipRateLimitKeys: string[];
 }
 
 function createHarness(options?: {
   githubStatus?: number;
-  rateLimitSuccess?: boolean;
+  installRateLimitSuccess?: boolean;
+  ipRateLimitSuccess?: boolean;
+  omitInstallRateLimiter?: boolean;
+  omitIpRateLimiter?: boolean;
   token?: string;
 }): Harness {
   const githubCalls: Array<{ url: string; init?: RequestInit }> = [];
-  const rateLimitKeys: string[] = [];
+  const installRateLimitKeys: string[] = [];
+  const ipRateLimitKeys: string[] = [];
   const dependencies: HandlerDependencies = {
     fetch: (async (input: RequestInfo | URL, init?: RequestInit) => {
       githubCalls.push({ url: String(input), init });
@@ -36,10 +41,16 @@ function createHarness(options?: {
     GITHUB_OWNER: "arjanbekaa",
     GITHUB_REPO: "dgs-ai-reports",
     GITHUB_BRANCH: "main",
-    REPORT_RATE_LIMITER: {
+    INSTALL_RATE_LIMITER: options?.omitInstallRateLimiter ? undefined : {
       limit: async ({ key }: { key: string }) => {
-        rateLimitKeys.push(key);
-        return { success: options?.rateLimitSuccess ?? true };
+        installRateLimitKeys.push(key);
+        return { success: options?.installRateLimitSuccess ?? true };
+      }
+    },
+    IP_RATE_LIMITER: options?.omitIpRateLimiter ? undefined : {
+      limit: async ({ key }: { key: string }) => {
+        ipRateLimitKeys.push(key);
+        return { success: options?.ipRateLimitSuccess ?? true };
       }
     }
   } as unknown as DgsFeedbackEnv;
@@ -48,17 +59,27 @@ function createHarness(options?: {
     handler: createHandler(dependencies),
     env,
     githubCalls,
-    rateLimitKeys
+    installRateLimitKeys,
+    ipRateLimitKeys
   };
 }
 
 function reportRequest(
   body: string,
-  headers: Record<string, string> = { "content-type": "application/json" }
+  headers: Record<string, string> = {},
+  clientIp: string | null = "203.0.113.42"
 ): Request {
+  const requestHeaders: Record<string, string> = {
+    "content-type": "application/json",
+    ...headers
+  };
+  if (clientIp !== null) {
+    requestHeaders["cf-connecting-ip"] = clientIp;
+  }
+
   return new Request("https://worker.test/v1/reports", {
     method: "POST",
-    headers,
+    headers: requestHeaders,
     body
   });
 }
@@ -82,10 +103,11 @@ test("health exposes only service status and does not touch storage", async () =
     version: "v1"
   });
   assert.equal(harness.githubCalls.length, 0);
-  assert.equal(harness.rateLimitKeys.length, 0);
+  assert.equal(harness.installRateLimitKeys.length, 0);
+  assert.equal(harness.ipRateLimitKeys.length, 0);
 });
 
-test("valid report is rate-limited then stored exactly once", async () => {
+test("valid report passes independent install and hashed-IP limits before one store", async () => {
   const harness = createHarness();
   const reportWithDeniedDiagnosticFields = {
     ...validReport,
@@ -106,7 +128,10 @@ test("valid report is rate-limited then stored exactly once", async () => {
     ok: true,
     reportId: "dgs_0102030405060708"
   });
-  assert.deepEqual(harness.rateLimitKeys, [validReport.anonymousInstallId]);
+  assert.deepEqual(harness.installRateLimitKeys, [validReport.anonymousInstallId]);
+  assert.deepEqual(harness.ipRateLimitKeys, [
+    "ip:17af1cf3d1b5332c53349fc789abdc853bbeea7ed33eff727ff794ab741ccac9"
+  ]);
   assert.equal(harness.githubCalls.length, 1);
   const githubBody = JSON.parse(String(harness.githubCalls[0].init?.body)) as {
     content: string;
@@ -116,6 +141,7 @@ test("valid report is rate-limited then stored exactly once", async () => {
     storedJson,
     /originalUserPrompt|rawResponse|private prompt|private provider response/
   );
+  assert.doesNotMatch(storedJson, /203\.0\.113\.42|17af1cf3d1b5332c/);
   assert.notEqual(response.headers.get("access-control-allow-credentials"), "true");
 });
 
@@ -155,7 +181,8 @@ test("unsupported content type fails before reading or storage", async () => {
     error: "unsupported_media_type"
   });
   assert.equal(harness.githubCalls.length, 0);
-  assert.equal(harness.rateLimitKeys.length, 0);
+  assert.equal(harness.installRateLimitKeys.length, 0);
+  assert.equal(harness.ipRateLimitKeys.length, 0);
 });
 
 test("declared and actual oversized bodies return 413 before storage", async () => {
@@ -175,7 +202,8 @@ test("declared and actual oversized bodies return 413 before storage", async () 
   assert.equal(declared.status, 413);
   assert.equal(actual.status, 413);
   assert.equal(harness.githubCalls.length, 0);
-  assert.equal(harness.rateLimitKeys.length, 0);
+  assert.equal(harness.installRateLimitKeys.length, 0);
+  assert.equal(harness.ipRateLimitKeys.length, 0);
 });
 
 test("streaming body is cancelled as soon as it crosses the size limit", async () => {
@@ -209,7 +237,8 @@ test("streaming body is cancelled as soon as it crosses the size limit", async (
   assert.equal(response.status, 413);
   assert.equal(cancelled, true);
   assert.equal(harness.githubCalls.length, 0);
-  assert.equal(harness.rateLimitKeys.length, 0);
+  assert.equal(harness.installRateLimitKeys.length, 0);
+  assert.equal(harness.ipRateLimitKeys.length, 0);
 });
 
 test("malformed JSON and invalid DGS schema return stable 400 errors", async () => {
@@ -228,11 +257,12 @@ test("malformed JSON and invalid DGS schema return stable 400 errors", async () 
     error: "invalid_schema"
   });
   assert.equal(harness.githubCalls.length, 0);
-  assert.equal(harness.rateLimitKeys.length, 0);
+  assert.equal(harness.installRateLimitKeys.length, 0);
+  assert.equal(harness.ipRateLimitKeys.length, 0);
 });
 
-test("rate-limit denial returns 429 and never calls GitHub", async () => {
-  const harness = createHarness({ rateLimitSuccess: false });
+test("install rate-limit denial returns 429 before IP limiting or GitHub", async () => {
+  const harness = createHarness({ installRateLimitSuccess: false });
   const response = await harness.handler.fetch(
     reportRequest(JSON.stringify(validReport)),
     harness.env
@@ -244,6 +274,88 @@ test("rate-limit denial returns 429 and never calls GitHub", async () => {
     ok: false,
     error: "rate_limited"
   });
+  assert.deepEqual(harness.installRateLimitKeys, [validReport.anonymousInstallId]);
+  assert.equal(harness.ipRateLimitKeys.length, 0);
+  assert.equal(harness.githubCalls.length, 0);
+});
+
+test("IP rate-limit denial returns the same 429 and never calls GitHub", async () => {
+  const harness = createHarness({ ipRateLimitSuccess: false });
+  const response = await harness.handler.fetch(
+    reportRequest(JSON.stringify(validReport)),
+    harness.env
+  );
+
+  assert.equal(response.status, 429);
+  assert.equal(response.headers.get("retry-after"), "60");
+  assert.deepEqual(await responseJson(response), {
+    ok: false,
+    error: "rate_limited"
+  });
+  assert.equal(harness.installRateLimitKeys.length, 1);
+  assert.equal(harness.ipRateLimitKeys.length, 1);
+  assert.equal(harness.githubCalls.length, 0);
+});
+
+test("missing Cloudflare source IP fails closed before either limiter or GitHub", async () => {
+  const harness = createHarness();
+  const response = await harness.handler.fetch(
+    reportRequest(JSON.stringify(validReport), {}, null),
+    harness.env
+  );
+
+  assert.equal(response.status, 503);
+  assert.deepEqual(await responseJson(response), {
+    ok: false,
+    error: "storage_unavailable"
+  });
+  assert.equal(harness.installRateLimitKeys.length, 0);
+  assert.equal(harness.ipRateLimitKeys.length, 0);
+  assert.equal(harness.githubCalls.length, 0);
+});
+
+test("missing either limiter binding fails closed before any limiting or storage", async () => {
+  const missingInstall = createHarness({ omitInstallRateLimiter: true });
+  const missingIp = createHarness({ omitIpRateLimiter: true });
+
+  const missingInstallResponse = await missingInstall.handler.fetch(
+    reportRequest(JSON.stringify(validReport)),
+    missingInstall.env
+  );
+  const missingIpResponse = await missingIp.handler.fetch(
+    reportRequest(JSON.stringify(validReport)),
+    missingIp.env
+  );
+
+  assert.equal(missingInstallResponse.status, 503);
+  assert.equal(missingIpResponse.status, 503);
+  assert.equal(missingInstall.installRateLimitKeys.length, 0);
+  assert.equal(missingInstall.ipRateLimitKeys.length, 0);
+  assert.equal(missingIp.installRateLimitKeys.length, 0);
+  assert.equal(missingIp.ipRateLimitKeys.length, 0);
+  assert.equal(missingInstall.githubCalls.length, 0);
+  assert.equal(missingIp.githubCalls.length, 0);
+});
+
+test("invalid source IP forms fail closed without exposing their values", async () => {
+  const harness = createHarness();
+  const commaSeparated = await harness.handler.fetch(
+    reportRequest(JSON.stringify(validReport), {}, "203.0.113.42, 198.51.100.7"),
+    harness.env
+  );
+  const oversized = await harness.handler.fetch(
+    reportRequest(JSON.stringify(validReport), {}, "1".repeat(129)),
+    harness.env
+  );
+
+  assert.equal(commaSeparated.status, 503);
+  assert.equal(oversized.status, 503);
+  assert.deepEqual(await responseJson(commaSeparated), {
+    ok: false,
+    error: "storage_unavailable"
+  });
+  assert.equal(harness.installRateLimitKeys.length, 0);
+  assert.equal(harness.ipRateLimitKeys.length, 0);
   assert.equal(harness.githubCalls.length, 0);
 });
 
