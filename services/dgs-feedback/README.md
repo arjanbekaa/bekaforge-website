@@ -66,14 +66,18 @@ npx.cmd wrangler deploy
 
 Record the returned HTTPS `workers.dev` origin. The report endpoint is that origin plus `/v1/reports`.
 
+Current production origin (deployed 2026-08-12):
+
+```text
+https://dgs-feedback-ingest.bekaforge-dgs-feedback.workers.dev
+```
+
 Run health and invalid-request checks without creating a report:
 
 ```powershell
-$env:DGS_REPORT_ENDPOINT = "https://deployment-host.workers.dev/v1/reports"
+$env:DGS_REPORT_ENDPOINT = "https://dgs-feedback-ingest.bekaforge-dgs-feedback.workers.dev/v1/reports"
 node ..\..\scripts\verify-dgs-feedback-live.mjs
 ```
-
-The `deployment-host.workers.dev` text above is an example command shape; replace it locally with Wrangler's exact returned hostname before execution.
 
 Create one deliberately synthetic report only after the private repository and Worker secret are confirmed:
 
@@ -92,7 +96,7 @@ After the explicit synthetic run:
 1. Open the private repository while signed into the owner account.
 2. Locate the dated JSON path containing the returned report ID.
 3. Confirm `storageSchemaVersion` is `1`, `client.schemaVersion` is `2`, and the server timestamp is present.
-4. Confirm `originalUserPrompt`, `systemPrompt`, `userPrompt`, and `rawResponse` are empty wherever present.
+4. Confirm `originalUserPrompt`, `systemPrompt`, `userPrompt`, and `rawResponse` are absent recursively.
 5. Confirm the commit message is `report: store <report-id>`.
 6. Repeat the report-file API request without authentication and confirm it does not return file content.
 
