@@ -179,7 +179,7 @@ Every request passes all checks before any GitHub API call:
 7. Required scalar fields have the expected type.
 8. String and array counts are bounded to the client contract.
 9. Unsupported top-level fields are rejected.
-10. High-risk diagnostic keys are blanked before storage: `originalUserPrompt`, `systemPrompt`, `userPrompt`, and `rawResponse`.
+10. High-risk diagnostic keys are removed recursively before storage: `originalUserPrompt`, `systemPrompt`, `userPrompt`, and `rawResponse`.
 11. All stored strings receive a second server-side redaction pass for bearer tokens, common API-key formats, email addresses, Windows and Unix absolute paths, and obvious credential assignments.
 12. The sanitized result is serialized again and must still be no larger than 128 KiB.
 
@@ -189,14 +189,18 @@ The Worker never logs the request body, stored envelope, GitHub token, or GitHub
 
 ## Abuse Protection
 
-A Cloudflare Workers Rate Limiting binding applies after schema validation and before GitHub storage:
+A pair of Cloudflare Workers Rate Limiting bindings applies after schema validation and before GitHub storage:
 
 - 5 schema-valid submission attempts per 60 seconds per `anonymousInstallId`.
+- 25 schema-valid submission attempts per 60 seconds per source IP address, providing a broader ceiling when a caller rotates installation IDs.
 - The anonymous installation ID is already part of the reviewed DGS payload; the rate-limit counter is transient and is not stored separately by application code.
+- The source IP is read only from Cloudflare's edge-provided `CF-Connecting-IP` header, normalized, hashed with SHA-256, and passed only as a transient limiter key. Neither the raw IP nor its hash is written to a report, response, application log, or GitHub.
+- The installation and IP bindings use distinct positive-integer namespace IDs so their counters remain independent.
+- A missing limiter binding, missing trusted client-IP header, or limiter failure returns a generic `503 storage_unavailable`; the Worker does not fall back to unprotected storage.
 - Rate-limited requests return `429` with `Retry-After`.
 - The Worker never accepts browser credentials and returns no permissive credentialed CORS headers.
 
-The 128 KiB body cap, strict schema, route restriction, and rate limit bound both GitHub commit noise and Worker/GitHub API consumption.
+The layered limits are intentionally not IP-only: shared networks retain a practical burst allowance, while the lower per-install limit still catches a single noisy editor. The 128 KiB body cap, strict schema, route restriction, and rate limits bound both GitHub commit noise and Worker/GitHub API consumption.
 
 ## GitHub Authentication
 
@@ -308,7 +312,7 @@ reports/
 - Saved path follows the dated one-file-per-report convention.
 - Stored envelope uses a server timestamp and random report ID.
 - Invalid method, route, content type, JSON, source, schema, field type, and size fail before storage.
-- High-risk diagnostic keys are blanked.
+- High-risk diagnostic keys are absent.
 - Tokens, emails, and absolute paths are redacted recursively.
 - Request bodies and secrets are absent from logs and responses.
 - Rate-limited requests return `429` and never call GitHub.

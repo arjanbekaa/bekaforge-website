@@ -4,7 +4,7 @@
 
 **Goal:** Serve DGS remote configuration from the public website, accept sanitized schema-2 feedback through a Cloudflare Worker, and store each accepted report as one JSON file in `arjanbekaa/dgs-ai-reports`, a private GitHub repository.
 
-**Architecture:** GitHub Pages serves a fail-closed public configuration document at the URL already compiled into DGS. A small TypeScript Cloudflare Worker validates and redacts submitted reports, rate-limits by anonymous DGS installation ID, then writes a server-created envelope through GitHub's Contents API. The GitHub token exists only as a Worker secret; no public endpoint can read reports.
+**Architecture:** GitHub Pages serves a fail-closed public configuration document at the URL already compiled into DGS. A small TypeScript Cloudflare Worker validates and redacts submitted reports, rate-limits independently by anonymous DGS installation ID and a transient SHA-256 digest of Cloudflare's source-IP header, then writes a server-created envelope through GitHub's Contents API. The GitHub token exists only as a Worker secret; no public endpoint can read reports.
 
 **Tech Stack:** GitHub Pages, Cloudflare Workers, TypeScript 7.0.2, Wrangler 4.121.0, Node.js 24 built-in test runner, GitHub REST Contents API, existing Unity Editor feedback client.
 
@@ -18,7 +18,8 @@
 - The Worker accepts at most 128 KiB of UTF-8 JSON and supports only DGS payload `schemaVersion: 2` from `source: dgs-unity-editor`.
 - The Worker strips `originalUserPrompt`, `systemPrompt`, `userPrompt`, and `rawResponse` recursively before storage.
 - The Worker stores no source IP, request headers, user agent, or Cloudflare request identifier.
-- Rate limit schema-valid submission attempts to five per 60 seconds per `anonymousInstallId`.
+- Rate limit schema-valid submission attempts to five per 60 seconds per `anonymousInstallId` and 25 per 60 seconds per SHA-256-hashed `CF-Connecting-IP`.
+- Never store or log the raw source IP or its hash; use both only as transient Cloudflare limiter keys.
 - No public route may list, read, update, or delete report files.
 - DGS interactive sends still require **Send Report**; automatic AI Authoring reporting remains locally controlled and disabled by default.
 - AI Extension remains Coming Soon; backend readiness does not change its publication gate.
@@ -32,7 +33,7 @@ Public website repository:
 - `services/dgs-feedback/package.json`: isolated Worker toolchain and scripts.
 - `services/dgs-feedback/package-lock.json`: exact dependency lock.
 - `services/dgs-feedback/tsconfig.json`: strict Worker and Node-test type checking.
-- `services/dgs-feedback/wrangler.jsonc`: Worker name, non-secret GitHub target, observability setting, and rate-limit binding.
+- `services/dgs-feedback/wrangler.jsonc`: Worker name, non-secret GitHub target, observability setting, and separate installation/IP rate-limit bindings.
 - `services/dgs-feedback/src/types.ts`: public payload, stored envelope, environment, dependency, and error types.
 - `services/dgs-feedback/src/redaction.ts`: recursive denied-key removal and secret/path/email redaction.
 - `services/dgs-feedback/src/contract.ts`: strict top-level schema validation, bounds, and sanitized payload construction.
@@ -465,7 +466,7 @@ git commit -m "feat: store private DGS reports in GitHub"
 
 - [ ] **Step 1: Write failing HTTP-boundary tests**
 
-Use `createHandler` with fake storage/fetch and a fake rate limiter. Cover:
+Use `createHandler` with fake storage/fetch and fake installation/IP rate limiters. Cover:
 
 ```ts
 test("valid report is rate-limited then stored exactly once", async () => {
@@ -477,12 +478,13 @@ test("valid report is rate-limited then stored exactly once", async () => {
 
   assert.equal(response.status, 201);
   assert.deepEqual(await response.json(), { ok: true, reportId: "dgs_0102030405060708" });
-  assert.deepEqual(rateLimitKeys, [validReport.anonymousInstallId]);
+  assert.deepEqual(installRateLimitKeys, [validReport.anonymousInstallId]);
+  assert.match(ipRateLimitKeys[0], /^ip:[a-f0-9]{64}$/);
   assert.equal(githubCalls.length, 1);
 });
 ```
 
-Add cases for `/health`, unknown route, GET/PUT on report route, wrong content type, declared and actual oversized bodies, invalid JSON, invalid contract, missing secret/config, rate-limit denial, and GitHub error mapping. Assert every failure before storage produces zero GitHub calls. Assert no response has `Access-Control-Allow-Credentials: true`.
+Add cases for `/health`, unknown route, GET/PUT on report route, wrong content type, declared and actual oversized bodies, invalid JSON, invalid contract, missing secret/config, either rate-limit denial, missing `CF-Connecting-IP`, and GitHub error mapping. Assert every failure before storage produces zero GitHub calls. Assert the IP limiter receives only a deterministic `ip:`-prefixed SHA-256 digest, never the raw address. Assert no response has `Access-Control-Allow-Credentials: true`.
 
 - [ ] **Step 2: Run the Worker test and verify failure**
 
@@ -502,7 +504,8 @@ interface Env {
   GITHUB_OWNER: string;
   GITHUB_REPO: string;
   GITHUB_BRANCH: string;
-  REPORT_RATE_LIMITER: RateLimit;
+  INSTALL_RATE_LIMITER: RateLimit;
+  IP_RATE_LIMITER: RateLimit;
 }
 ```
 
@@ -513,12 +516,14 @@ Handler order:
 3. Non-POST report methods return `405 method_not_allowed` with `Allow: POST`.
 4. Reject non-JSON content type with `415 unsupported_media_type`.
 5. Reject declared length above 131072 before reading.
-6. Read `arrayBuffer`, reject actual length above 131072, decode UTF-8, parse JSON.
+6. Read the body stream incrementally, cancel immediately when actual length exceeds 131072 bytes, decode strict UTF-8, and parse JSON.
 7. Call `validateReport`.
-8. Call `REPORT_RATE_LIMITER.limit({ key: payload.anonymousInstallId })`; on denial return `429 rate_limited` and `Retry-After: 60`.
-9. Call `storeReport` with environment target and secret.
-10. Return `201` with only `ok` and `reportId`.
-11. Map `PublicError` to its stable status/code; map all other errors to `500 internal_error` without logging submitted data.
+8. Require the Cloudflare-provided `CF-Connecting-IP`, normalize it, SHA-256 hash it with Web Crypto, and prefix the lowercase hex digest with `ip:`.
+9. Call `INSTALL_RATE_LIMITER.limit({ key: payload.anonymousInstallId })` and `IP_RATE_LIMITER.limit({ key: hashedIp })`; on either denial return `429 rate_limited` and `Retry-After: 60`.
+10. If either binding, the trusted IP header, hashing, or limiter call is unavailable, return `503 storage_unavailable` without storing the report.
+11. Call `storeReport` with environment target and secret.
+12. Return `201` with only `ok` and `reportId`.
+13. Map `PublicError` to its stable status/code; map all other errors to `500 internal_error` without logging submitted data.
 
 The default dependency clock uses `new Date()`, randomness uses `crypto.getRandomValues`, fetch uses global `fetch`, and sleep uses `scheduler.wait` or a Promise timer compatible with Workers.
 
@@ -541,9 +546,14 @@ Create `wrangler.jsonc`:
   },
   "ratelimits": [
     {
-      "name": "REPORT_RATE_LIMITER",
+      "name": "INSTALL_RATE_LIMITER",
       "namespace_id": "38448201",
       "simple": { "limit": 5, "period": 60 }
+    },
+    {
+      "name": "IP_RATE_LIMITER",
+      "namespace_id": "38448202",
+      "simple": { "limit": 25, "period": 60 }
     }
   ]
 }
@@ -702,7 +712,7 @@ Expected: browser login succeeds; secret input is interactive and Wrangler confi
 npx.cmd wrangler deploy
 ```
 
-Expected: deployment succeeds for `dgs-feedback-ingest`, returns an HTTPS `workers.dev` URL, and lists the rate-limit binding plus non-secret GitHub target variables.
+Expected: deployment succeeds for `dgs-feedback-ingest`, returns an HTTPS `workers.dev` URL, and lists both rate-limit bindings plus non-secret GitHub target variables.
 
 - [ ] **Step 5: Run live health, rejection, and one explicit synthetic write**
 

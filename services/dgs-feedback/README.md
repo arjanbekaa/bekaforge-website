@@ -4,6 +4,8 @@ This Cloudflare Worker accepts sanitized Dialogue Graph System feedback and writ
 
 The public Worker has no report-read route. `GET /health` exposes only service status, and `POST /v1/reports` is the only storage route.
 
+Accepted schema-valid requests must pass two transient Cloudflare limits before GitHub storage: five attempts per 60 seconds per anonymous DGS installation and 25 attempts per 60 seconds per SHA-256-hashed `CF-Connecting-IP`. The raw IP and digest are never written to reports, responses, application logs, or GitHub.
+
 ## Local verification
 
 From this directory:
@@ -14,7 +16,7 @@ npm.cmd run check
 npx.cmd wrangler deploy --dry-run
 ```
 
-Expected evidence is nonzero tests with zero failures, successful strict type checking, and a Wrangler bundle listing the rate-limit binding plus the non-secret repository target variables.
+Expected evidence is nonzero tests with zero failures, successful strict type checking, and a Wrangler bundle listing both rate-limit bindings plus the non-secret repository target variables.
 
 ## Private repository
 
