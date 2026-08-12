@@ -35,7 +35,7 @@
       dgsIcon: "Dialogue Graph System/brand/icone 1254x1254.png",
       aiExtensionScreenshot: "Dialogue Graph AI Extension/brand/ai-extension-card-420x280.png",
       aiExtensionIcon: "Dialogue Graph AI Extension/brand/ai-extension-icon-160x160.png",
-      aiProvidersScreenshot: "AI Providers/brand/ai-providers-card-1536x1024.png",
+      aiProvidersScreenshot: "AI Providers/brand/ai-providers-card-420x280.png",
       aiProvidersIcon: "AI Providers/brand/ai-providers-icon-1254x1254.png"
     },
     products: {
@@ -62,7 +62,7 @@
         version: "1.0.0",
         description: "Configure reusable cloud and local AI provider connections for Beka Forge tools.",
         docsPath: "AI Providers/index.html",
-        screenshotPath: "AI Providers/brand/ai-providers-card-1536x1024.png",
+        screenshotPath: "AI Providers/brand/ai-providers-card-420x280.png",
         iconPath: "AI Providers/brand/ai-providers-icon-1254x1254.png",
         assetStoreUrl: "https://assetstore.unity.com/packages/package/384482",
         youtubeUrl: ""

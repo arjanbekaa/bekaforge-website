@@ -23,19 +23,20 @@
     .nav-inner{min-height:68px;display:flex;align-items:center;justify-content:space-between;gap:24px}
     .brand{font:700 19px/1 "Space Grotesk",sans-serif}.brand span{color:var(--orange)}
     .nav-links{display:flex;gap:20px;color:var(--muted);font-size:14px;font-weight:600}.nav-links a:hover{color:var(--text)}
-    .hero{display:grid;grid-template-columns:.86fr 1.14fr;gap:54px;align-items:center;padding:92px 0 72px}
+    .hero{display:grid;grid-template-columns:.86fr 1.14fr;gap:54px;align-items:center;padding:92px 0 72px}.hero>*{min-width:0}
     .badge{display:inline-flex;border:1px solid rgba(168,85,247,.55);background:rgba(168,85,247,.10);color:#D8B4FE;border-radius:999px;padding:7px 12px;font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
     h1,h2,h3{font-family:"Space Grotesk",sans-serif;line-height:1.06;letter-spacing:-.025em}
     h1{font-size:clamp(44px,7vw,76px);margin:22px 0 20px}h1 span{background:linear-gradient(90deg,var(--violet),var(--blue));-webkit-background-clip:text;background-clip:text;color:transparent}
     .lead{color:var(--muted);font-size:18px;max-width:610px;margin:0 0 30px}
     .actions{display:flex;flex-wrap:wrap;gap:12px}.button{display:inline-flex;align-items:center;justify-content:center;padding:12px 17px;border:1px solid var(--line);border-radius:9px;font-weight:800}.button.primary{background:var(--orange);border-color:var(--orange);color:white}.button:hover{border-color:var(--muted)}.button.primary:hover{background:var(--orange-light)}
-    .preview{margin:0;border:1px solid rgba(168,85,247,.42);border-radius:24px;overflow:hidden;background:var(--panel);box-shadow:0 34px 100px rgba(0,0,0,.45)}.preview img{width:100%;aspect-ratio:3/2;object-fit:cover}
+    .preview{min-width:0;margin:0;border:1px solid rgba(168,85,247,.42);border-radius:24px;overflow:hidden;background:var(--panel);box-shadow:0 34px 100px rgba(0,0,0,.45)}.preview img{display:block;width:100%;height:auto;object-fit:contain}
     .section{padding:42px 0 86px}.section-header{max-width:720px;margin-bottom:28px}.section-header h2{font-size:clamp(32px,5vw,50px);margin:0 0 12px}.section-header p{color:var(--muted);margin:0}
     .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.card{border:1px solid var(--line);background:rgba(28,35,51,.82);border-radius:18px;padding:22px}.card h3{margin:0 0 10px;font-size:22px}.card p{margin:0;color:var(--muted);font-size:14px}
+    .showcase-section{padding-top:0}.showcase-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}.showcase-card{margin:0;overflow:hidden;border:1px solid var(--line);border-radius:18px;background:rgba(28,35,51,.82)}.showcase-card img{width:100%;height:auto;aspect-ratio:3/2;object-fit:contain;background:#090c13}.showcase-card figcaption{padding:17px 18px 19px;color:var(--muted);font-size:14px}.showcase-card strong{display:block;margin-bottom:4px;color:var(--text);font-family:"Space Grotesk",sans-serif;font-size:18px}
     .boundary{margin-top:22px;border-left:3px solid var(--orange);background:rgba(232,84,26,.08);padding:18px 20px;border-radius:0 14px 14px 0;color:var(--muted)}
     footer{border-top:3px solid var(--orange);background:var(--panel)}.footer-inner{padding:30px 0;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;color:var(--muted);font-size:13px}
     :focus-visible{outline:3px solid var(--orange-light);outline-offset:3px}
-    @media(max-width:860px){.hero{grid-template-columns:1fr;padding-top:62px}.grid{grid-template-columns:1fr}.nav-links a:first-child{display:none}}
+    @media(max-width:860px){.hero{grid-template-columns:1fr;padding-top:62px}.grid,.showcase-grid{grid-template-columns:1fr}.nav-links a:first-child{display:none}}
     @media(max-width:540px){.nav-inner,.shell,.footer-inner{width:min(100% - 28px,1160px)}.nav-links{gap:12px;font-size:13px}.hero{gap:30px}h1{font-size:42px}}
     @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
   </style>
@@ -80,6 +81,28 @@
         <article class="card"><h3>Use your provider</h3><p>The extension is designed to use the separate AI Providers package for cloud or local connectivity.</p></article>
       </div>
       <div class="boundary"><strong>DGS works without AI.</strong> Dialogue Graph System 3.0 is available now as the complete core editor and runtime. AI Providers is also available independently and free.</div>
+    </section>
+
+    <section class="section showcase-section" aria-labelledby="planned-previews-title">
+      <div class="section-header">
+        <span class="badge">Preview</span>
+        <h2 id="planned-previews-title">Planned workflow previews</h2>
+        <p>These images show the current direction for the extension. Interface details and final capabilities may change before release.</p>
+      </div>
+      <div class="showcase-grid">
+        <figure class="showcase-card">
+          <img src="assets/images/showcase-ai-assistant.png" alt="Planned AI Assistant command workflow inside Dialogue Graph System" width="1536" height="1024" loading="lazy">
+          <figcaption><strong>Assistant commands</strong>Planned context-aware drafting and editing from a focused assistant panel.</figcaption>
+        </figure>
+        <figure class="showcase-card">
+          <img src="assets/images/showcase-ai-localization.png" alt="Planned AI localization workflow inside Dialogue Graph System" width="1536" height="1024" loading="lazy">
+          <figcaption><strong>Localization assistance</strong>Planned translation generation for missing entries or a complete language refresh.</figcaption>
+        </figure>
+        <figure class="showcase-card">
+          <img src="assets/images/showcase-ai-translation-preview.png" alt="Planned review-before-apply translation preview" width="1536" height="1024" loading="lazy">
+          <figcaption><strong>Review before apply</strong>Planned side-by-side previews keep proposed translations visible before acceptance.</figcaption>
+        </figure>
+      </div>
     </section>
   </main>
 
