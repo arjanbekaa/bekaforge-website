@@ -189,10 +189,10 @@ The Worker never logs the request body, stored envelope, GitHub token, or GitHub
 
 ## Abuse Protection
 
-A Cloudflare Workers Rate Limiting binding applies before GitHub storage:
+A Cloudflare Workers Rate Limiting binding applies after schema validation and before GitHub storage:
 
-- 5 accepted or attempted submissions per 10 minutes per source IP.
-- The source IP is used only as the transient rate-limit key and is not persisted by application code.
+- 5 accepted submissions per 60 seconds per `anonymousInstallId`.
+- The anonymous installation ID is already part of the reviewed DGS payload; the rate-limit counter is transient and is not stored separately by application code.
 - Rate-limited requests return `429` with `Retry-After`.
 - The Worker never accepts browser credentials and returns no permissive credentialed CORS headers.
 
