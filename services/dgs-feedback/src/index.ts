@@ -58,9 +58,34 @@ async function parseBody(request: Request): Promise<unknown> {
     throw new PublicError(413, "payload_too_large");
   }
 
-  const bytes = await request.arrayBuffer();
-  if (bytes.byteLength > MAX_BODY_BYTES) {
-    throw new PublicError(413, "payload_too_large");
+  const reader = request.body?.getReader();
+  const chunks: Uint8Array[] = [];
+  let byteLength = 0;
+  if (reader) {
+    try {
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) {
+          break;
+        }
+
+        byteLength += value.byteLength;
+        if (byteLength > MAX_BODY_BYTES) {
+          await reader.cancel();
+          throw new PublicError(413, "payload_too_large");
+        }
+        chunks.push(value);
+      }
+    } finally {
+      reader.releaseLock();
+    }
+  }
+
+  const bytes = new Uint8Array(byteLength);
+  let offset = 0;
+  for (const chunk of chunks) {
+    bytes.set(chunk, offset);
+    offset += chunk.byteLength;
   }
 
   let text: string;

@@ -18,6 +18,10 @@ test("redaction removes denied diagnostic content recursively", () => {
     json,
     /private dialogue|secret system|private request|provider response|Bearer abc|developer@example.com|C:\\\\Users/
   );
+  assert.doesNotMatch(
+    json,
+    /originalUserPrompt|systemPrompt|userPrompt|rawResponse/
+  );
   assert.match(json, /\[REDACTED_/);
 });
 

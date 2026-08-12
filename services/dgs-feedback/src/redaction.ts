@@ -29,11 +29,7 @@ function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
 }
 
-export function redactValue(value: unknown, key = ""): unknown {
-  if (DENIED_KEYS.has(key.toLowerCase())) {
-    return "";
-  }
-
+export function redactValue(value: unknown): unknown {
   if (typeof value === "string") {
     return redactString(value);
   }
@@ -44,10 +40,9 @@ export function redactValue(value: unknown, key = ""): unknown {
 
   if (isRecord(value)) {
     return Object.fromEntries(
-      Object.entries(value).map(([childKey, childValue]) => [
-        childKey,
-        redactValue(childValue, childKey)
-      ])
+      Object.entries(value)
+        .filter(([childKey]) => !DENIED_KEYS.has(childKey.toLowerCase()))
+        .map(([childKey, childValue]) => [childKey, redactValue(childValue)])
     );
   }
 

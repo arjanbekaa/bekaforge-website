@@ -38,6 +38,12 @@ const ALLOWED_FIELDS = new Set([
   "omittedSections"
 ]);
 
+const MAX_DIAGNOSTIC_DEPTH = 16;
+const MAX_DIAGNOSTIC_NODES = 4_096;
+const MAX_DIAGNOSTIC_COLLECTION_SIZE = 512;
+const MAX_DIAGNOSTIC_KEY_LENGTH = 128;
+const MAX_DIAGNOSTIC_STRING_LENGTH = 20_000;
+
 function isRecord(value: unknown): value is Record<string, unknown> {
   if (typeof value !== "object" || value === null || Array.isArray(value)) {
     return false;
@@ -71,6 +77,61 @@ function readOmittedSections(value: unknown): string[] {
   return [...value];
 }
 
+function validateDiagnosticValue(
+  value: unknown,
+  depth: number,
+  budget: { nodes: number }
+): void {
+  budget.nodes += 1;
+  if (depth > MAX_DIAGNOSTIC_DEPTH || budget.nodes > MAX_DIAGNOSTIC_NODES) {
+    throw new PublicError(400, "invalid_field");
+  }
+
+  if (value === null || typeof value === "boolean") {
+    return;
+  }
+
+  if (typeof value === "number") {
+    if (!Number.isFinite(value)) {
+      throw new PublicError(400, "invalid_field");
+    }
+    return;
+  }
+
+  if (typeof value === "string") {
+    if (value.length > MAX_DIAGNOSTIC_STRING_LENGTH) {
+      throw new PublicError(400, "invalid_field");
+    }
+    return;
+  }
+
+  if (Array.isArray(value)) {
+    if (value.length > MAX_DIAGNOSTIC_COLLECTION_SIZE) {
+      throw new PublicError(400, "invalid_field");
+    }
+    for (const entry of value) {
+      validateDiagnosticValue(entry, depth + 1, budget);
+    }
+    return;
+  }
+
+  if (!isRecord(value)) {
+    throw new PublicError(400, "invalid_field");
+  }
+
+  const entries = Object.entries(value);
+  if (
+    entries.length > MAX_DIAGNOSTIC_COLLECTION_SIZE ||
+    entries.some(([key]) => key.length > MAX_DIAGNOSTIC_KEY_LENGTH)
+  ) {
+    throw new PublicError(400, "invalid_field");
+  }
+
+  for (const [, childValue] of entries) {
+    validateDiagnosticValue(childValue, depth + 1, budget);
+  }
+}
+
 export function validateReport(value: unknown): DgsFeedbackPayload {
   if (!isRecord(value)) {
     throw new PublicError(400, "invalid_schema");
@@ -95,6 +156,7 @@ export function validateReport(value: unknown): DgsFeedbackPayload {
   if (value.diagnostic !== null && !isRecord(value.diagnostic)) {
     throw new PublicError(400, "invalid_field");
   }
+  validateDiagnosticValue(value.diagnostic, 0, { nodes: 0 });
 
   const stringValues = Object.fromEntries(
     (Object.keys(STRING_LIMITS) as Array<keyof typeof STRING_LIMITS>).map(

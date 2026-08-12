@@ -77,6 +77,18 @@ test("contract redacts nested diagnostic values before returning", () => {
   assert.match(json, /\[REDACTED_/);
 });
 
+test("contract rejects diagnostics that exceed the supported nesting depth", () => {
+  let diagnostic: Record<string, unknown> = { value: "leaf" };
+  for (let index = 0; index < 20; index += 1) {
+    diagnostic = { nested: diagnostic };
+  }
+
+  assert.throws(
+    () => validateReport({ ...validReport, diagnostic }),
+    /invalid_field/
+  );
+});
+
 test("body-size constant remains exactly 128 KiB", () => {
   assert.equal(MAX_BODY_BYTES, 128 * 1024);
 });

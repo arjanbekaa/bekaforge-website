@@ -87,9 +87,17 @@ test("health exposes only service status and does not touch storage", async () =
 
 test("valid report is rate-limited then stored exactly once", async () => {
   const harness = createHarness();
+  const reportWithDeniedDiagnosticFields = {
+    ...validReport,
+    diagnostic: {
+      ...validReport.diagnostic,
+      originalUserPrompt: "private prompt",
+      rawResponse: "private provider response"
+    }
+  };
 
   const response = await harness.handler.fetch(
-    reportRequest(JSON.stringify(validReport)),
+    reportRequest(JSON.stringify(reportWithDeniedDiagnosticFields)),
     harness.env
   );
 
@@ -100,6 +108,14 @@ test("valid report is rate-limited then stored exactly once", async () => {
   });
   assert.deepEqual(harness.rateLimitKeys, [validReport.anonymousInstallId]);
   assert.equal(harness.githubCalls.length, 1);
+  const githubBody = JSON.parse(String(harness.githubCalls[0].init?.body)) as {
+    content: string;
+  };
+  const storedJson = Buffer.from(githubBody.content, "base64").toString("utf8");
+  assert.doesNotMatch(
+    storedJson,
+    /originalUserPrompt|rawResponse|private prompt|private provider response/
+  );
   assert.notEqual(response.headers.get("access-control-allow-credentials"), "true");
 });
 
@@ -158,6 +174,40 @@ test("declared and actual oversized bodies return 413 before storage", async () 
 
   assert.equal(declared.status, 413);
   assert.equal(actual.status, 413);
+  assert.equal(harness.githubCalls.length, 0);
+  assert.equal(harness.rateLimitKeys.length, 0);
+});
+
+test("streaming body is cancelled as soon as it crosses the size limit", async () => {
+  const harness = createHarness();
+  let cancelled = false;
+  let pullCount = 0;
+  const body = new ReadableStream<Uint8Array>({
+    pull(controller) {
+      pullCount += 1;
+      if (pullCount === 1) {
+        controller.enqueue(new Uint8Array(100 * 1024));
+      } else if (pullCount === 2) {
+        controller.enqueue(new Uint8Array(40 * 1024));
+      } else {
+        controller.close();
+      }
+    },
+    cancel() {
+      cancelled = true;
+    }
+  });
+  const request = new Request("https://worker.test/v1/reports", {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body,
+    duplex: "half"
+  } as RequestInit & { duplex: "half" });
+
+  const response = await harness.handler.fetch(request, harness.env);
+
+  assert.equal(response.status, 413);
+  assert.equal(cancelled, true);
   assert.equal(harness.githubCalls.length, 0);
   assert.equal(harness.rateLimitKeys.length, 0);
 });
