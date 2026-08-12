@@ -221,7 +221,8 @@ const defaultDependencies: HandlerDependencies = {
   now: () => new Date(),
   randomBytes: (length) => crypto.getRandomValues(new Uint8Array(length)),
   sleep: (milliseconds) =>
-    new Promise((resolve) => setTimeout(resolve, milliseconds))
+    new Promise((resolve) => setTimeout(resolve, milliseconds)),
+  logStorageFailure: (event) => console.error(JSON.stringify(event))
 };
 
 export default createHandler(defaultDependencies) satisfies ExportedHandler<DgsFeedbackEnv>;

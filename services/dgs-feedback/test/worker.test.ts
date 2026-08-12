@@ -33,7 +33,8 @@ function createHarness(options?: {
     }) as typeof fetch,
     now: () => new Date("2026-08-12T14:30:52.000Z"),
     randomBytes: () => Uint8Array.from([1, 2, 3, 4, 5, 6, 7, 8]),
-    sleep: async () => {}
+    sleep: async () => {},
+    logStorageFailure: () => {}
   };
 
   const env = {

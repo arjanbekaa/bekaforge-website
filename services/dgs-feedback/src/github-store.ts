@@ -16,6 +16,14 @@ export interface StoreDependencies {
   now: () => Date;
   randomBytes: (length: number) => Uint8Array;
   sleep: (milliseconds: number) => Promise<void>;
+  logStorageFailure: (event: StorageFailureEvent) => void;
+}
+
+export interface StorageFailureEvent {
+  event: "dgs_github_storage_failed";
+  reportId: string;
+  reason: "network_error" | "upstream_status";
+  status?: number;
 }
 
 export interface StoredReportResult {
@@ -97,6 +105,17 @@ function isTransient(status: number): boolean {
   return status === 409 || status === 429 || status >= 500;
 }
 
+function logStorageFailure(
+  dependencies: StoreDependencies,
+  event: StorageFailureEvent
+): void {
+  try {
+    dependencies.logStorageFailure(event);
+  } catch {
+    // Telemetry must never alter the public failure contract.
+  }
+}
+
 async function putReport(
   pending: PendingReport,
   config: GitHubStoreConfig,
@@ -139,6 +158,11 @@ export async function storeReport(
         continue;
       }
 
+      logStorageFailure(dependencies, {
+        event: "dgs_github_storage_failed",
+        reportId: pending.reportId,
+        reason: "network_error"
+      });
       throw new PublicError(502, "storage_unavailable");
     }
 
@@ -157,6 +181,12 @@ export async function storeReport(
       continue;
     }
 
+    logStorageFailure(dependencies, {
+      event: "dgs_github_storage_failed",
+      reportId: pending.reportId,
+      reason: "upstream_status",
+      status: response.status
+    });
     throw new PublicError(502, "storage_unavailable");
   }
 

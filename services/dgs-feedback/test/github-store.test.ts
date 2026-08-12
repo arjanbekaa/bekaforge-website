@@ -1,6 +1,10 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { storeReport, type StoreDependencies } from "../src/github-store.ts";
+import {
+  storeReport,
+  type StorageFailureEvent,
+  type StoreDependencies
+} from "../src/github-store.ts";
 import { PublicError, type StoredReportEnvelope } from "../src/types.ts";
 import { validReport } from "./fixtures/valid-report.ts";
 
@@ -36,8 +40,12 @@ function dependencies(
   captured: CapturedRequest[],
   statuses = [201],
   randomBytes?: (length: number) => Uint8Array
-): StoreDependencies & { delays: number[] } {
+): StoreDependencies & {
+  delays: number[];
+  failureEvents: StorageFailureEvent[];
+} {
   const delays: number[] = [];
+  const failureEvents: StorageFailureEvent[] = [];
   return {
     fetch: sequenceFetch(statuses, captured),
     now: () => new Date("2026-08-12T14:30:52.000Z"),
@@ -47,7 +55,11 @@ function dependencies(
     sleep: async (milliseconds) => {
       delays.push(milliseconds);
     },
-    delays
+    logStorageFailure: (event) => {
+      failureEvents.push(event);
+    },
+    delays,
+    failureEvents
   };
 }
 
@@ -149,13 +161,23 @@ test("storage rejects missing configuration before any fetch", async () => {
 
 test("storage errors never expose token or GitHub response details", async () => {
   const captured: CapturedRequest[] = [];
+  const deps = dependencies(captured, [403]);
 
   const error = await storeReport(
     validReport,
     config,
-    dependencies(captured, [403])
+    deps
   ).catch((caught: unknown) => caught);
   const serialized = JSON.stringify(error, Object.getOwnPropertyNames(error));
 
   assert.doesNotMatch(serialized, /test-token-private|upstream private detail/);
+  assert.deepEqual(deps.failureEvents, [
+    {
+      event: "dgs_github_storage_failed",
+      reportId: "dgs_0102030405060708",
+      reason: "upstream_status",
+      status: 403
+    }
+  ]);
+  assert.doesNotMatch(JSON.stringify(deps.failureEvents), /token|private detail|reports\//i);
 });
