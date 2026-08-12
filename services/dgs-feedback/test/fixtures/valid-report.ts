@@ -36,4 +36,3 @@ export const validReport: DgsFeedbackPayload = {
   anonymousInstallId: "synthetic-install-0001",
   anonymousSessionId: "synthetic-session-0001"
 };
-
