@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI Providers documentation moved | Beka Forge</title>
+  <link rel="canonical" href="https://bekaforge.com/AI%20Providers/index.html">
+  <script src="../../assets/data/textresources.js"></script>
+</head>
+<body>
+  <p>Continue to <a href="../../AI%20Providers/index.html" id="destination">AI Providers documentation</a>.</p>
+  <script>
+    window.BekaForgeConfigReady.then(() => {
+      const target = new URL(window.BekaForgeResources.products.aiProviders.docsPath, new URL('../../', location.href));
+      if (target.protocol !== 'https:' && target.origin !== location.origin) return;
+      document.getElementById('destination').href = target.href;
+      if (target.href !== location.href) location.replace(target.href);
+    });
+  </script>
+</body>
+</html>

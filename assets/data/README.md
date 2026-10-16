@@ -27,3 +27,7 @@ Pages can bind values with:
 - `data-current-year`
 
 If a static page cannot use the binding without becoming harder to maintain, keep the literal HTML aligned with this file and mention the page in the edit summary.
+
+## AI Providers editor links
+
+AI Providers 2.2.0 reads `products.aiProviders.docsPath` and `products.aiProviders.websiteUrl` from this JSON on an explicit Documentation or Website click. The request uses the raw GitHub `main/assets/data/site-config.json` URL, accepts HTTPS destinations, and caches valid links locally for offline use. `docsPath` can be a site-relative path or an absolute HTTPS URL. `supportUrl` and `changelogUrl` identify the product help pages for website links. Keep these public fields free of credentials.

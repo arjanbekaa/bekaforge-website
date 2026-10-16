@@ -11,6 +11,7 @@
   <link rel="icon" type="image/png" sizes="16x16" href="../favicon/favicon-16x16.png">
   <link rel="apple-touch-icon" sizes="180x180" href="../favicon/apple-touch-icon.png">
   <meta name="theme-color" content="#E8541A">
+  <script src="../../assets/data/textresources.js"></script>
 </head>
 <body data-page="request-pipeline" data-base="../">
   <a class="skip-link" href="#main-content">Skip to content</a>
@@ -21,7 +22,7 @@
         <div class="topbar-spacer"></div>
         <div class="top-actions">
           <div class="search-wrap"><input class="search-input" type="search" placeholder="Use the sidebar to filter pages" aria-label="Search hint" readonly></div>
-          <a class="back-to-site" href="../../index.html">&#8592; Beka Forge</a>
+          <a class="back-to-site" href="../../index.html" data-resource-href="products.aiProviders.websiteUrl">&#8592; Beka Forge</a>
           <button class="menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-controls="sidebar">Menu</button>
         </div>
       </div>
@@ -30,47 +31,10 @@
       <aside class="sidebar" id="sidebar"><div class="sidebar-inner" data-sidebar-nav></div></aside>
       <main class="content-shell" id="main-content">
         <article class="doc-article" data-doc-content>
-          <nav class="breadcrumb"><a href="../index.html">Home</a> / <span>Request Pipeline</span></nav>
-          <h1>Request Pipeline</h1>
-          <p class="lede">AI Providers exposes both a blocking request path and a coroutine-based runtime path. Both use the same provider asset abstraction and the same service-level timeout and retry options.</p>
-
-          <h2>Blocking editor path</h2>
-<pre><code class="language-csharp">public static bool TrySendPrompt(
-    LlmProviderDefinitionBase provider,
-    LlmChatRequest chat,
-    out string responseText,
-    out string error,
-    RequestOptions options)</code></pre>
-
-          <p>This path is synchronous and editor-oriented. The service builds the request, sends it through <code>UnityWebRequest</code>, reads the raw response, and then asks the provider to extract provider-specific text.</p>
-
-          <h2>Coroutine runtime path</h2>
-<pre><code class="language-csharp">StartCoroutine(AiProvidersService.SendPromptCoroutine(
-    provider,
-    chat,
-    result =>
-    {
-        if (result.Success) Debug.Log(result.ResponseText);
-        else Debug.LogError(result.Error);
-    },
-    new AiProvidersService.RequestOptions
-    {
-        timeoutSeconds = 30,
-        retryCount = 1,
-        retryDelaySeconds = 0.5f
-    }));</code></pre>
-
-          <h2>Request options</h2>
-          <p><code>RequestOptions</code> currently exposes timeout seconds, retry count, and retry delay seconds. The defaults are conservative: 120 seconds, zero retries, zero delay.</p>
-
-          <h2>Response normalization</h2>
-          <p>The service owns common response normalization fallbacks for generic <code>"content"</code> or <code>"text"</code> shapes after provider-specific extraction runs. That makes the transport layer slightly more forgiving while keeping provider ownership of real parsing logic.</p>
-
-          <h2>Reality check</h2>
-          <p>The blocking path still busy-waits and is best treated as editor-oriented tooling rather than ideal runtime behavior.</p>
-
-          <nav class="page-nav" data-prev-next></nav>
-        </article>
+<nav class="breadcrumb"><a href="../index.html">Home</a> / <span>Request Pipeline</span></nav><h1>Request Pipeline</h1>
+<p class="lede">Use asynchronous or coroutine requests for responsive editor and runtime workflows.</p><h2>Build, then send</h2><p>Build the execution snapshot on the main thread using <code>TryBuildExecutionSnapshot</code>. Await <code>SendPromptAsync</code> for HTTP/API editor work. Use <code>BeginPromptCoroutine</code> in MonoBehaviours and the streaming adapters for incremental responses.</p><h2>Reliability</h2><p>Profiles expose timeout, retry count and base retry delay. Transient failures use exponential backoff with jitter. A provider's positive <code>Retry-After</code> interval is honored without truncating it to 60 seconds; long waits remain cancellable. Authentication and validation failures fail without retrying.</p><h2>Response and usage</h2><p><code>PromptResult</code> exposes success, extracted response text, error, diagnostics and token usage where the provider reports it. Structured JSON and streaming support depend on the selected provider.</p><h2>Subscription requests</h2><p>Local subscription transports use native editor tools, not HTTP/API credentials. They never silently switch to API billing. Cancellation and editor lifecycle handling stop owned processes; native platform behavior needs separate validation.</p>
+<nav class="page-nav" data-prev-next></nav>
+</article>
       </main>
       <aside class="page-toc" data-page-toc></aside>
     </div>

@@ -11,6 +11,7 @@
   <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
   <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
   <meta name="theme-color" content="#E8541A">
+  <script src="../assets/data/textresources.js"></script>
 </head>
 <body data-page="architecture" data-base="">
   <a class="skip-link" href="#main-content">Skip to content</a>
@@ -21,7 +22,7 @@
         <div class="topbar-spacer"></div>
         <div class="top-actions">
           <div class="search-wrap"><input class="search-input" type="search" placeholder="Use the sidebar to filter pages" aria-label="Search hint" readonly></div>
-          <a class="back-to-site" href="../index.html">&#8592; Beka Forge</a>
+          <a class="back-to-site" href="../index.html" data-resource-href="products.aiProviders.websiteUrl">&#8592; Beka Forge</a>
           <button class="menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-controls="sidebar">Menu</button>
         </div>
       </div>
@@ -30,38 +31,10 @@
       <aside class="sidebar" id="sidebar"><div class="sidebar-inner" data-sidebar-nav></div></aside>
       <main class="content-shell" id="main-content">
         <article class="doc-article" data-doc-content>
-          <nav class="breadcrumb"><a href="index.html">Home</a> / <span>Architecture</span></nav>
-          <h1>Architecture</h1>
-          <p class="lede">AI Providers is a provider-asset abstraction plus a shared request service. The design stays intentionally independent of Dialogue Graph System and AI Extension so other tools can reuse the same provider and transport layer.</p>
-
-          <h2>High-level architecture</h2>
-<pre><code>Caller
-  -&gt; AiProvidersService
-  -&gt; LlmProviderDefinitionBase
-  -&gt; LlmHttpRequest
-  -&gt; UnityWebRequest
-  -&gt; Provider API
-  -&gt; provider-specific response extraction</code></pre>
-
-          <h2>Division of ownership</h2>
-          <ul>
-            <li><strong>Provider asset</strong> builds the concrete HTTP request and parses the provider-specific response.</li>
-            <li><strong>Service layer</strong> owns transport execution, timeout/retry behavior, and normalized HTTP error handling.</li>
-            <li><strong>DTO layer</strong> carries chat messages, model overrides, and the built request definition.</li>
-          </ul>
-
-          <h2>Base class contract</h2>
-<pre><code class="language-csharp">public abstract class LlmProviderDefinitionBase : ScriptableObject
-{
-    public abstract LlmHttpRequest BuildHttpRequest(LlmChatRequest chat);
-    public abstract string ExtractTextFromResponse(string responseJson);
-}</code></pre>
-
-          <h2>Why provider assets matter</h2>
-          <p>New providers are added as assets and subclasses rather than as giant switch statements in the service. That keeps endpoint rules, model defaults, and response parsing close to the specific provider implementation.</p>
-
-          <nav class="page-nav" data-prev-next></nav>
-        </article>
+<nav class="breadcrumb"><a href="index.html">Home</a> / <span>Architecture</span></nav><h1>Architecture</h1>
+<p class="lede">A standalone provider layer shared by editor tools and runtime callers.</p><h2>Request flow</h2><p>Build a provider execution snapshot on Unity's main thread. The async service sends the HTTP request and returns normalized text, diagnostics and token usage where reported. Coroutine adapters support MonoBehaviour callers; streaming adapters deliver incremental text.</p><h2>Ownership</h2><ul><li>Provider assets own shared endpoint, model, transport and reliability settings.</li><li>Provider implementations own request construction and response extraction.</li><li>The request service owns execution, retries, timeouts and cancellation.</li><li>Protected local credential storage keeps API keys out of shared assets.</li><li>Codex and Claude Code subscription transports are editor-only and use local tool authentication.</li></ul><h2>Package boundary</h2><p>Runtime and editor assemblies are <code>AiProviders.Runtime</code> and <code>AiProviders.Editor</code>; public namespaces use <code>BekaForge.AIProviders</code>. No DGS assembly is needed.</p>
+<nav class="page-nav" data-prev-next></nav>
+</article>
       </main>
       <aside class="page-toc" data-page-toc></aside>
     </div>

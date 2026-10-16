@@ -11,6 +11,7 @@
   <link rel="icon" type="image/png" sizes="16x16" href="../favicon/favicon-16x16.png">
   <link rel="apple-touch-icon" sizes="180x180" href="../favicon/apple-touch-icon.png">
   <meta name="theme-color" content="#E8541A">
+  <script src="../../assets/data/textresources.js"></script>
 </head>
 <body data-page="provider-assets" data-base="../">
   <a class="skip-link" href="#main-content">Skip to content</a>
@@ -21,7 +22,7 @@
         <div class="topbar-spacer"></div>
         <div class="top-actions">
           <div class="search-wrap"><input class="search-input" type="search" placeholder="Use the sidebar to filter pages" aria-label="Search hint" readonly></div>
-          <a class="back-to-site" href="../../index.html">&#8592; Beka Forge</a>
+          <a class="back-to-site" href="../../index.html" data-resource-href="products.aiProviders.websiteUrl">&#8592; Beka Forge</a>
           <button class="menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-controls="sidebar">Menu</button>
         </div>
       </div>
@@ -30,44 +31,10 @@
       <aside class="sidebar" id="sidebar"><div class="sidebar-inner" data-sidebar-nav></div></aside>
       <main class="content-shell" id="main-content">
         <article class="doc-article" data-doc-content>
-          <nav class="breadcrumb"><a href="../index.html">Home</a> / <span>Provider Assets</span></nav>
-          <h1>Provider Assets</h1>
-          <p class="lede">Provider assets are the main extension surface in AI Providers. Each built-in provider is a concrete <code>LlmProviderDefinitionBase</code> implementation with its own endpoint, auth behavior, and response parser.</p>
-
-          <h2>Built-in providers</h2>
-          <table>
-            <thead><tr><th>Provider</th><th>Endpoint style</th><th>Notes</th></tr></thead>
-            <tbody>
-              <tr><td>OpenAI</td><td><code>/v1/chat/completions</code></td><td>Reference shape for OpenAI-compatible providers.</td></tr>
-              <tr><td>DeepSeek</td><td>OpenAI-compatible chat completions</td><td>Same general transport shape with a different base endpoint.</td></tr>
-              <tr><td>Gemini</td><td><code>generateContent</code> style</td><td>Uses Google-style API key header rules.</td></tr>
-              <tr><td>Ollama</td><td><code>/api/chat</code></td><td>Local or remote Ollama endpoint, no remote cloud key by default.</td></tr>
-              <tr><td>Custom JSON</td><td>User-defined</td><td>Generic adapter for custom or OpenAI-compatible HTTP+JSON flows.</td></tr>
-            </tbody>
-          </table>
-
-          <h2>What provider assets store</h2>
-          <ul>
-            <li>Display name and description.</li>
-            <li>Base URL and endpoint rules.</li>
-            <li>Default model name.</li>
-            <li>Request header behavior.</li>
-            <li>Provider GUID used for local key lookup.</li>
-          </ul>
-
-          <h2>What provider assets do not store</h2>
-          <p>Local API keys are not serialized into the shared asset file. That boundary is intentional and matters both for version control and for honest public documentation.</p>
-
-          <div class="placeholder-grid">
-            <article class="placeholder-card">
-              <h3>Built-in provider surface</h3>
-              <img class="screenshot-img" src="../assets/images/provider-settings-overview.png" alt="AI Providers panel with built-in provider choices" loading="lazy">
-              <p>The built-in provider tabs show the supported provider families and the editable asset fields each provider exposes.</p>
-            </article>
-          </div>
-
-          <nav class="page-nav" data-prev-next></nav>
-        </article>
+<nav class="breadcrumb"><a href="../index.html">Home</a> / <span>Provider Assets</span></nav><h1>Provider Assets</h1>
+<p class="lede">Profiles are ScriptableObject assets containing reusable connection settings.</p><h2>API and local-model providers</h2><p>OpenAI, OpenAI Compatible, DeepSeek, Gemini, Ollama and Custom JSON. Use OpenAI Compatible for compatible services; Custom JSON supports explicit request and extraction configuration.</p><h2>Editor subscription providers</h2><p>Codex and Claude Code connect through user-installed native tools and their existing accounts. Availability and model lists depend on that account. Subscription profiles are not runtime transports.</p><h2>Shared and local state</h2><p>Assets hold display names, endpoint settings, models and reliability settings. Keys remain in supported local protected storage. Ordinary edits preserve asset GUIDs; Duplicate creates a new asset without copying credentials or connection-test results.</p><h2>Selecting models</h2><p>Fetched model IDs appear in a searchable, alphabetized list. IDs containing slashes stay intact. Long IDs have full tooltips. Filtering does not change the profile; choose a result and confirm, or cancel. Keep a custom model by editing it manually.</p>
+<nav class="page-nav" data-prev-next></nav>
+</article>
       </main>
       <aside class="page-toc" data-page-toc></aside>
     </div>

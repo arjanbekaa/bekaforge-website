@@ -23,7 +23,10 @@
       "version": "1.0.0",
       "assetStoreUrl": "https://assetstore.unity.com/packages/package/384482",
       "youtubeUrl": "",
-      "docsPath": "AI Providers/index.html"
+      "docsPath": "AI Providers/index.html",
+      "websiteUrl": "https://bekaforge.com/",
+      "supportUrl": "https://bekaforge.com/AI%20Providers/support.html",
+      "changelogUrl": "https://bekaforge.com/AI%20Providers/changelog.html"
     },
     "aiExtension": {
       "status": "Coming Soon",

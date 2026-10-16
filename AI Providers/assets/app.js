@@ -15,13 +15,15 @@
       items: [
         { id: "provider-assets", label: "Provider Assets", href: "modules/provider-assets.html", search: "providers openai deepseek gemini ollama custom json asset types" },
         { id: "request-pipeline", label: "Request Pipeline", href: "modules/request-pipeline.html", search: "trysendprompt sendpromptcoroutine request pipeline timeout retry unitywebrequest" },
-        { id: "settings-and-keys", label: "Settings and Keys", href: "modules/settings-and-keys.html", search: "settings keys playerprefs local secret provider guid editorprefs" }
+        { id: "settings-and-keys", label: "Settings and Keys", href: "modules/settings-and-keys.html", search: "settings keys protected credentials local secret provider guid editorprefs online links" }
       ]
     },
     {
       title: "API and Ops",
       items: [
         { id: "public-api", label: "Public API", href: "api/public-api.html", search: "public api aiprovidersservice llmproviderdefinitionbase llmchatrequest promptresult" },
+        { id: "changelog", label: "Changelog", href: "changelog.html", search: "release changes version" },
+        { id: "support", label: "Support", href: "support.html", search: "help contact diagnostics" },
         { id: "troubleshooting", label: "Troubleshooting", href: "troubleshooting.html", search: "troubleshooting security notes blocking request runtime retry ollama errors" }
       ]
     }

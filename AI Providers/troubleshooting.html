@@ -11,6 +11,7 @@
   <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
   <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
   <meta name="theme-color" content="#E8541A">
+  <script src="../assets/data/textresources.js"></script>
 </head>
 <body data-page="troubleshooting" data-base="">
   <a class="skip-link" href="#main-content">Skip to content</a>
@@ -21,7 +22,7 @@
         <div class="topbar-spacer"></div>
         <div class="top-actions">
           <div class="search-wrap"><input class="search-input" type="search" placeholder="Use the sidebar to filter pages" aria-label="Search hint" readonly></div>
-          <a class="back-to-site" href="../index.html">&#8592; Beka Forge</a>
+          <a class="back-to-site" href="../index.html" data-resource-href="products.aiProviders.websiteUrl">&#8592; Beka Forge</a>
           <button class="menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-controls="sidebar">Menu</button>
         </div>
       </div>
@@ -30,26 +31,10 @@
       <aside class="sidebar" id="sidebar"><div class="sidebar-inner" data-sidebar-nav></div></aside>
       <main class="content-shell" id="main-content">
         <article class="doc-article" data-doc-content>
-          <nav class="breadcrumb"><a href="index.html">Home</a> / <span>Troubleshooting</span></nav>
-          <h1>Troubleshooting</h1>
-          <p class="lede">Most provider issues are configuration problems rather than code problems: the wrong endpoint, a missing local key, or using the blocking transport path in the wrong place.</p>
-
-          <h2>Common failure buckets</h2>
-          <ul>
-            <li><strong>HTTP errors</strong>: verify base URL, endpoint, auth header behavior, and model name.</li>
-            <li><strong>Local key mismatch</strong>: duplicating a provider asset creates a new GUID and requires a new local key entry.</li>
-            <li><strong>Ollama offline</strong>: verify the local service is running and the model is pulled.</li>
-            <li><strong>Runtime stalls</strong>: prefer the coroutine request path instead of the blocking editor path.</li>
-          </ul>
-
-          <h2>Security reality</h2>
-          <p>Keys are intentionally local and not serialized into asset files, but they are not encrypted at rest. The docs should continue to frame this as convenience storage rather than as hardened credential management.</p>
-
-          <h2>Custom JSON caveat</h2>
-          <p>The Custom JSON provider is intentionally flexible and correspondingly less strongly typed. If parsing fails, check the response shape your endpoint actually returns rather than assuming it matches the fallback text extraction rules.</p>
-
-          <nav class="page-nav" data-prev-next></nav>
-        </article>
+<nav class="breadcrumb"><a href="index.html">Home</a> / <span>Troubleshooting</span></nav><h1>Troubleshooting</h1>
+<p class="lede">Start with the local diagnostic message, endpoint and selected model.</p><h2>API connections</h2><ul><li>401: re-enter the local key and check its provider permissions.</li><li>404: check the base URL and endpoint.</li><li>429: check quota; retries honor the provider's Retry-After interval.</li><li>Ollama offline: start the local service and install the selected model.</li><li>Unknown model: refresh the provider model list or enter the exact model ID manually.</li></ul><h2>Subscription connections</h2><p>Install the official local tool, connect its subscription, and refresh status. Confirm account entitlement and tool version. These connections are editor-only and never fall back silently to API billing.</p><h2>Credentials</h2><p>Check the editor's protected storage status. Linux protected persistence is unavailable; native macOS behavior requires platform acceptance. Duplicated profiles need their own credentials.</p><h2>Documentation links offline</h2><p>Buttons use the last valid cached URL registry, or bundled defaults if the registry cannot be fetched. The destination page itself still requires an Internet connection.</p>
+<nav class="page-nav" data-prev-next></nav>
+</article>
       </main>
       <aside class="page-toc" data-page-toc></aside>
     </div>

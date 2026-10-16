@@ -125,7 +125,8 @@ function validateConfig(config) {
   for (const [name, product] of Object.entries(config.products || {})) {
     exactKeys(
       product,
-      ["status", "price", "version", "assetStoreUrl", "youtubeUrl", "docsPath"],
+      ["status", "price", "version", "assetStoreUrl", "youtubeUrl", "docsPath",
+        ...(name === "aiProviders" ? ["websiteUrl", "supportUrl", "changelogUrl"] : [])],
       `${name} config`
     );
   }
@@ -156,7 +157,7 @@ function validateConfig(config) {
     if (typeof value === "string" && /(?:github_pat_|ghp_[a-z0-9]{20,}|sk-[a-z0-9]{20,})/i.test(value)) {
       errors.push(`Secret-like config value is not allowed: ${key}`);
     }
-    if (/(?:assetStoreUrl|youtubeUrl|githubUrl|reportIssueUrl)$/.test(key) && value && !/^https:\/\//.test(value)) {
+    if (/(?:assetStoreUrl|youtubeUrl|githubUrl|reportIssueUrl|websiteUrl|supportUrl|changelogUrl)$/.test(key) && value && !/^https:\/\//.test(value)) {
       errors.push(`${key} must be an HTTPS URL.`);
     }
     if (key.endsWith("emailUrl") && value && !/^mailto:/i.test(value)) {

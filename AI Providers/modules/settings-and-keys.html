@@ -11,6 +11,7 @@
   <link rel="icon" type="image/png" sizes="16x16" href="../favicon/favicon-16x16.png">
   <link rel="apple-touch-icon" sizes="180x180" href="../favicon/apple-touch-icon.png">
   <meta name="theme-color" content="#E8541A">
+  <script src="../../assets/data/textresources.js"></script>
 </head>
 <body data-page="settings-and-keys" data-base="../">
   <a class="skip-link" href="#main-content">Skip to content</a>
@@ -21,7 +22,7 @@
         <div class="topbar-spacer"></div>
         <div class="top-actions">
           <div class="search-wrap"><input class="search-input" type="search" placeholder="Use the sidebar to filter pages" aria-label="Search hint" readonly></div>
-          <a class="back-to-site" href="../../index.html">&#8592; Beka Forge</a>
+          <a class="back-to-site" href="../../index.html" data-resource-href="products.aiProviders.websiteUrl">&#8592; Beka Forge</a>
           <button class="menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-controls="sidebar">Menu</button>
         </div>
       </div>
@@ -30,43 +31,10 @@
       <aside class="sidebar" id="sidebar"><div class="sidebar-inner" data-sidebar-nav></div></aside>
       <main class="content-shell" id="main-content">
         <article class="doc-article" data-doc-content>
-          <nav class="breadcrumb"><a href="../index.html">Home</a> / <span>Settings and Keys</span></nav>
-          <h1>Settings and Keys</h1>
-          <p class="lede">AI Providers separates three concerns: shared provider asset configuration, local API key storage, and editor-only preferences. Those layers should be understood separately because the storage and security properties are different.</p>
-
-          <h2>Layer 1: provider asset</h2>
-          <p>The asset stores shared configuration such as display name, base URL, endpoint behavior, default model, and provider GUID.</p>
-
-          <h2>Layer 2: local API key storage</h2>
-          <p>Keys are stored in <code>PlayerPrefs</code>, scoped by project hash and provider GUID. That keeps keys out of the asset file, but it does not encrypt them at rest.</p>
-
-<pre><code class="language-csharp">public string GetApiKey()
-{
-    if (!string.IsNullOrWhiteSpace(apiKey)) return apiKey;
-    return ProviderApiKeyStorage.GetProviderApiKey(providerGuid);
-}</code></pre>
-
-          <h2>Layer 3: editor preferences</h2>
-          <p>Editor panel preferences live separately in <code>AiProvidersEditorLocalSettings</code> via <code>EditorPrefs</code>. That includes selected provider GUID, prompt preferences, and connection-test UI state.</p>
-
-          <h2>Security posture</h2>
-          <ul>
-            <li>Secrets stay out of the serialized asset files.</li>
-            <li>Secrets are local to the machine/project combination.</li>
-            <li>Secrets are not an encrypted vault.</li>
-            <li>Do not describe this as encrypted or vault-backed storage.</li>
-          </ul>
-
-          <div class="placeholder-grid">
-            <article class="placeholder-card">
-              <h3>Local key and shared config surface</h3>
-              <img class="screenshot-img" src="../assets/images/provider-settings-overview.png" alt="AI Providers panel with hidden API key and connection test" loading="lazy">
-              <p>The shared provider asset fields stay editable while the key remains machine-local and visually masked in the editor.</p>
-            </article>
-          </div>
-
-          <nav class="page-nav" data-prev-next></nav>
-        </article>
+<nav class="breadcrumb"><a href="../index.html">Home</a> / <span>Settings and Keys</span></nav><h1>Settings and Keys</h1>
+<p class="lede">Share profile configuration while keeping credentials local.</p><h2>Provider assets</h2><p>Profiles store endpoint, model, transport and reliability settings. API keys are never serialized into those assets.</p><h2>Protected local credentials</h2><p>Supported platforms use protected OS-backed credential storage. Windows uses DPAPI and macOS uses Keychain. Linux protected credential persistence is unavailable. Legacy plaintext PlayerPrefs values are migrated on read and removed after successful migration. Check the storage status shown in the editor.</p><h2>Editor preferences</h2><p>Prompt defaults, selected profile and other local editor preferences are stored separately. Subscription credentials remain owned by the installed native tool.</p><h2>Online documentation links</h2><p>The Documentation and Website buttons fetch the public <a href="https://github.com/arjanbekaa/bekaforge-website/blob/main/assets/data/site-config.json">site-config.json</a> when clicked. Edit <code>products.aiProviders.docsPath</code> and <code>products.aiProviders.websiteUrl</code> on GitHub to change their destinations. Valid links are cached locally; offline or invalid responses retain the last valid links, or bundled defaults when no cache exists. The request times out after five seconds and sends no provider keys, prompts or project contents. Drawing the UI makes no configuration request.</p><h2>Sharing safely</h2><p>Share profile configuration rather than secrets. Do not embed an API key in source, screenshots, exported assets or a shipped player.</p>
+<nav class="page-nav" data-prev-next></nav>
+</article>
       </main>
       <aside class="page-toc" data-page-toc></aside>
     </div>

@@ -62,6 +62,9 @@
         version: "1.0.0",
         description: "Configure reusable cloud and local AI provider connections for Beka Forge tools.",
         docsPath: "AI Providers/index.html",
+        websiteUrl: "https://bekaforge.com/",
+        supportUrl: "https://bekaforge.com/AI%20Providers/support.html",
+        changelogUrl: "https://bekaforge.com/AI%20Providers/changelog.html",
         screenshotPath: "AI Providers/brand/ai-providers-card-420x280.png",
         iconPath: "AI Providers/brand/ai-providers-icon-1254x1254.png",
         assetStoreUrl: "https://assetstore.unity.com/packages/package/384482",
@@ -92,6 +95,9 @@
     "assetStoreUrl",
     "youtubeUrl",
     "docsPath",
+    "websiteUrl",
+    "supportUrl",
+    "changelogUrl",
     "githubUrl",
     "emailUrl",
     "reportIssueUrl"
@@ -102,7 +108,10 @@
     "version",
     "assetStoreUrl",
     "youtubeUrl",
-    "docsPath"
+    "docsPath",
+    "websiteUrl",
+    "supportUrl",
+    "changelogUrl"
   ];
 
   function isSafeUrl(value, allowEmpty) {
