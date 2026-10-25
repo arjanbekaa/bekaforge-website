@@ -8,6 +8,29 @@
     "emailUrl": "mailto:bekaforge@gmail.com",
     "reportIssueUrl": "https://github.com/arjanbekaa/bekaforge-website/issues/new/choose"
   },
+  "documentation": {
+    "getting-started": "https://bekaforge.com/Dialogue%20Graph%20System/getting-started.html",
+    "dialogue-runtime": "https://bekaforge.com/Dialogue%20Graph%20System/modules/runtime-dialog-flow.html",
+    "actions": "https://bekaforge.com/Dialogue%20Graph%20System/guides/integrating-actions.html",
+    "history": "https://bekaforge.com/Dialogue%20Graph%20System/modules/history-and-transcripts.html",
+    "localization": "https://bekaforge.com/Dialogue%20Graph%20System/inspector-reference.html#localization",
+    "ui-themes": "https://bekaforge.com/Dialogue%20Graph%20System/modules/settings-system.html",
+    "variables": "https://bekaforge.com/Dialogue%20Graph%20System/inspector-reference.html#variable-definition",
+    "dialogue-graphs": "https://bekaforge.com/Dialogue%20Graph%20System/modules/graph-editor.html",
+    "characters": "https://bekaforge.com/Dialogue%20Graph%20System/inspector-reference.html#asset-character",
+    "banter": "https://bekaforge.com/Dialogue%20Graph%20System/guides/banter-setup.html",
+    "audio": "https://bekaforge.com/Dialogue%20Graph%20System/inspector-reference.html#asset-voice-table",
+    "delivery": "https://bekaforge.com/Dialogue%20Graph%20System/inspector-reference.html#asset-delivery-preset",
+    "scene-context": "https://bekaforge.com/Dialogue%20Graph%20System/inspector-reference.html#asset-scene-context",
+    "branding": "https://bekaforge.com/Dialogue%20Graph%20System/inspector-reference.html#asset-welcome-branding",
+    "runtime-ui": "https://bekaforge.com/Dialogue%20Graph%20System/components/runtime-ui.html",
+    "settings": "https://bekaforge.com/Dialogue%20Graph%20System/modules/settings-system.html",
+    "camera-controller": "https://bekaforge.com/Dialogue%20Graph%20System/guides/camera-interaction-ui.html",
+    "interaction": "https://bekaforge.com/Dialogue%20Graph%20System/guides/camera-interaction-ui.html",
+    "walla": "https://bekaforge.com/Dialogue%20Graph%20System/guides/walla-setup.html",
+    "ai-extension": "https://bekaforge.com/Dialogue%20Graph%20System/guides/ai-generation-workflow.html",
+    "upgrade": "https://bekaforge.com/Dialogue%20Graph%20System/installation.html#upgrade"
+  },
   "products": {
     "dialogueGraphSystem": {
       "status": "4.0 documentation prepared · release not published",
@@ -15,7 +38,10 @@
       "version": "4.0.0",
       "assetStoreUrl": "https://assetstore.unity.com/packages/tools/gui/dialogue-graph-system-332234",
       "youtubeUrl": "https://www.youtube.com/watch?v=1K7-WWIBjD0",
-      "docsPath": "Dialogue Graph System/index.html"
+      "docsPath": "Dialogue Graph System/index.html",
+      "websiteUrl": "https://bekaforge.com/Dialogue%20Graph%20System/index.html",
+      "supportUrl": "https://bekaforge.com/Dialogue%20Graph%20System/support.html",
+      "changelogUrl": "https://bekaforge.com/Dialogue%20Graph%20System/changelog.html"
     },
     "aiProviders": {
       "status": "Published 1.0.0 · requires unpublished 2.2.0 for DGS 4.0 AI",
@@ -23,7 +49,10 @@
       "version": "1.0.0",
       "assetStoreUrl": "https://assetstore.unity.com/packages/tools/ai-ml-integration/ai-providers-for-unity-beka-forge-384482",
       "youtubeUrl": "",
-      "docsPath": "AI Providers/index.html"
+      "docsPath": "AI Providers/index.html",
+      "websiteUrl": "https://bekaforge.com/",
+      "supportUrl": "https://bekaforge.com/AI%20Providers/support.html",
+      "changelogUrl": "https://bekaforge.com/AI%20Providers/changelog.html"
     },
     "aiExtension": {
       "status": "Included in DGS 4.0.0",
@@ -31,7 +60,10 @@
       "version": "2.1.0",
       "assetStoreUrl": "",
       "youtubeUrl": "",
-      "docsPath": "Dialogue Graph System/guides/ai-generation-workflow.html"
+      "docsPath": "Dialogue Graph System/guides/ai-generation-workflow.html",
+      "websiteUrl": "https://bekaforge.com/Dialogue%20Graph%20System/guides/ai-generation-workflow.html",
+      "supportUrl": "https://bekaforge.com/Dialogue%20Graph%20System/support.html",
+      "changelogUrl": "https://bekaforge.com/Dialogue%20Graph%20System/changelog.html"
     }
   }
 }

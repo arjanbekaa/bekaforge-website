@@ -24,7 +24,7 @@
           <div class="search-wrap">
             <input class="search-input" type="search" placeholder="Use the sidebar to filter pages" aria-label="Search hint" readonly>
           </div>
-          <a class="back-to-site" href="../index.html">&#8592; Beka Forge</a>
+          <a class="back-to-site" href="../index.html" data-resource-href="products.aiProviders.websiteUrl">&#8592; Beka Forge</a>
           <button class="menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-controls="sidebar">Menu</button>
         </div>
       </div>
@@ -37,7 +37,7 @@
 
       <main class="content-shell" id="main-content">
         <section class="page-hero">
-          <span class="eyebrow">Separate package | DGS 4.0 requires the unpublished 2.2.0 update</span>
+<span class="eyebrow">Separate package | 1.0.0 published; 2.2.0 release candidate documented for DGS 4.0</span>
           <h1 class="hero-title">AI Providers for Unity documentation.</h1>
           <p class="hero-subtitle">
             Product-specific documentation for the reusable provider connectivity layer behind Beka Forge AI-enabled tools.
@@ -55,19 +55,19 @@
             <article class="hero-card">
               <h2>What this product owns</h2>
               <p>
-                This guide describes the prepared AI Providers 2.2.0 source: saved provider profiles, API and editor-only subscription transports,
-                protected local credentials, request execution, and response handling. The current Store listing remains 1.0; the compatible update must be supplied separately.
+This guide describes the AI Providers 2.2.0 release candidate: saved profiles, six HTTP/API provider families plus editor-only subscription transports, protected local credentials, streaming, model discovery, and cancellable requests. The current Store listing remains 1.0.0; the matching DGS 4.0 integration requires the separate 2.2.0 update, which is not yet published.
               </p>
               <div class="stat-grid">
-                <div class="stat"><strong>5</strong><span>Built-in provider families</span></div>
+                <div class="stat"><strong>6</strong><span>HTTP/API provider families</span></div>
                 <div class="stat"><strong>2</strong><span>Transport choices: API or editor subscription</span></div>
                 <div class="stat"><strong>0</strong><span>Dependencies on DGS or AI Extension</span></div>
               </div>
             </article>
 
             <article class="hero-card">
-              <h3>Provider layer overview</h3>
-              <img class="screenshot-img" src="../Dialogue%20Graph%20System/4.0/screenshots/ai-providers-setup.jpg" alt="AI Providers 2.2 setup checklist before connecting a provider" loading="lazy" width="1920" height="1161">
+<h3>Earlier interface reference</h3>
+              <img class="screenshot-img" src="assets/images/provider-settings-overview.png" alt="Earlier AI Providers settings overview; the 2.2.0 release candidate interface may differ" loading="lazy">
+              <p>This image is historical orientation only. Follow the live 2.2.0 preview and current guide for the release-candidate interface.</p>
             </article>
           </div>
         </section>
@@ -86,8 +86,8 @@
           <div class="card-grid">
             <article class="doc-card"><h3>Standalone transport layer</h3><p>The package is dependency-free and can be reused by tools outside Dialogue Graph System.</p></article>
             <article class="doc-card"><h3>Provider assets over hardcoded switches</h3><p>Each provider subclass owns its request shape and response parsing instead of relying on one monolithic service switch.</p></article>
-            <article class="doc-card"><h3>Local secrets, shared config</h3><p>Provider assets store configuration. Supported protected credential storage keeps API keys local; never put keys in shared assets, screenshots, or a shipped player.</p></article>
-            <article class="doc-card"><h3>Runtime caveat</h3><p><code>TrySendPrompt</code> is blocking and best described as editor-oriented. Runtime callers should generally use the coroutine path.</p></article>
+<article class="doc-card"><h3>Local secrets, shared config</h3><p>Provider assets store configuration and remain shareable. Supported protected credential storage keeps API keys local; never put keys in shared assets, screenshots, or a shipped player.</p></article>
+            <article class="doc-card"><h3>Runtime caveat</h3><p><code>TrySendPrompt</code> is obsolete because it blocks. Use the cancellable coroutine path at runtime, or build a snapshot on the main thread and await the async service in editor workflows.</p></article>
           </div>
           <figure class="preview-embed"><iframe class="preview-embed__frame" data-preview-src="../assets/unity-preview/embed.html?window=ai-providers&amp;surface=profiles&amp;embed=1" hidden title="Interactive preview of the AI Providers profiles window" loading="lazy"></iframe><figcaption>Interactive preview: <strong>AI Providers &gt; Profiles</strong>, recreated from the product source with fictitious example values. No provider is contacted and no key is stored. <a href="../assets/unity-preview/embed.html?window=ai-providers&amp;surface=profiles">Open the full preview</a> or <a href="../Dialogue%20Graph%20System/preview/index.html">browse the DGS preview</a>.</figcaption></figure>
         </section>
@@ -98,8 +98,10 @@
             <a class="doc-card" href="getting-started.html"><h3>Getting Started</h3><p>Import the asset, create a provider asset, and send the first request.</p></a>
             <a class="doc-card" href="architecture.html"><h3>Architecture</h3><p>Service-driven transport, provider abstraction, and DTO ownership.</p></a>
             <a class="doc-card" href="modules/provider-assets.html"><h3>Provider Assets</h3><p>Built-in provider families and what their asset layer actually stores.</p></a>
-            <a class="doc-card" href="modules/request-pipeline.html"><h3>Request Pipeline</h3><p>Blocking and coroutine request paths, timeout options, and response normalization.</p></a>
+            <a class="doc-card" href="modules/request-pipeline.html"><h3>Request Pipeline</h3><p>Async, coroutine and streaming request paths, Retry-After handling, cancellation and diagnostics.</p></a>
             <a class="doc-card" href="modules/settings-and-keys.html"><h3>Settings and Keys</h3><p>Shared asset config, local keys, and editor-only preference state.</p></a>
+            <a class="doc-card" href="support.html" data-resource-href="products.aiProviders.supportUrl"><h3>Support</h3><p>Contact details and sanitized issue reports.</p></a>
+            <a class="doc-card" href="changelog.html" data-resource-href="products.aiProviders.changelogUrl"><h3>Changelog</h3><p>Changes in the 2.2.0 release candidate.</p></a>
             <a class="doc-card" href="api/public-api.html"><h3>Public API</h3><p>The reusable service, provider base class, DTOs, and built-in provider types.</p></a>
           </div>
         </section>
@@ -124,7 +126,7 @@
         </div>
       </aside>
     </div>
-    <footer class="footer"><div class="footer-inner"><span>AI Providers 1.0.0 published · DGS 4.0 requires unpublished 2.2.0</span><span>&copy; <span data-current-year></span> Beka Forge</span></div></footer>
+<footer class="footer"><div class="footer-inner"><span>AI Providers 1.0.0 published · 2.2.0 release candidate documented; DGS 4.0 requires the separate 2.2.0 update</span><span>&copy; <span data-current-year></span> Beka Forge</span></div></footer>
   </div>
   <script src="assets/app.js"></script>
 </body>

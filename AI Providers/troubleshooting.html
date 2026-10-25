@@ -11,6 +11,7 @@
   <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
   <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
   <meta name="theme-color" content="#E8541A">
+  <script src="../assets/data/textresources.js"></script>
 </head>
 <body data-page="troubleshooting" data-base="">
   <a class="skip-link" href="#main-content">Skip to content</a>
@@ -21,7 +22,7 @@
         <div class="topbar-spacer"></div>
         <div class="top-actions">
           <div class="search-wrap"><input class="search-input" type="search" placeholder="Use the sidebar to filter pages" aria-label="Search hint" readonly></div>
-          <a class="back-to-site" href="../index.html">&#8592; Beka Forge</a>
+          <a class="back-to-site" href="../index.html" data-resource-href="products.aiProviders.websiteUrl">&#8592; Beka Forge</a>
           <button class="menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-controls="sidebar">Menu</button>
         </div>
       </div>
@@ -50,7 +51,7 @@
 
           <h2>429, quota, and server errors</h2>
           <ul>
-            <li><strong>429:</strong> check account quota and rate limits. The service respects provider <code>Retry-After</code> when retrying a transient response, but retries cannot create quota.</li>
+            <li><strong>429:</strong> check account quota and rate limits. The service honors a positive provider <code>Retry-After</code> interval without truncating it to 60 seconds; long waits remain cancellable. Retries cannot create quota.</li>
             <li><strong>5xx or timeout:</strong> verify the provider is reachable and try again after checking its status. Adjust timeout/retry settings only when the expected request duration warrants it.</li>
             <li><strong>400 or parse failure:</strong> inspect the request mode, model support, JSON mode, and Custom JSON response shape. Authentication and malformed-request failures are not treated as transient retry cases.</li>
           </ul>
@@ -63,6 +64,9 @@
 
           <h2>Codex or Claude Code profile problems</h2>
           <p>These are editor-only subscription integrations, not API-key profiles. Install and sign into the corresponding native tool yourself, then use the profile's connection flow. Unity does not collect subscription credentials or reuse subscription tokens as API keys. Use an HTTP/API profile for player builds.</p>
+
+          <h2>Documentation links offline</h2>
+          <p>Documentation and Website buttons use the last valid cached URL registry, or bundled defaults if the registry cannot be fetched. The destination itself still needs an Internet connection. Registry requests do not contain provider keys, prompts, or project data.</p>
 
           <h2>Safe diagnostics</h2>
           <p>Use the provider window's sanitized diagnostics when reporting an issue. Remove prompts or response content that contains private project material, and confirm no API key, account token, or credential appears in the report or screenshot.</p>          <nav class="page-nav" data-prev-next></nav>

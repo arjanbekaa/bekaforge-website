@@ -11,6 +11,7 @@
   <link rel="icon" type="image/png" sizes="16x16" href="../favicon/favicon-16x16.png">
   <link rel="apple-touch-icon" sizes="180x180" href="../favicon/apple-touch-icon.png">
   <meta name="theme-color" content="#E8541A">
+  <script src="../../assets/data/textresources.js"></script>
 </head>
 <body data-page="settings-and-keys" data-base="../">
   <a class="skip-link" href="#main-content">Skip to content</a>
@@ -21,7 +22,7 @@
         <div class="topbar-spacer"></div>
         <div class="top-actions">
           <div class="search-wrap"><input class="search-input" type="search" placeholder="Use the sidebar to filter pages" aria-label="Search hint" readonly></div>
-          <a class="back-to-site" href="../../index.html">&#8592; Beka Forge</a>
+          <a class="back-to-site" href="../../index.html" data-resource-href="products.aiProviders.websiteUrl">&#8592; Beka Forge</a>
           <button class="menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-controls="sidebar">Menu</button>
         </div>
       </div>
@@ -40,12 +41,18 @@
           <h2>Layer 2: local API key storage</h2>
           <p>API keys are stored outside the asset in OS-backed protected credential storage on supported platforms, scoped to the project and provider GUID. Unsupported platforms report that persistence is unavailable instead of silently writing a plaintext fallback. The key field in the editor is masked.</p>
 
-          <p>Use <code>Tools &gt; Beka Forge &gt; AI Providers</code> to add or select a profile, enter the key into its local credential field, save the profile, and run <strong>Test connection</strong>. A normal edit preserves the provider asset GUID and its credential scope. Duplicating a profile creates a new GUID, so the duplicate needs its own credential entry.</p>
+          <p>Use <code>Tools &gt; Beka Forge &gt; AI Providers &gt; Settings</code> to add or select a profile, enter the key into its local credential field, save the profile, and run <strong>Test connection</strong>. A normal edit preserves the provider asset GUID and its credential scope. Duplicating a profile creates a new GUID, so the duplicate needs its own credential entry.</p>
 
           <figure class="preview-embed"><iframe class="preview-embed__frame" data-preview-src="../../assets/unity-preview/embed.html?window=ai-providers&amp;surface=profile-duplicate&amp;embed=1" hidden title="Interactive preview of the Duplicate AI profile dialog" loading="lazy"></iframe><figcaption>Interactive preview: <strong>Profiles &gt; Duplicate AI profile</strong>, recreated from the product source. Duplicating creates a new identity that needs its own credential; nothing is saved. <a href="../../assets/unity-preview/embed.html?window=ai-providers&amp;surface=profile-duplicate">Open the full duplicate example</a>.</figcaption></figure>
 
+          <h2>Platform storage and legacy migration</h2>
+          <p>Windows uses DPAPI and macOS uses Keychain for protected OS-backed credential storage. Linux protected credential persistence is unavailable. Legacy plaintext PlayerPrefs values migrate on read and are removed after successful migration. Check the editor's displayed storage status before relying on persistence.</p>
+
           <h2>Layer 3: editor preferences</h2>
           <p>Editor-only preferences, such as which profile is selected in a window, are stored separately from the provider asset and credentials. Subscription connections through Codex or Claude Code are also editor-only; they do not provide a player-build API credential.</p>
+
+          <h2>Online documentation links</h2>
+          <p>The Documentation and Website buttons fetch the public <a href="https://github.com/arjanbekaa/bekaforge-website/blob/main/assets/data/site-config.json">site-config.json</a> when clicked. Edit <code>products.aiProviders.docsPath</code> and <code>products.aiProviders.websiteUrl</code> there to change destinations. Valid links are cached locally; offline or invalid responses retain the last valid links, or bundled defaults when no cache exists. The request times out after five seconds and sends no provider keys, prompts, or project contents. Drawing the UI makes no configuration request.</p>
 
           <h2>Security posture</h2>
           <ul>

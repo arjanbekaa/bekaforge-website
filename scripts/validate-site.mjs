@@ -117,17 +117,46 @@ function validateConfig(config) {
     }
   };
 
-  exactKeys(config, ["publisher", "support", "products"], "site config");
+  exactKeys(config, ["publisher", "support", "products", "documentation"], "site config");
   exactKeys(config.publisher, ["assetStoreUrl", "youtubeUrl", "githubUrl"], "publisher config");
   exactKeys(config.support, ["emailUrl", "reportIssueUrl"], "support config");
   exactKeys(config.products, ["dialogueGraphSystem", "aiProviders", "aiExtension"], "products config");
+  const documentationSlugs = [
+    "getting-started", "dialogue-runtime", "actions", "history", "localization",
+    "ui-themes", "variables", "dialogue-graphs", "characters", "banter", "audio",
+    "delivery", "scene-context", "branding", "runtime-ui", "settings",
+    "camera-controller", "interaction", "walla", "ai-extension", "upgrade"
+  ];
+  exactKeys(config.documentation, documentationSlugs, "documentation config");
+  for (const [slug, url] of Object.entries(config.documentation || {})) {
+    if (typeof url !== "string" || !/^https:\/\/bekaforge\.com\//i.test(url)) {
+      errors.push(`documentation.${slug} must be an HTTPS Beka Forge URL.`);
+    }
+  }
 
   for (const [name, product] of Object.entries(config.products || {})) {
     exactKeys(
       product,
-      ["status", "price", "version", "assetStoreUrl", "youtubeUrl", "docsPath"],
+      ["status", "price", "version", "assetStoreUrl", "youtubeUrl", "docsPath",
+        "websiteUrl", "supportUrl", "changelogUrl"],
       `${name} config`
     );
+    for (const field of ["websiteUrl", "supportUrl", "changelogUrl"]) {
+      if (typeof product?.[field] !== "string" || !/^https:\/\//i.test(product[field])) {
+        errors.push(`${name}.${field} must be a non-empty HTTPS URL.`);
+      }
+    }
+  }
+
+  const canonicalDocsPaths = {
+    dialogueGraphSystem: "Dialogue Graph System/index.html",
+    aiProviders: "AI Providers/index.html",
+    aiExtension: "Dialogue Graph System/guides/ai-generation-workflow.html"
+  };
+  for (const [name, docsPath] of Object.entries(canonicalDocsPaths)) {
+    if (config.products?.[name]?.docsPath !== docsPath) {
+      errors.push(`${name}.docsPath must remain the canonical relative path: ${docsPath}`);
+    }
   }
 
   if (config.products?.dialogueGraphSystem?.version !== "4.0.0") {
@@ -159,7 +188,7 @@ function validateConfig(config) {
     if (typeof value === "string" && /(?:github_pat_|ghp_[a-z0-9]{20,}|sk-[a-z0-9]{20,})/i.test(value)) {
       errors.push(`Secret-like config value is not allowed: ${key}`);
     }
-    if (/(?:assetStoreUrl|youtubeUrl|githubUrl|reportIssueUrl)$/.test(key) && value && !/^https:\/\//.test(value)) {
+    if (/(?:assetStoreUrl|youtubeUrl|githubUrl|reportIssueUrl|websiteUrl|supportUrl|changelogUrl)$/.test(key) && value && !/^https:\/\//i.test(value)) {
       errors.push(`${key} must be an HTTPS URL.`);
     }
     if (key.endsWith("emailUrl") && value && !/^mailto:/i.test(value)) {

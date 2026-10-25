@@ -387,6 +387,9 @@
   renderRoadmapButton();
   document.querySelector('.topbar input[readonly]')?.closest('.search-wrap')?.remove();
   import(new URL("../../assets/documentation/live-previews.js", document.currentScript.src).href)
-    .then(({ enhanceLivePreviews }) => enhanceLivePreviews())
+    .then(({ enhanceLivePreviews, enhanceDocumentationLinks }) => {
+      enhanceLivePreviews();
+      enhanceDocumentationLinks("dialogueGraphSystem", "Dialogue Graph System");
+    })
     .catch((error) => console.warn("Live examples are unavailable; use the standalone preview links.", error));
 })();

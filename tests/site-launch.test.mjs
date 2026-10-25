@@ -27,7 +27,7 @@ export async function htmlFiles(directory) {
 test("public config exposes the DGS 4.0 bundle and separate AI Providers without unsupported price claims", async () => {
   const config = JSON.parse(await read("assets/data/site-config.json"));
 
-  assert.deepEqual(Object.keys(config).sort(), ["products", "publisher", "support"]);
+  assert.deepEqual(Object.keys(config).sort(), ["documentation", "products", "publisher", "support"]);
   assert.equal(config.products.dialogueGraphSystem.version, "4.0.0");
   assert.equal(config.products.dialogueGraphSystem.price, "");
   assert.match(config.products.dialogueGraphSystem.status, /not published/i);
@@ -168,7 +168,8 @@ test("AI Providers has one separate listing and the old AI Extension URL redirec
   const extension = await read("Dialogue Graph AI Extension/index.html");
 
   assert.match(providers, /Separate package/);
-  assert.match(providers, /DGS 4\.0 requires the unpublished 2\.2\.0 update/i);
+  assert.match(providers, /DGS 4\.0 integration requires the separate 2\.2\.0 update/i);
+  assert.match(providers, /not yet published|unpublished/i);
   assert.match(providers, /products\.aiProviders\.assetStoreUrl/);
   assert.match(providers, /ai-providers-for-unity-beka-forge-384482/);
   assert.doesNotMatch(providers, /Available Free|Get free on Asset Store/i);

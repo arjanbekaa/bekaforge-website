@@ -1,5 +1,27 @@
 const stylesheet = new URL("live-docs.css", import.meta.url).href;
 
+export function enhanceDocumentationLinks(productKey, directory) {
+  const siteRoot = new URL("../../", import.meta.url);
+  const productRoot = new URL(`${directory}/`, siteRoot);
+  const pages = new Map([["index.html", "docsPath"], ["support.html", "supportUrl"], ["changelog.html", "changelogUrl"]]);
+  document.querySelectorAll("a[href]").forEach((link) => {
+    if (link.hasAttribute("data-resource-href")) return;
+    if (link.matches(".back-to-site")) return;
+    const url = new URL(link.getAttribute("href"), location.href);
+    for (const [page, field] of pages) {
+      if (url.href === new URL(page, productRoot).href) link.setAttribute("data-resource-href", `products.${productKey}.${field}`);
+    }
+  });
+  if (window.BekaForgeConfigReady) {
+    window.BekaForgeConfigReady.then(() => window.applyBekaForgeTextResources(document));
+  } else if (!document.querySelector("script[data-beka-resources]")) {
+    const script = document.createElement("script");
+    script.src = new URL("assets/data/textresources.js", siteRoot).href;
+    script.dataset.bekaResources = "true";
+    document.head.append(script);
+  }
+}
+
 export function enhanceLivePreviews(root = document) {
   if (!document.querySelector('link[data-live-docs-style]')) {
     const link = document.createElement("link");

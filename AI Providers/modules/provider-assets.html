@@ -11,6 +11,7 @@
   <link rel="icon" type="image/png" sizes="16x16" href="../favicon/favicon-16x16.png">
   <link rel="apple-touch-icon" sizes="180x180" href="../favicon/apple-touch-icon.png">
   <meta name="theme-color" content="#E8541A">
+  <script src="../../assets/data/textresources.js"></script>
 </head>
 <body data-page="provider-assets" data-base="../">
   <a class="skip-link" href="#main-content">Skip to content</a>
@@ -21,7 +22,7 @@
         <div class="topbar-spacer"></div>
         <div class="top-actions">
           <div class="search-wrap"><input class="search-input" type="search" placeholder="Use the sidebar to filter pages" aria-label="Search hint" readonly></div>
-          <a class="back-to-site" href="../../index.html">&#8592; Beka Forge</a>
+          <a class="back-to-site" href="../../index.html" data-resource-href="products.aiProviders.websiteUrl">&#8592; Beka Forge</a>
           <button class="menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-controls="sidebar">Menu</button>
         </div>
       </div>
@@ -49,11 +50,15 @@
 
           <figure class="preview-embed"><iframe class="preview-embed__frame" data-preview-src="../../assets/unity-preview/embed.html?window=ai-providers&amp;surface=profiles&amp;embed=1" hidden title="Interactive preview of the AI Providers profiles window" loading="lazy"></iframe><figcaption>Interactive preview: <strong>Profiles</strong>, recreated from the product source with fictitious example values. Select profiles to inspect their stored fields; no provider is contacted. <a href="../../assets/unity-preview/embed.html?window=ai-providers&amp;surface=profiles">Open the full preview</a>.</figcaption></figure>
 
+          <h2>Model selection and duplicate profiles</h2>
+          <p>Fetched model IDs appear in a searchable, alphabetized list. Search by any part of the full ID; slash-containing IDs remain intact and long IDs expose a full tooltip. Choosing a result applies it to the profile; filtering alone does not change the model. Custom model names can also be entered manually. Editing a profile preserves its asset GUID and credential scope. Duplicating creates a new asset identity and does not copy credentials or connection-test state.</p>
+
           <h2>What provider assets store</h2>
           <ul>
             <li>Display name and description.</li>
             <li>Base URL and endpoint rules.</li>
             <li>Default model name.</li>
+            <li>Transport and reliability settings used by request execution.</li>
             <li>Request header behavior.</li>
             <li>Provider GUID used for local key lookup.</li>
           </ul>
