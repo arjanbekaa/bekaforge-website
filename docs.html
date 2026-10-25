@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Beka Forge Docs Hub</title>
-  <meta name="description" content="Documentation for Dialogue Graph System 3.0 and AI Providers for Unity, with a coming-soon preview of the Dialogue Graph AI Extension.">
+  <meta name="description" content="Prepared customer documentation for Dialogue Graph System 4.0, including Core, Banter, Sound/Walla, AI Extension, Camera Controller, and Interaction. AI Providers is separate and needed only for AI features.">
   <link rel="icon" type="image/x-icon" href="favicon/favicon.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -41,7 +41,7 @@
     .btn.primary{background:var(--forge);border-color:var(--forge);color:#fff}
     .btn:hover{border-color:var(--slate)}
     .btn.primary:hover{background:var(--forge-light);border-color:var(--forge-light)}
-    .section-block{padding:38px 0;border-top:1px solid var(--steel-mid)}
+    .section-block{padding:38px 0;border-top:1px solid var(--steel-mid);scroll-margin-top:80px}
     .section-block h2{font-size:32px;margin:0 0 12px}
     .note{background:rgba(232,84,26,.08);border:1px solid rgba(232,84,26,.22);border-radius:14px;padding:16px;color:var(--slate)}
     .list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:18px}
@@ -72,49 +72,46 @@
       <section class="section hero">
         <span class="eyebrow">Documentation Hub</span>
         <h1>Which documentation do you need?</h1>
-        <p class="lead">Build dialogue with the complete DGS 3.0 guides, configure the free AI Providers package, or preview the AI Extension that is coming soon.</p>
+        <p class="lead">Use the prepared DGS 4.0 guides for the complete package. The DGS 4.0 release and its separate AI Providers compatibility update have not been published.</p>
       </section>
 
       <section class="section">
         <div class="grid">
           <article class="card featured" id="dialogue-graph-system">
-            <span class="status">Available · version 3.0.0 · $24.99</span>
-            <h2>Dialogue Graph System 3.0</h2>
+            <span class="status">4.0 documentation prepared · release not published</span>
+            <h2>Dialogue Graph System 4.0</h2>
             <p data-resource-text="products.dialogueGraphSystem.description"></p>
             <div class="actions">
               <a class="btn primary" data-resource-href="products.dialogueGraphSystem.docsPath">Open DGS docs</a>
-              <a class="btn" data-resource-href="products.dialogueGraphSystem.assetStoreUrl" target="_blank" rel="noopener">Asset Store</a>
+              <a class="btn" data-resource-href="products.dialogueGraphSystem.assetStoreUrl" target="_blank" rel="noopener">Current DGS 3.0 listing · 4.0 update pending</a>
               <a class="btn" data-resource-href="products.dialogueGraphSystem.youtubeUrl" target="_blank" rel="noopener">Watch video</a>
             </div>
           </article>
 
           <article class="card" id="ai-providers">
-            <span class="status">Available Free</span>
+            <span class="status">Separate package · needed for AI features</span>
             <h2 data-resource-text="products.aiProviders.name">AI Providers for Unity</h2>
             <p data-resource-text="products.aiProviders.description"></p>
             <div class="actions">
               <a class="btn primary" data-resource-href="products.aiProviders.docsPath">Open provider docs</a>
-              <a class="btn" data-resource-href="products.aiProviders.assetStoreUrl" target="_blank" rel="noopener">Get free</a>
+              <a class="btn" data-resource-href="products.aiProviders.assetStoreUrl" target="_blank" rel="noopener">AI Providers listing</a>
             </div>
           </article>
 
-          <article class="card" id="ai-extension">
-            <span class="status">Coming Soon</span>
-            <h2 data-resource-text="products.aiExtension.name">Dialogue Graph AI Extension</h2>
-            <p>Preview the planned optional AI-assisted authoring layer. Setup and technical guides will be published when the extension is ready.</p>
-            <div class="actions">
-              <a class="btn" data-resource-href="products.aiExtension.docsPath">Preview coming soon</a>
-            </div>
-          </article>
         </div>
       </section>
 
       <section class="section section-block" id="start-here">
         <h2>Start with your current task</h2>
-        <p class="note">DGS and AI Providers are independent packages. The future AI Extension will add optional authoring assistance on top of DGS and use AI Providers for connectivity.</p>
+        <p class="note">One DGS package includes Core, Banter, Sound/Walla, AI Extension, Camera Controller, and Interaction. AI Providers is the only separate package. Dialogue authoring and runtime do not require it; DGS 4.0 AI compatibility is pending publication.</p>
         <div class="list">
-          <a href="Dialogue Graph System/installation.html"><strong>Install DGS 3.0</strong><span>Import the package and configure the editor and runtime requirements.</span></a>
+          <a href="Dialogue Graph System/installation.html"><strong>DGS 4.0 package scope</strong><span>Review included tools, AI provider requirements, and setup notes.</span></a>
           <a href="Dialogue Graph System/quick-tutorial.html"><strong>Create your first dialogue</strong><span>Build a graph, connect runtime components, and play a branching conversation.</span></a>
+          <a href="Dialogue Graph System/guides/banter-setup.html"><strong>Set up Banter</strong><span>Start with the sample, create exchanges, validate collections, and trigger contextual lines.</span></a>
+          <a href="Dialogue Graph System/guides/walla-setup.html"><strong>Set up Walla and sound</strong><span>Create a timeline, assign graph sounds, and prepare runtime playback.</span></a>
+          <a href="Dialogue Graph System/guides/ai-generation-workflow.html"><strong>Use the AI Extension</strong><span>Connect a provider, draft a small graph, review the plan, and apply it.</span></a>
+          <a href="AI Providers/api/public-api.html"><strong>Use AI from C#</strong><span>Copy typed prompt examples with cancellation and safe lifecycle handling.</span></a>
+          <a href="Dialogue Graph System/4.0/screenshots/index.html"><strong>See DGS 4.0 in Unity</strong><span>Browse the current editor, sample, Banter, Walla, and AI setup screenshots.</span></a>
           <a href="AI Providers/getting-started.html"><strong>Configure an AI provider</strong><span>Create a provider asset, add a machine-local key, and test the connection.</span></a>
           <a data-resource-href="support.reportIssueUrl" target="_blank" rel="noopener"><strong>Report a documentation problem</strong><span>Open a public GitHub report for broken links, incorrect details, or unclear steps.</span></a>
         </div>

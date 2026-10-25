@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Settings and Keys | AI Providers Docs</title>
-  <meta name="description" content="Settings layers and local key handling in AI Providers, including provider assets, PlayerPrefs-based local keys, and editor-only panel preferences.">
+  <meta name="description" content="Provider asset configuration, protected local API-key storage, and editor-only settings in AI Providers.">
   <link rel="stylesheet" href="../assets/styles.css">
   <link rel="icon" type="image/x-icon" href="../favicon/favicon.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="../favicon/favicon-32x32.png">
@@ -32,38 +32,32 @@
         <article class="doc-article" data-doc-content>
           <nav class="breadcrumb"><a href="../index.html">Home</a> / <span>Settings and Keys</span></nav>
           <h1>Settings and Keys</h1>
-          <p class="lede">AI Providers separates three concerns: shared provider asset configuration, local API key storage, and editor-only preferences. Those layers should be understood separately because the storage and security properties are different.</p>
+          <p class="lede">AI Providers separates reusable profile configuration from secrets and from editor preferences. A provider asset can be shared with a project; credentials and local editor state are deliberately kept outside that asset.</p>
 
           <h2>Layer 1: provider asset</h2>
-          <p>The asset stores shared configuration such as display name, base URL, endpoint behavior, default model, and provider GUID.</p>
+          <p>The provider asset stores configuration such as display name, base URL, provider-specific endpoint behavior, default model, and provider GUID. It does not need a secret to be committed with project files.</p>
 
           <h2>Layer 2: local API key storage</h2>
-          <p>Keys are stored in <code>PlayerPrefs</code>, scoped by project hash and provider GUID. That keeps keys out of the asset file, but it does not encrypt them at rest.</p>
+          <p>API keys are stored outside the asset in OS-backed protected credential storage on supported platforms, scoped to the project and provider GUID. Unsupported platforms report that persistence is unavailable instead of silently writing a plaintext fallback. The key field in the editor is masked.</p>
 
-<pre><code class="language-csharp">public string GetApiKey()
-{
-    if (!string.IsNullOrWhiteSpace(apiKey)) return apiKey;
-    return ProviderApiKeyStorage.GetProviderApiKey(providerGuid);
-}</code></pre>
+          <p>Use <code>Tools &gt; Beka Forge &gt; AI Providers</code> to add or select a profile, enter the key into its local credential field, save the profile, and run <strong>Test connection</strong>. A normal edit preserves the provider asset GUID and its credential scope. Duplicating a profile creates a new GUID, so the duplicate needs its own credential entry.</p>
+
+          <figure class="preview-embed"><iframe class="preview-embed__frame" data-preview-src="../../assets/unity-preview/embed.html?window=ai-providers&amp;surface=profile-duplicate&amp;embed=1" hidden title="Interactive preview of the Duplicate AI profile dialog" loading="lazy"></iframe><figcaption>Interactive preview: <strong>Profiles &gt; Duplicate AI profile</strong>, recreated from the product source. Duplicating creates a new identity that needs its own credential; nothing is saved. <a href="../../assets/unity-preview/embed.html?window=ai-providers&amp;surface=profile-duplicate">Open the full duplicate example</a>.</figcaption></figure>
 
           <h2>Layer 3: editor preferences</h2>
-          <p>Editor panel preferences live separately in <code>AiProvidersEditorLocalSettings</code> via <code>EditorPrefs</code>. That includes selected provider GUID, prompt preferences, and connection-test UI state.</p>
+          <p>Editor-only preferences, such as which profile is selected in a window, are stored separately from the provider asset and credentials. Subscription connections through Codex or Claude Code are also editor-only; they do not provide a player-build API credential.</p>
 
           <h2>Security posture</h2>
           <ul>
-            <li>Secrets stay out of the serialized asset files.</li>
-            <li>Secrets are local to the machine/project combination.</li>
-            <li>Secrets are not an encrypted vault.</li>
-            <li>Do not describe this as encrypted or vault-backed storage.</li>
+            <li>Never paste a key into a provider asset, source file, screenshot, log, or version-controlled settings file.</li>
+            <li>Protected credential storage is available only on supported platforms; check the editor's storage status before relying on persistence.</li>
+            <li>Credential storage is not a team secret manager. Share profile configuration, not API keys.</li>
           </ul>
 
-          <div class="placeholder-grid">
-            <article class="placeholder-card">
-              <h3>Local key and shared config surface</h3>
-              <img class="screenshot-img" src="../assets/images/provider-settings-overview.png" alt="AI Providers panel with hidden API key and connection test" loading="lazy">
-              <p>The shared provider asset fields stay editable while the key remains machine-local and visually masked in the editor.</p>
-            </article>
-          </div>
+          <figure class="screenshot-figure">
+            <img class="screenshot-img" src="../../Dialogue Graph System/4.0/screenshots/ai-provider-api-profile.jpg" alt="Example API profile with an empty API key field and provider endpoint settings" loading="lazy" width="1920" height="1161">
+            <figcaption>The captured example leaves the credential field blank and has not been connection-tested. Enter keys only in the local masked field.</figcaption>
+          </figure>
 
           <nav class="page-nav" data-prev-next></nav>
         </article>

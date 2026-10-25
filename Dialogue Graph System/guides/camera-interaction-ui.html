@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Camera, Interaction, and UI Workflows | Dialogue Graph System Docs</title>
+  <meta name="description" content="Create a branching conversation and start it by dialogID.">
+  <link rel="stylesheet" href="../assets/styles.css">
+  <!-- Favicons -->
+  <link rel="icon" type="image/x-icon" href="../favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="../favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../favicon/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../favicon/apple-touch-icon.png">
+  <meta name="theme-color" content="#E8541A">
+</head>
+<body data-page="camera-interaction-ui" data-base="../">
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <div class="site-shell">
+    <header class="topbar"><div class="topbar-inner"><a class="brand" href="../index.html"><img src="../brand/logo-primary-transparent-dark@1x.png" alt="BekaForge Dialogue Graph System" height="34" style="display:block;"></a><div class="topbar-spacer"></div><div class="top-actions"><div class="search-wrap"><input class="search-input" type="search" placeholder="Filter pages from the sidebar" readonly></div><a class="back-to-site" href="../../index.html">&#8592; BekaForge</a><button class="menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-controls="sidebar">Menu</button></div></div></header>
+    <div class="page-layout">
+      <aside class="sidebar" id="sidebar"><div class="sidebar-inner" data-sidebar-nav></div></aside>
+      <main class="content-shell" id="main-content">
+        <article class="doc-article" data-doc-content>
+<nav class="breadcrumb"><a href="../index.html">Home</a> / <span>Camera, Interaction, and UI Workflows</span></nav>
+<h1>Camera, Interaction, and UI Workflows</h1>
+<p class="lede">Connect authored camera and interaction fields to scene components, then configure dialogue appearance and localization. Browser examples show representative fields; they do not run a Unity scene.</p>
+<h2>Set up camera IDs</h2>
+<ol><li>In the Unity scene, select the Camera Controller Manager and assign its Output Camera (it falls back to Camera.main when unset). Its collapsed Live Operation State is read-only; rig and target IDs belong to the registered components.</li><li>Select each BekaCameraRig or BekaCameraTarget component and give it a stable ID; those components register the IDs used by camera nodes.</li><li>In a DGS graph, add the appropriate Camera node and enter the same ID. See the <a href="../node-reference.html#cameraswitch">camera node field reference</a>.</li><li>Save the graph and scene. To review graph issues, show the graph sidebar, open <strong>Validate</strong>, and click <strong>Validate Graph</strong>.</li></ol>
+<figure class="preview-embed"><iframe class="preview-embed__frame" data-preview-src="../../assets/unity-preview/embed.html?component=inspector%3Acamera-manager&amp;embed=1" title="Camera Controller Manager inspector example" loading="lazy" hidden></iframe><figcaption>Example Output Camera and read-only status only. No scene component is loaded. <a href="../../assets/unity-preview/embed.html?component=inspector%3Acamera-manager">Open the full manager preview</a>.</figcaption></figure>
+<figure class="preview-embed"><iframe class="preview-embed__frame" data-preview-src="../../assets/unity-preview/embed.html?component=inspector%3Acamera-components&amp;embed=1" title="Camera rig and target inspector example" loading="lazy" hidden></iframe><figcaption>Example stable IDs only. <a href="../../assets/unity-preview/embed.html?component=inspector%3Acamera-components">Open the full rig and target preview</a>.</figcaption></figure>
+<h2>Configure an interaction prompt</h2>
+<ol><li>Select the Interactable component on the target object.</li><li>Set Action Label and Object Label, choose Press or Hold, then configure the action source and availability.</li><li>Set the Interactor’s authored target references and targeting mode. In its Input Ownership section, read the state-source, adapter, and active-binding diagnostics; they are not editable ownership controls. Review the component’s Validation section for its actual checks.</li><li>For DGS integration, implement the gameplay handler that responds to the interaction; the Inspector fields alone do not perform game-specific behavior.</li></ol>
+<figure class="preview-embed"><iframe class="preview-embed__frame" data-preview-src="../../assets/unity-preview/embed.html?component=inspector%3Ainteractable&amp;embed=1" title="Interactable inspector example" loading="lazy" hidden></iframe><figcaption>Example action and prompt settings; no interaction is executed. <a href="../../assets/unity-preview/embed.html?component=inspector%3Ainteractable">Open the full Interactable preview</a>.</figcaption></figure>
+<figure class="preview-embed"><iframe class="preview-embed__frame" data-preview-src="../../assets/unity-preview/embed.html?component=inspector%3Ainteractor&amp;embed=1" title="Interactor inspector example" loading="lazy" hidden></iframe><figcaption>Example targeting settings; no scene is queried. <a href="../../assets/unity-preview/embed.html?component=inspector%3Ainteractor">Open the full Interactor preview</a>.</figcaption></figure>
+<h2>Choose a UI theme appearance</h2>
+<ol><li>Open the DGS Settings window and choose <strong>UI themes</strong>. If that category is not shown because the UI Themes integration is unavailable, use the Inspector route: create or select the catalog with <strong>Create &gt; Beka Forge &gt; UI Themes &gt; DGS Theme Catalog</strong>, then click <strong>Open UI Theme Editor</strong>. A scene Dialog UI Manager also exposes <strong>Open UI Theme Editor</strong> under <strong>Appearance &amp; Layout</strong>. The direct menu <strong>Tools &gt; Beka Forge &gt; Developer &gt; DGS &gt; UI Theme Editor</strong> is development-only.</li><li>Use the workbench to select the intended appearance pack and review the related preview fields together.</li><li>Select the scene’s Dialog UI Manager. In <strong>Appearance &amp; Layout</strong>, enable catalog themes if needed, assign the <strong>UI Theme Catalog</strong>, and choose the intended appearance and layout. <strong>Apply to Live UI</strong> previews the selection in Play Mode only.</li><li>Save the assets and scene, then inspect the UI in Unity. The browser workbench is a field demonstration only.</li></ol>
+<figure class="preview-embed"><iframe class="preview-embed__frame" data-preview-src="../../assets/unity-preview/embed.html?window=themes&amp;surface=workbench&amp;embed=1" title="UI Themes workbench example" loading="lazy" hidden></iframe><figcaption>Fabricated appearance settings and preview; no project theme is changed. <a href="../../assets/unity-preview/embed.html?window=themes&amp;surface=workbench">Open the full Themes workbench preview</a>.</figcaption></figure>
+<h2>Set runtime UI visibility</h2>
+<ol><li>Select the Dialogue Runtime UI Settings asset used by the scene, or edit the project master through <strong>DGS Settings &gt; Runtime UI</strong>.</li><li>Review visibility switches for speaker, portrait, choices, history, settings, and language controls.</li><li>For a scene-specific override, select its DialogManager and assign the asset to <strong>Overrides &gt; Local UI Settings</strong>. That local setting takes precedence for the manager.</li></ol>
+<figure class="preview-embed"><iframe class="preview-embed__frame" data-preview-src="../../assets/unity-preview/embed.html?component=inspector%3Aasset-runtime-ui-settings&amp;embed=1" title="Dialogue Runtime UI Settings inspector example" loading="lazy" hidden></iframe><figcaption>Example visibility configuration only. <a href="../../assets/unity-preview/embed.html?component=inspector%3Aasset-runtime-ui-settings">Open the full settings Inspector preview</a>.</figcaption></figure>
+<h2>Prepare localized text</h2>
+<ol><li>Create or select a Dialog Localization Table and confirm its source locale matches the authored source text.</li><li>Add each required locale and provide translated strings keyed to the source dialogue lines.</li><li>In Localization Runtime Settings, set <strong>Default Locale Code</strong> and add the Dialog Localization Table assets to <strong>Localization Tables</strong>; edit locale display names or player-choice persistence if needed.</li><li>Keep the settings asset at <code>Resources/DialogSettingsSO/DialogLocalizationRuntimeSettings</code> for the built-in runtime loader, or assign it to the scene’s Dialog Runtime Language Controller. Save the assets.</li></ol>
+<figure class="preview-embed"><iframe class="preview-embed__frame" data-preview-src="../../assets/unity-preview/embed.html?component=inspector%3Aasset-localization-table&amp;embed=1" title="Dialog Localization Table inspector example" loading="lazy" hidden></iframe><figcaption>Example table values; no translations are generated or stored. <a href="../../assets/unity-preview/embed.html?component=inspector%3Aasset-localization-table">Open the full localization table preview</a>.</figcaption></figure>
+<figure class="preview-embed"><iframe class="preview-embed__frame" data-preview-src="../../assets/unity-preview/embed.html?component=inspector%3Aasset-localization-runtime-settings&amp;embed=1" title="Localization Runtime Settings inspector example" loading="lazy" hidden></iframe><figcaption>Example locale settings. <a href="../../assets/unity-preview/embed.html?component=inspector%3Aasset-localization-runtime-settings">Open the full locale settings preview</a>.</figcaption></figure>
+<p><strong>Acceptance boundary:</strong> these steps document Unity authoring and setup. They do not establish a rendered camera move, interaction response, localized runtime display, or audio playback. Verify those behaviors in the target Unity scene and build.</p>
+<p>For core dialogue, see <a href="creating-a-dialog.html">Creating a Dialog</a>. For authored sound sequences, see <a href="walla-setup.html">Walla and Sound</a>; for contextual exchanges, see <a href="banter-setup.html">Banter</a>.</p><nav class="page-nav" data-prev-next></nav>
+</article>
+      </main>
+      <aside class="page-toc" data-page-toc></aside>
+    </div>
+    <footer class="footer"><div class="footer-inner"><span>Dialogue Graph System v4.0.0</span><span>&copy; <span data-current-year></span></span></div></footer>
+  </div>
+  <script src="../assets/app.js"></script>
+</body>
+</html>

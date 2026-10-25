@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
@@ -23,54 +23,60 @@
         <article class="doc-article" data-doc-content>
           <nav class="breadcrumb"><a href="index.html">Home</a> / <span>Troubleshooting</span></nav>
           <h1>Troubleshooting</h1>
-          <p class="lede">Use this page when a graph exists but does not play, UI appears but choices do not work, or generated/imported data behaves unexpectedly.</p>
+          <p class="lede">Start with the visible symptom and check the graph, runtime UI, input module, or imported asset involved before changing project settings.</p>
           <h2>The dialogue does not start</h2>
           <ul>
-            <li><code>DialogManager.uiPanel</code> is assigned</li>
-            <li>the graph is mapped in <code>dialogGraphs</code></li>
-            <li>the requested <code>dialogID</code> matches exactly</li>
-            <li>the graph has a valid <code>Start</code> link</li>
+            <li>The <code>DialogManager</code> has a usable <code>DialogUIManager</code> reference or prefab, or a valid <code>DialogUIController</code> is already in the scene. The old <code>uiPanel</code> field is not the current setup.</li>
+            <li>If you use <code>PlayDialogByID</code>, check that <code>dialogGraphs</code> contains exactly one matching ID and a graph reference. IDs are matched as registered keys.</li>
+            <li>In the Graphs workspace, show the graph sidebar, select <strong>Validate</strong>, and click <strong>Validate Graph</strong>. Review its issues and inspect Start’s outgoing route to a valid next node or End.</li>
+            <li>Check the Console for a specific refusal, such as a missing UI manager, invalid graph, or ambiguous ID.</li>
           </ul>
           <h2>The UI appears but choices do not work</h2>
           <ul>
-            <li><code>choiceButtonPrefab</code> is assigned</li>
-            <li>the prefab root has a <code>Button</code></li>
-            <li><code>choicesContainer</code> is assigned</li>
-            <li>the EventSystem is active and compatible with your input setup</li>
+            <li>Open the active <code>DialogUIController</code> and check its choice prefab and <code>choicesContainer</code> bindings. The current controller also supports its configured fallback choice prefab.</li>
+            <li>Check the choice prefab’s expected view/button components and that the container belongs to a live scene UI, not a Project prefab asset.</li>
+            <li>Confirm an active EventSystem has an input module compatible with the project’s Active Input Handling. DGS includes an optional bridge for the Input System UI module; the Input System package itself is not required for the core runtime.</li>
+            <li>Check the choice’s requirements and outgoing link in the graph. A visible choice does not guarantee that its authored destination or requirements are valid.</li>
           </ul>
           <h2>History panel is empty</h2>
           <ul>
-            <li><code>DialogueHistory</code> is enabled</li>
-            <li>it is subscribed to the active <code>DialogManager</code></li>
-            <li><code>DialogueHistoryView</code> references are wired</li>
+            <li>Check that a <code>DialogueHistory</code> component is initialized against the active manager. It can resolve the manager’s current UI history view when one is available.</li>
+            <li>Verify the history panel is enabled in the effective runtime UI settings and the view’s required panel, list/viewport, and row prefab references are assigned.</li>
+            <li>Check the retention policy: <code>CurrentConversation</code> starts a fresh visible session for a new conversation, while broader retention keeps entries within the configured cap.</li>
+            <li>Open the panel only after at least one line or choice has been committed. It records runtime presentations, not graph nodes merely selected in the editor.</li>
           </ul>
           <h2>Transcript comes back empty</h2>
           <ul>
-            <li>the conversation was started by <code>dialogID</code></li>
-            <li>the conversation has already completed once</li>
-            <li>the graph mapping still exists</li>
-            <li>the graph structure has not changed in a way that invalidates the stored branch path</li>
+            <li>Use <code>PlayDialogByID</code> if you need branch-path lookup by ID; a direct <code>StartDialog(graph)</code> call does not provide that registry ID.</li>
+            <li>Check that the requested ID still maps to one graph and that the conversation recorded a branch path.</li>
+            <li>Call <code>GetLastPlayedDialogTranscript</code> after a run that reached a terminal point, and check the returned text rather than assuming every run has a transcript.</li>
+            <li>Rebuild after graph edits. A stored path is a sequence of branch indices and cannot always be replayed against a structurally changed graph.</li>
           </ul>
           <h2>JSON import fails</h2>
           <ul>
-            <li>the JSON is valid</li>
-            <li>GUIDs are unique</li>
-            <li>links reference real nodes</li>
-            <li>choice arrays and link ports align</li>
+            <li>Use <strong>Production &gt; Import / Export</strong> in <strong>Tools &gt; Beka Forge &gt; Dialogue Graph System &gt; Open Editor</strong>. Select a TextAsset or external JSON file and choose <strong>Load &amp; Validate JSON</strong> before importing.</li>
+            <li>Read the preview and refusal message. DGS validates identities, node data, choice requirements, references, and supported branch/condition structures before creating the graph.</li>
+            <li>Import as a new independent copy for ordinary reuse. Choose overwrite only when you intend to replace an existing target and have reviewed the exact target.</li>
+            <li>Keep external JSON untrusted and review the imported graph in the editor before use.</li>
           </ul>
-          <h2>AI command preview fails</h2>
+          <h2>Contextual Banter does not appear</h2>
           <ul>
-            <li>the provider returned structured JSON content and not explanatory text</li>
-            <li>the selected command is supported in the current release</li>
-            <li>the selected model can follow structured output instructions reliably</li>
-            <li>the provider asset points to the correct endpoint and contains your current key or local Ollama settings</li>
+            <li>Check that the Banter host finished initialization before it submitted a request.</li>
+            <li>Compare the submitted trigger and category with enabled exchanges in the configured collections, then run the Exchange and Catalog validators.</li>
+            <li>Check the exact registered ActorIds and character-role bindings. See <a href="guides/banter-setup.html">Set up Banter</a>.</li>
           </ul>
+          <h2>Graph sound is assigned but silent</h2>
+          <ul>
+            <li>Graph authoring data and playback are separate: prepare a fresh runtime binding from the graph’s sound sidecar, then use a scene bridge with the correct manager, binding, and distinct ambience/local players.</li>
+            <li>Check the AudioClip, AudioListener, mixer and active output device. See <a href="guides/walla-setup.html">Set up Walla sound</a>.</li>
+          </ul>
+          <p>For AI-provider setup and authoring diagnostics, use the <a href="guides/ai-generation-workflow.html">AI authoring guide</a>; provider details are maintained separately from this core troubleshooting page.</p>
           <nav class="page-nav" data-prev-next></nav>
         </article>
       </main>
       <aside class="page-toc" data-page-toc></aside>
     </div>
-    <footer class="footer"><div class="footer-inner"><span>Dialogue Graph System v3.0.0</span><span>&copy; <span data-current-year></span></span></div></footer>
+    <footer class="footer"><div class="footer-inner"><span>Dialogue Graph System v4.0.0</span><span>&copy; <span data-current-year></span></span></div></footer>
   </div>
   <script src="assets/app.js"></script>
 </body>

@@ -1,0 +1,241 @@
+/* AI Providers window styles.
+   Reproduces the warm AiProvidersUiTheme scope used by the Unity panel. */
+
+.ai-providers--warm {
+  --ai-canvas: #2b2a27;
+  --ai-card: #3a3833;
+  --ai-card-alt: #444139;
+  --ai-text: #f2ede4;
+  --ai-muted: #b6ac9c;
+  --ai-violet: #a78bfa;
+  --ai-success: #7fd39a;
+  --ai-warning: #e8c56a;
+  --ai-failure: #e08585;
+
+  background: var(--ai-canvas);
+  color: var(--ai-text);
+  border-color: #55514622;
+}
+
+.ai-providers--warm .up-window__titlebar {
+  background: #211f1c;
+  border-bottom-color: #4a463d;
+  color: var(--ai-text);
+}
+
+.ai-providers--warm .bf-card,
+.ai-providers--warm .ai-providers-settings-section .bf-card {
+  background: #3a3833;
+  border-color: #555146;
+}
+
+.ai-providers--warm .bf-card__title,
+.ai-providers--warm .bf-section-title {
+  color: var(--ai-text);
+  border-bottom-color: #555146;
+}
+
+.ai-providers--warm .bf-field__label,
+.ai-providers--warm .bf-muted,
+.ai-providers--warm .bf-helper {
+  color: var(--ai-muted);
+}
+
+.ai-providers--warm .bf-input,
+.ai-providers--warm .bf-select,
+.ai-providers--warm .bf-textarea {
+  background: #2b2a27;
+  color: var(--ai-text);
+  border-color: #6b6558;
+}
+
+.ai-providers--warm .bf-button {
+  background: #444139;
+  color: var(--ai-text);
+  border-color: #6b6558;
+}
+
+.ai-providers--warm .bf-button--primary {
+  background: #7c6bd0;
+  border-color: #a78bfa;
+}
+
+.ai-providers-window {
+  width: min(880px, 100%);
+}
+
+.ai-providers-form-content {
+  flex: 1 1 auto;
+  min-height: 0;
+  padding: 0 14px 14px;
+}
+
+.ai-provider-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  margin: 0 -14px 10px;
+  padding: 14px;
+  background: #444139;
+  border-bottom: 1px solid #555146;
+  border-left: 4px solid var(--ai-violet);
+  position: sticky;
+  top: 0;
+  z-index: 5;
+}
+
+.ai-provider-header-main {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.ai-provider-brand-logo {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+  border-radius: 6px;
+  background: #2b2a27;
+}
+
+.ai-provider-header-copy {
+  min-width: 0;
+}
+
+.ai-provider-header-title {
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.ai-provider-enabled-badge {
+  padding: 4px 10px;
+  border-radius: 12px;
+  background: #2e7d4f;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.ai-provider-enabled-badge--off {
+  background: #7d2e2e;
+}
+
+.ai-providers-section-navigation {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 6px 0 12px;
+}
+
+.ai-providers-section-heading {
+  font-size: 13px;
+  font-weight: 700;
+  margin: 14px 0 8px;
+  color: var(--ai-text);
+}
+
+.ai-profile-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.ai-profile-card {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-align: left;
+  padding: 8px 10px;
+  background: #2b2a27;
+  border: 1px solid #555146;
+  border-radius: 6px;
+  cursor: pointer;
+  color: var(--ai-text);
+}
+
+.ai-profile-card:hover {
+  border-color: #8d8571;
+}
+
+.ai-profile-card--selected {
+  border-color: var(--ai-violet);
+  box-shadow: 0 0 0 1px var(--ai-violet);
+}
+
+.ai-profile-card__name {
+  font-weight: 700;
+  font-size: 12px;
+}
+
+.ai-profile-card__path {
+  font-size: 10px;
+  color: var(--ai-muted);
+  word-break: break-all;
+}
+
+.ai-profile-card__chips {
+  display: flex;
+  gap: 4px;
+}
+
+.ai-profile-card__action {
+  font-size: 10px;
+  color: var(--ai-violet);
+  font-weight: 600;
+}
+
+.ai-provider-chip--subscription {
+  background: rgba(167, 139, 250, 0.25);
+  color: #d9cdff;
+}
+
+.ai-provider-chip--warning {
+  background: rgba(232, 197, 106, 0.25);
+  color: var(--ai-warning);
+}
+
+.ai-provider-chip--success {
+  background: rgba(127, 211, 154, 0.25);
+  color: var(--ai-success);
+}
+
+.ai-template-group {
+  margin-top: 10px;
+}
+
+.ai-template-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.ai-template-card {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-align: left;
+  padding: 8px 10px;
+  background: var(--bf-raised, #1a1d28);
+  border: 1px solid var(--bf-border, #2a2f45);
+  border-radius: 6px;
+  cursor: pointer;
+  color: var(--bf-text-primary, #e8ecf4);
+}
+
+.ai-template-card:hover {
+  border-color: var(--bf-focus, #a5aeff);
+}
+
+.ai-prompt-section {
+  margin: 8px 0 12px;
+}
+
+@media (max-width: 680px) {
+  .ai-provider-header {
+    flex-direction: column;
+  }
+}

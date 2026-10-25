@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
@@ -26,7 +26,7 @@
           <p class="lede">The project is organized around a clear editor/runtime split, with graph assets and runtime playback as the core architectural boundary.</p>
           <div class="meta-strip">
             <span class="meta-chip">Assemblies: DialogSystem.Runtime and DialogSystem.Editor</span>
-            <span class="meta-chip">Core 3.0 has no required AI dependency</span>
+            <span class="meta-chip">AI Providers is only required for AI features</span>
           </div>
 
           <h2>Repository structure</h2>
@@ -40,19 +40,21 @@
 
           <h2>Runtime data flow</h2>
 <pre><code>Game code or UI event
-    -> DialogManager.PlayDialogByID
+    -> DialogManager.PlayDialogByID / StartDialog
     -> DialogGraph lookup
     -> Graph traversal
-    -> DialogUIController
-    -> DialogActionRunner
-    -> OnLineShown / OnChoicePicked
-    -> DialogueHistory
-    -> Branch path tracking
-    -> DialogGraphTranscriptBuilder</code></pre>
+       -> Dialog / choice node -> DialogUIController
+       -> Action node -> DialogActionRunner -> configured handler or UnityEvent
+    -> DialogManager line / choice events -> DialogueHistory
+    -> branch path recorded as choices are resolved
+
+GetLastPlayedDialogTranscript
+    -> current graph + recorded branch path -> DialogGraphTranscriptBuilder</code></pre>
+          <p>The transcript builder reconstructs authored text from the current graph and recorded path. It does not preserve the exact localized or interpolated text that a player saw.</p>
 
           <h2>Editor authoring flow</h2>
-<pre><code>DialogGraphLauncherWindow
-    -> DialogGraphEditorWindow
+<pre><code>DialogSystemMainWindow (active entry point)
+    -> GraphTabController
     -> DialogGraphView
     -> Node views and edges
     -> DialogGraph asset plus node sub-assets
@@ -76,7 +78,7 @@
 
           <h2>Suggested visuals</h2>
           <div class="placeholder-grid">
-            <article class="placeholder-card"><h3>Graph editor overview</h3><img class="screenshot-img" src="assets/images/graph-editor-overview.png" alt="Graph Editor Overview" loading="lazy"><p>Best visual anchor for the editor/runtime split.</p></article>
+            <article class="placeholder-card"><h3>Graph editor overview</h3><img class="screenshot-img" src="4.0/screenshots/clean/graph-far.png" alt="MarketFriend graph overview in the Graphs workspace, with its node canvas, sidebar, and minimap." loading="lazy" width="1914" height="986"><p>Best visual anchor for the editor/runtime split.</p></article>
           </div>
 
           <nav class="page-nav" data-prev-next></nav>
@@ -84,7 +86,7 @@
       </main>
       <aside class="page-toc" data-page-toc></aside>
     </div>
-    <footer class="footer"><div class="footer-inner"><span>Dialogue Graph System v3.0.0</span><span>&copy; <span data-current-year></span></span></div></footer>
+    <footer class="footer"><div class="footer-inner"><span>Dialogue Graph System v4.0.0</span><span>&copy; <span data-current-year></span></span></div></footer>
   </div>
   <script src="assets/app.js"></script>
 </body>

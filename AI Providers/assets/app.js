@@ -7,7 +7,8 @@
       items: [
         { id: "home", label: "Home", href: "index.html", search: "overview ai providers connector docs provider assets transport unity" },
         { id: "getting-started", label: "Getting Started", href: "getting-started.html", search: "getting started setup provider asset api key editor window quick start" },
-        { id: "architecture", label: "Architecture", href: "architecture.html", search: "architecture service provider abstraction request response transport" }
+        { id: "architecture", label: "Architecture", href: "architecture.html", search: "architecture service provider abstraction request response transport" },
+        { id: "interactive-preview", label: "Interactive Preview", href: "preview/index.html", search: "interactive preview settings window profiles providers prompt defaults example" }
       ]
     },
     {
@@ -125,7 +126,13 @@
       return;
     }
     headings.forEach((heading) => {
-      if (!heading.id) heading.id = slugify(heading.textContent || "");
+      if (!heading.id) {
+        const base = slugify(heading.textContent || "") || "section";
+        let id = base;
+        let suffix = 2;
+        while (document.getElementById(id)) id = `${base}-${suffix++}`;
+        heading.id = id;
+      }
     });
     host.innerHTML = `
       <div class="toc-card">
@@ -222,8 +229,11 @@
     });
 
     document.addEventListener("keydown", (event) => {
-      if (event.key === "Escape" && !overlay.hasAttribute("hidden")) {
-        closeLightbox();
+      if (overlay.hasAttribute("hidden")) return;
+      if (event.key === "Escape") closeLightbox();
+      if (event.key === "Tab") {
+        event.preventDefault();
+        overlay.querySelector(".image-lightbox__close").focus();
       }
     });
 
@@ -258,6 +268,12 @@
       if (sidebar.contains(event.target) || toggle.contains(event.target)) return;
       body.classList.remove("nav-open");
       toggle.setAttribute("aria-expanded", "false");
+    });
+    document.addEventListener("keydown", (event) => {
+      if (event.key !== "Escape" || !body.classList.contains("nav-open")) return;
+      body.classList.remove("nav-open");
+      toggle.setAttribute("aria-expanded", "false");
+      toggle.focus();
     });
   }
 
@@ -295,4 +311,8 @@
   setYear();
   fadeInPanels();
   renderRoadmapButton();
+  document.querySelector('.topbar input[readonly]')?.closest('.search-wrap')?.remove();
+  import(new URL("../../assets/documentation/live-previews.js", document.currentScript.src).href)
+    .then(({ enhanceLivePreviews }) => enhanceLivePreviews())
+    .catch((error) => console.warn("Live examples are unavailable; use the standalone preview links.", error));
 })();

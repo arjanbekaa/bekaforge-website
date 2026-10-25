@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
@@ -21,43 +21,71 @@
       <aside class="sidebar" id="sidebar"><div class="sidebar-inner" data-sidebar-nav></div></aside>
       <main class="content-shell" id="main-content">
         <article class="doc-article" data-doc-content>
-          <nav class="breadcrumb"><a href="../index.html">Home</a> / <span>Creating a Dialog</span></nav>
-          <h1>Guide: Creating a Dialog</h1>
-          <p class="lede">Create a branching conversation that can be started by <code>dialogID</code>.</p>
-          <h2>Workflow</h2>
-          <ol>
-            <li>Open <code>Tools â†’ Dialogue Graph System â†’ Dialogue Graph</code>.</li>
-            <li>Create a new graph.</li>
-            <li>Add nodes and connect them.</li>
-            <li>Save the graph.</li>
-            <li>Add it to <code>DialogManager.dialogGraphs</code>.</li>
-            <li>Start it from gameplay code.</li>
-          </ol>
-          <h2>Example starter script</h2>
-<pre><code>using DialogSystem.Runtime.Core;
-using UnityEngine;
+<nav class="breadcrumb"><a href="../index.html">Home</a> / <span>Creating a Dialog</span></nav>
+<h1>Creating a Dialog Graph</h1>
+<p class="lede">Create a small graph, author its lines and responses, save it, and inspect its setup before connecting it to a scene.</p>
 
-public class TavernNpc : MonoBehaviour
-{
-    public void Talk()
-    {
-        DialogManager.Instance.PlayDialogByID("tavern_npc_intro");
-    }
-}</code></pre>
-          <h2>Validation checklist</h2>
-          <ul>
-            <li><code>Start</code> has an outgoing link</li>
-            <li>every choice option has a valid target</li>
-            <li>the <code>dialogID</code> mapping exists in the manager</li>
-            <li>the scene has a working UI panel</li>
-          </ul>
-          <div class="placeholder-grid"><article class="placeholder-card screenshot-card"><h3>New graph dialog</h3><img class="screenshot-img" src="../assets/images/new-dialogue-popup.png" alt="New graph dialog" loading="lazy"><p>The creation prompt where you name the graph asset and set its dialog ID.</p></article></div>
-          <nav class="page-nav" data-prev-next></nav>
-        </article>
+<h2>Start with a named graph asset</h2>
+<ol>
+  <li>Open <strong>Tools &gt; Beka Forge &gt; Dialogue Graph System &gt; Open Editor</strong>. The workspace opens on <strong>Home</strong>, which contains the create-and-open controls.</li>
+  <li>In the Home view's <strong>Name</strong> field, enter a unique descriptive name such as <code>VillageGreeting</code> and select <strong>Create &amp; Open</strong>.</li>
+  <li>The new asset is normally placed under <code>Assets/DialogGraphSystem/Graphs</code>. Keep it in your project's asset structure so Unity can track its reference and metadata.</li>
+</ol>
+
+<figure class="preview-embed"><iframe class="preview-embed__frame" data-preview-src="../../assets/unity-preview/embed.html?window=dgs&amp;surface=home&amp;embed=1" title="DGS Home workspace example" loading="lazy" hidden></iframe><figcaption>Example Home workspace; nothing is saved. <a href="../../assets/unity-preview/embed.html?window=dgs&amp;surface=home">Open the full preview</a>.</figcaption></figure>
+<p class="try-it"><strong>Try the Home example:</strong> enter a graph name in the <strong>Graph name</strong> field and choose <strong>Create &amp; Open</strong> to see the sample confirmation flow. No Unity asset is created.</p>
+
+<figure class="preview-embed"><iframe class="preview-embed__frame" data-preview-src="../../assets/unity-preview/embed.html?component=node%3ADialog&amp;embed=1" title="Editable Dialog node field example" loading="lazy" hidden></iframe><figcaption>Separate example Dialog fields; no graph is loaded or saved. <a href="../../assets/unity-preview/embed.html?component=node%3ADialog">Open the full Dialog preview</a>.</figcaption></figure>
+<p class="try-it"><strong>Try the Dialog example:</strong> edit <strong>Speaker</strong> and <strong>Dialog</strong>, then expand <strong>Details</strong> and change <strong>Node Title</strong>. The card reflects those browser-only edits.</p>
+<h2>Understand the boundary nodes</h2>
+<p>The graph editor supplies an editor-created <strong>Start</strong> and <strong>End</strong> boundary. Start is the entry point; End marks a completed route. Do not create replacement boundary nodes manually. Build the conversation between them and connect all intended outcomes to End or onward to another node.</p>
+<figure class="screenshot-figure"><img class="screenshot-img" src="../4.0/screenshots/clean/graph-far.png" alt="MarketFriend graph overview in the Graphs workspace, with its node canvas, sidebar, and minimap." loading="lazy" width="1914" height="986"><figcaption>MarketFriend graph overview shown as a visual reference; your graph will have the nodes and labels you author.</figcaption></figure>
+
+<h2>Add a line and a choice</h2>
+<ol>
+  <li>Right-click the canvas and choose <strong>Create &gt; Dialog Node</strong>.</li>
+  <li>Select the node. Fill in <strong>Node Title</strong>, <strong>Speaker</strong>, and <strong>Dialog</strong>. The title helps identify the node while editing; the speaker and line are the authored conversation content.</li>
+  <li>Create a <strong>Choice Node</strong> from <strong>Create &gt; Choice Node</strong> in the same context menu and connect the Dialog node's output to its input.</li>
+  <li>A new Choice starts with one answer row. Edit that row for the first response, then select <strong>+ Add Option</strong> once for each additional response. The preceding Dialog line asks the question; the active Choice card has no prompt field, and its answer IDs are managed by the editor.</li>
+  <li>Create a Dialog node for each response if each answer should receive a different reply. Connect each answer's output port to its own response node.</li>
+  <li>Connect Start to your first line and connect every branch to the next intended node. When a route finishes, connect it to End.</li>
+</ol>
+<p>To change a connection, drag from an output port to the intended input port. Follow the port direction shown by the graph editor; an unconnected response is a route the player cannot continue through.</p>
+
+<figure class="preview-embed"><iframe class="preview-embed__frame" data-preview-src="../../assets/unity-preview/embed.html?component=node%3AChoice&amp;embed=1" title="Editable Choice answer rows example" loading="lazy" hidden></iframe><figcaption>Separate example answer rows; no graph is loaded and changes do not save. <a href="../../assets/unity-preview/embed.html?component=node%3AChoice">Open the full Choice preview</a>.</figcaption></figure>
+<p class="try-it"><strong>Try the Choice example:</strong> edit an option's answer text, expand its <strong>Requirements</strong> foldout, then choose <strong>+ Add Option</strong>. The browser example shows the editable rows and a new answer; it does not simulate graph connections.</p>
+<h2>Save and review the graph</h2>
+<ol>
+  <li>Choose <strong>Save</strong> in the graph editor toolbar.</li>
+  <li>If the graph sidebar is hidden, select <strong>Show Sidebar</strong>. In its right-hand panel, choose <strong>Validate</strong>, then click <strong>Validate Graph</strong>.</li>
+  <li>Review the validation results, fix relevant issues, and run <strong>Validate Graph</strong> again. Save graph edits as needed.</li>
+</ol>
+<p><strong>Expected result:</strong> the graph asset is saved and the graph sidebar shows its validation results. Verify scene presentation separately in Unity Play Mode.</p>
+
+
+
+<p>The graph toolbar provides <strong>Save</strong>, <strong>Format Layout</strong>, and <strong>Show/Hide Sidebar</strong>. Open the sidebar’s <strong>Validate</strong> tab and choose <strong>Validate Graph</strong> to review graph errors, warnings, and information messages.</p><h2>Give the graph a playback ID</h2>
+<p>Graph asset identity and a runtime <code>dialogID</code> are different things. The graph asset is the authored graph. A <code>dialogID</code> is the string key your scene's <code>DialogManager</code> uses to select that graph.</p>
+<ol>
+  <li>Put the <code>DialogueManager.prefab</code> from <code>Assets/DialogGraphSystem/Resources/Prefabs/</code> into the scene.</li>
+  <li>Add a row to the manager's <strong>Dialog Graphs</strong> list, assign your graph asset, and enter a unique ID such as <code>village_greeting</code>.</li>
+  <li>Launch it with <code>DialogPlayer.StartDialog("village_greeting")</code> or <code>DialogManager.Instance.PlayDialogByID("village_greeting")</code>.</li>
+</ol>
+<p>Keep IDs stable once scene buttons, saved data, or other code refer to them. A blank or duplicate ID can make registry resolution ambiguous; review the row in the manager Inspector.</p>
+
+<h2>Common authoring mistakes</h2>
+<ul>
+  <li><strong>A response has no destination:</strong> connect its output to a reply or End.</li>
+  <li><strong>The graph begins in the middle:</strong> connect Start to the first Dialog node.</li>
+  <li><strong>Two unrelated options share one response unintentionally:</strong> split them into separate Dialog nodes if their follow-up text should differ.</li>
+  <li><strong>A route looks connected but the scene does not advance:</strong> verify the selected output reaches the intended input, then test the configured Unity scene separately.</li>
+</ul>
+<nav class="page-nav" data-prev-next></nav>
+</article>
       </main>
       <aside class="page-toc" data-page-toc></aside>
     </div>
-    <footer class="footer"><div class="footer-inner"><span>Dialogue Graph System v3.0.0</span><span>&copy; <span data-current-year></span></span></div></footer>
+    <footer class="footer"><div class="footer-inner"><span>Dialogue Graph System v4.0.0</span><span>&copy; <span data-current-year></span></span></div></footer>
   </div>
   <script src="../assets/app.js"></script>
 </body>

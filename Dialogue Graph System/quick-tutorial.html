@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
@@ -21,67 +21,60 @@
       <aside class="sidebar" id="sidebar"><div class="sidebar-inner" data-sidebar-nav></div></aside>
       <main class="content-shell" id="main-content">
         <article class="doc-article" data-doc-content>
-          <nav class="breadcrumb"><a href="index.html">Home</a> / <span>Quick Tutorial</span></nav>
-          <h1>Quick Tutorial</h1>
-          <p class="lede">This is the smallest meaningful workflow in the repository: create a graph, wire runtime components, and play a branching conversation end to end.</p>
+<nav class="breadcrumb"><a href="index.html">Home</a> / <span>Quick Tutorial</span></nav>
+<h1>Quick Tutorial: Build and Play a Branching Dialogue</h1>
+<p class="lede">In this walkthrough you will create a graph, connect a question and two responses, register it with a scene manager, and launch it from a button.</p>
 
-          <h2>Step 1. Create or open a graph</h2>
-          <p>Open <code>Tools â†’ Dialogue Graph System â†’ Dialogue Graph</code>. In the launcher window, either create a new graph asset or open one of the included sample graphs from <code>Assets/DialogGraphSystem/Graphs/</code>.</p>
+<h2>What you need</h2>
+<p>Dialogue Graph System 4.0 imported into a Unity 6000.3-or-newer project, UGUI resolved, and TMP Essential Resources imported if Unity has not already set them up. AI Providers is not needed for this tutorial.</p>
 
-          <h2>Step 2. Build a minimal graph</h2>
-          <ol>
-            <li>Keep the generated <code>Start</code> and <code>End</code> markers.</li>
-            <li>Add one <code>Dialog</code> node for an opening line.</li>
-            <li>Add one <code>Choice</code> node with at least two answers.</li>
-            <li>Add one or two more <code>Dialog</code> nodes for the branch outcomes.</li>
-            <li>Connect everything so every branch reaches <code>End</code>.</li>
-          </ol>
-<pre><code>Start -> Dialog -> Choice -> Dialog A -> End
-                       -> Dialog B -> End</code></pre>
+<h2>Create the graph</h2>
+<ol>
+  <li>Choose <strong>Tools &gt; Beka Forge &gt; Dialogue Graph System &gt; Open Editor</strong>. The workspace opens on <strong>Home</strong>, where you can create a graph.</li>
+  <li>Enter <code>GatekeeperIntro</code> in <strong>Name</strong> and select <strong>Create &amp; Open</strong>.</li>
+  <li>In the graph canvas, right-click and create a <strong>Dialog</strong> node. Give it a title such as <code>Question</code>, a speaker such as <code>Gatekeeper</code>, and line text: “What brings you to the gate?”</li>
+  <li>Create a <strong>Choice</strong> node and connect the Dialog node to it. Put the question in the preceding Dialog line; the active Choice card provides answer rows, not a prompt field.</li>
+  <li>Edit the initial answer row to “I have a pass.”, then choose <strong>+ Add Option</strong> once and set the new row to “I need directions.” The editor assigns and maintains each answer ID.</li>
+  <li>Create one Dialog node for each response. Put a short acknowledgement in each. Connect the first answer output to the pass response and the second to the directions response. Connect both response outputs to the graph's End node.</li>
+  <li>Connect Start to the first Dialog node. The graph editor creates and maintains the Start and End boundary nodes; you do not need to add them yourself.</li>
+  <li>Choose <strong>Save</strong>. If you want to check the graph, show the graph sidebar, choose <strong>Validate</strong>, then select <strong>Validate Graph</strong>. Review any errors or warnings before testing the scene.</li>
+</ol>
+<p><strong>Expected result:</strong> the graph has one entry path, two distinct answer branches, and both branches reach End.</p>
+<figure class="screenshot-figure"><img class="screenshot-img" src="4.0/screenshots/clean/graph-far.png" alt="MarketFriend graph overview in the Graphs workspace, with its node canvas, sidebar, and minimap." loading="lazy" width="1914" height="986"><figcaption>This capture shows the MarketFriend graph overview; the Gatekeeper graph in this walkthrough uses the same editor with different nodes.</figcaption></figure>
 
-          <h2>Step 3. Save the graph</h2>
-          <p>Use the graph editor toolbar to save. The graph is stored as a <code>DialogGraph</code> asset with sub-assets for the individual nodes.</p>
+<figure class="preview-embed"><iframe class="preview-embed__frame" data-preview-src="../assets/unity-preview/embed.html?window=dgs&amp;surface=home&amp;embed=1" title="DGS Home graph creation example" loading="lazy" hidden></iframe><figcaption>Sample Home workspace; the browser preview does not create an asset. <a href="../assets/unity-preview/embed.html?window=dgs&amp;surface=home">Open the full Home preview</a>.</figcaption></figure>
+<p class="try-it"><strong>Try the Home example:</strong> enter a graph name in the <strong>Graph name</strong> field and choose <strong>Create &amp; Open</strong>. This opens an example confirmation flow only; it does not create the tutorial graph.</p>
+<figure class="preview-embed"><iframe class="preview-embed__frame" data-preview-src="../assets/unity-preview/embed.html?component=node%3ADialog&amp;embed=1" title="Editable Dialog node field example" loading="lazy" hidden></iframe><figcaption>Separate Gate Warden example values; this browser example does not save to Unity. <a href="../assets/unity-preview/embed.html?component=node%3ADialog">Open the full node preview</a>.</figcaption></figure>
+<p class="try-it"><strong>Try the Dialog example:</strong> edit <strong>Speaker</strong> and <strong>Dialog</strong> to the Gatekeeper values above; observe the node card update. This browser state is separate from the Unity graph.</p>
+<figure class="preview-embed"><iframe class="preview-embed__frame" data-preview-src="../assets/unity-preview/embed.html?component=node%3AChoice&amp;embed=1" title="Editable Choice answer rows example" loading="lazy" hidden></iframe><figcaption>Separate answer-row example with editable text; no graph or Unity asset is loaded. <a href="../assets/unity-preview/embed.html?component=node%3AChoice">Open the full Choice node preview</a>.</figcaption></figure>
+<p class="try-it"><strong>Try the Choice example:</strong> edit the first answer row, then click <strong>+ Add Option</strong> and edit the new row. The preview adds an answer row; it does not create graph links or save an asset.</p>
+<h2>Register the graph for playback</h2>
+<ol>
+  <li>Drag <code>Assets/DialogGraphSystem/Resources/Prefabs/DialogueManager.prefab</code> into the scene.</li>
+  <li>Select its <strong>Dialog Manager</strong> component. Under <strong>Dialog Graphs</strong>, add one row, assign <code>GatekeeperIntro</code>, and enter <code>gatekeeper_intro</code> as its Dialog ID.</li>
+  <li>Keep the UI references supplied by the prefab unless you are intentionally replacing the runtime UI. See <a href="components/runtime-ui.html">Runtime UI setup</a> before changing those references.</li>
+  <li>Add <code>DialogPlayer</code> to a scene object. On your UI Button, add that object to <strong>On Click ()</strong>, select <strong>DialogPlayer &gt; StartDialog (string)</strong>, and enter <code>gatekeeper_intro</code>.</li>
+</ol>
 
-          <h2>Step 4. Wire runtime components</h2>
-          <p>In your scene, add or reuse a <code>DialogManager</code>, assign its <code>uiPanel</code>, add your graph to <code>dialogGraphs</code>, and give the mapping a <code>dialogID</code>.</p>
+<figure class="preview-embed"><iframe class="preview-embed__frame" data-preview-src="../assets/unity-preview/embed.html?component=inspector%3Adialog-manager&amp;embed=1" title="Dialog Manager inspector example" loading="lazy" hidden></iframe><figcaption>Example scene references only; no Unity scene is read or changed. <a href="../assets/unity-preview/embed.html?component=inspector%3Adialog-manager">Open the full Dialog Manager preview</a>.</figcaption></figure>
+<p class="try-it"><strong>Try the manager example:</strong> expand <strong>Dialogue Graphs</strong>, open the sample <strong>Dialog Graphs</strong> row, and edit <strong>Dialog ID</strong>. The graph reference is read-only in this browser example; Unity scene wiring remains a separate step.</p>
+<h2>Try it in Unity</h2>
+<p>Press Play and click the button. The gatekeeper should ask the question. Select either answer and confirm its matching acknowledgement appears before the conversation ends.</p>
 
-          <h2>Step 5. Trigger playback</h2>
-<pre><code>using DialogSystem.Runtime.Core;
-using UnityEngine;
-
-public class StartGuardConversation : MonoBehaviour
-{
-    public void PlayIntro()
-    {
-        DialogManager.Instance.PlayDialogByID(
-            "intro_guard",
-            () => Debug.Log("Conversation finished."));
-    }
-}</code></pre>
-
-          <h2>Step 6. Try runtime behaviors</h2>
-          <ul>
-            <li>dialog text appears in the runtime panel</li>
-            <li>portraits and speaker names update</li>
-            <li>choices can be selected by click or keyboard</li>
-            <li>skip and autoplay work as expected</li>
-          </ul>
-
-          <h2>Step 7. Inspect history and transcript</h2>
-<pre><code>string transcript = DialogManager.Instance.GetLastPlayedDialogTranscript("intro_guard");
-Debug.Log(transcript);</code></pre>
-
-          <div class="placeholder-grid">
-            <article class="placeholder-card"><h3>Branching graph example</h3><img class="screenshot-img" src="assets/images/graph-editor-branching-example.png" alt="Graph Editor Branching Example" loading="lazy"><p>Ideal visual for the authoring steps.</p></article>
-            <article class="placeholder-card"><h3>Runtime result</h3><img class="screenshot-img" src="assets/images/runtime-dialog-ui.png" alt="Runtime Dialog Ui" loading="lazy"><p>Shows the graph authoring result in Play Mode.</p></article>
-          </div>
-
-          <nav class="page-nav" data-prev-next></nav>
-        </article>
+<h2>Check the authored setup</h2>
+<ul>
+  <li>Confirm the graph is assigned in the manager registry and its Dialog ID matches the button exactly.</li>
+  <li>Use the graph sidebar’s <strong>Validate</strong> tab and <strong>Validate Graph</strong> action to review this graph’s errors, warnings, and information messages. Compare the Dialog ID with the manager registry as a separate setup check.</li>
+  <li>Confirm the scene contains an active DialogueManager and its runtime UI is assigned.</li>
+  <li>If one answer never appears, inspect the Choice node's answer rows and confirm each output is connected to the intended branch.</li>
+</ul>
+<p>For a no-code launch path, see <a href="getting-started.html">Getting Started</a>. For the manager's code and event surface, see <a href="api/dialog-manager.html">DialogManager</a>.</p>
+<nav class="page-nav" data-prev-next></nav>
+</article>
       </main>
       <aside class="page-toc" data-page-toc></aside>
     </div>
-    <footer class="footer"><div class="footer-inner"><span>Dialogue Graph System v3.0.0</span><span>&copy; <span data-current-year></span></span></div></footer>
+    <footer class="footer"><div class="footer-inner"><span>Dialogue Graph System v4.0.0</span><span>&copy; <span data-current-year></span></span></div></footer>
   </div>
   <script src="assets/app.js"></script>
 </body>

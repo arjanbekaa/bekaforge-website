@@ -37,11 +37,12 @@
           <h2>High-level architecture</h2>
 <pre><code>Caller
   -&gt; AiProvidersService
-  -&gt; LlmProviderDefinitionBase
-  -&gt; LlmHttpRequest
-  -&gt; UnityWebRequest
-  -&gt; Provider API
-  -&gt; provider-specific response extraction</code></pre>
+  -&gt; HTTP profile: LlmProviderDefinitionBase builds LlmHttpRequest
+     -&gt; HttpClient (async) or UnityWebRequest (coroutine)
+     -&gt; Provider API and provider-specific response extraction
+  -&gt; Codex / Claude Code profile: registered editor-only transport
+     -&gt; installed local tool</code></pre>
+          <p>The async snapshot path sends through <code>HttpClient</code>; the coroutine adapter uses <code>UnityWebRequest</code>. Codex and Claude Code use editor-only registered transports instead of an HTTP provider endpoint.</p>
 
           <h2>Division of ownership</h2>
           <ul>

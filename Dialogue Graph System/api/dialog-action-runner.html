@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
@@ -23,20 +23,21 @@
         <article class="doc-article" data-doc-content>
           <nav class="breadcrumb"><a href="../index.html">Home</a> / <span>DialogActionRunner API</span></nav>
           <h1>DialogActionRunner API</h1>
-          <p class="lede"><code>DialogActionRunner</code> is the runtime dispatcher for action nodes and manual action invocation.</p>
+          <p class="lede"><code>DialogActionRunner</code> dispatches an <code>ActionNode</code> to matching UnityEvent bindings and asynchronous handlers. <code>DialogManager</code> resolves the runner and exposes coroutine-backed convenience calls.</p>
           <h2>Responsibilities</h2>
           <ul>
-            <li>invoke synchronous UnityEvent bindings by <code>actionId</code></li>
-            <li>run coroutine-based asynchronous handlers through <code>IActionHandler</code></li>
-            <li>support per-conversation action sets keyed by <code>dialogID</code></li>
-            <li>optionally fall back to a global action set</li>
+            <li>invoke matching synchronous UnityEvent bindings from the conversation-specific set and, when configured, the global set</li>
+            <li>run coroutine handlers implementing <code>IActionHandler</code>; contextual handlers can also implement <code>IContextualDialogueActionHandler</code></li>
+            <li>select action sets by <code>dialogID</code> and optionally use the global fallback</li>
+            <li>honor an action node’s pre-delay and wait-for-completion settings</li>
           </ul>
           <h2>Convenience methods</h2>
+          <p>Call these from a <code>MonoBehaviour</code> with a configured runner. <code>waitForCompletion</code> waits for the handler coroutine; the handler must itself yield until its gameplay work is finished.</p>
 <pre><code>StartCoroutine(actionRunner.RunActionGlobal(
     actionId: "PlaySfx",
     payloadJson: "{\"clip\":\"ding\"}",
     waitForCompletion: false));</code></pre>
-<pre><code>StartCoroutine(actionRunner.RunActionForConversation(
+<pre><code>StartCoroutine(actionRunner.RunActionForDialogue(
     dialogId: "intro_guard",
     actionId: "UnlockGate",
     payloadJson: "{\"gateId\":\"north\"}",
@@ -56,12 +57,13 @@ public class UnlockGateHandler : MonoBehaviour, IActionHandler
         yield return null;
     }
 }</code></pre>
+          <p>Place the handler on a GameObject referenced by the matching <code>ConversationActionSet</code> (or global set), and make <code>CanHandle</code> match the action node’s exact ID. The manager uses its configured runner and can discover an available runner when none is assigned. For gameplay code, <code>DialogManager.InvokeDialogueAction</code> and <code>InvokeGlobalAction</code> provide manager-level wrappers.</p>
           <nav class="page-nav" data-prev-next></nav>
         </article>
       </main>
       <aside class="page-toc" data-page-toc></aside>
     </div>
-    <footer class="footer"><div class="footer-inner"><span>Dialogue Graph System v3.0.0</span><span>&copy; <span data-current-year></span></span></div></footer>
+    <footer class="footer"><div class="footer-inner"><span>Dialogue Graph System v4.0.0</span><span>&copy; <span data-current-year></span></span></div></footer>
   </div>
   <script src="../assets/app.js"></script>
 </body>

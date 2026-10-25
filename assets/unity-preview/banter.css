@@ -1,0 +1,98 @@
+/* Banter editor surfaces.
+   Translated from the Banter editor sources; shared tokens and controls live in preview.css. */
+
+/* Banter · Getting Started steps */
+
+.pf-step {
+  padding: 10px;
+  margin: 8px 0;
+  background: var(--bf-raised, #1a1d28);
+  border: 1px solid var(--bf-border, #2a2f45);
+  border-radius: 5px;
+}
+
+.pf-step__head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.pf-step__number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--bf-elevated, #222636);
+  border: 1px solid var(--bf-border-strong, #3d4460);
+  color: var(--bf-text-primary, #e8ecf4);
+  font-size: 10px;
+  font-weight: 700;
+  flex: 0 0 auto;
+}
+
+.pf-step__title {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--bf-text-primary, #e8ecf4);
+}
+
+.pf-step__body {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+/* Banter · Catalog Validation list editors */
+
+.pf-list-editor {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 6px 0;
+}
+
+.pf-list-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.pf-list-row .bf-object-preview,
+.pf-list-row .bf-field {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* Diagnostics and trace output */
+
+.pf-diagnostic {
+  padding: 8px;
+  margin: 6px 0;
+  background: var(--bf-deep, #0d0f16);
+  border: 1px solid var(--bf-divider, #1e2235);
+  border-radius: 4px;
+}
+
+.pf-pre {
+  margin: 0;
+  padding: 8px;
+  max-height: 260px;
+  overflow: auto;
+  background: var(--bf-deep, #0d0f16);
+  border: 1px solid var(--bf-divider, #1e2235);
+  border-radius: 4px;
+  color: var(--bf-text-secondary, #c8d0e0);
+  font-family: Consolas, "Courier New", monospace;
+  font-size: 10px;
+  line-height: 1.45;
+  white-space: pre-wrap;
+}
+
+.pf-pre--trace {
+  max-height: 380px;
+  white-space: pre;
+}

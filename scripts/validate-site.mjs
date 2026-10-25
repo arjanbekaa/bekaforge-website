@@ -130,22 +130,25 @@ function validateConfig(config) {
     );
   }
 
-  if (config.products?.dialogueGraphSystem?.version !== "3.0.0") {
-    errors.push("Dialogue Graph System must advertise version 3.0.0.");
+  if (config.products?.dialogueGraphSystem?.version !== "4.0.0") {
+    errors.push("Dialogue Graph System must identify the prepared 4.0.0 documentation.");
   }
-  if (config.products?.dialogueGraphSystem?.price !== "$24.99") {
-    errors.push("Dialogue Graph System must advertise the approved $24.99 price.");
+  if (config.products?.dialogueGraphSystem?.price !== "" || !/not published/i.test(config.products?.dialogueGraphSystem?.status || "")) {
+    errors.push("DGS 4.0 must not claim a price or publication before release.");
   }
-  if (config.products?.aiProviders?.status !== "Available Free" || config.products?.aiProviders?.price !== "Free") {
-    errors.push("AI Providers must be Available Free.");
+  if (config.products?.dialogueGraphSystem?.assetStoreUrl !== "https://assetstore.unity.com/packages/tools/gui/dialogue-graph-system-332234") {
+    errors.push("DGS must keep the verified current single Asset Store listing URL.");
   }
-  if (!/\/384482\/?$/.test(config.products?.aiProviders?.assetStoreUrl || "")) {
-    errors.push("AI Providers must use Asset Store package 384482.");
+  if (!/published 1\.0\.0.*unpublished 2\.2\.0.*DGS 4\.0 AI/i.test(config.products?.aiProviders?.status || "") || config.products?.aiProviders?.version !== "1.0.0" || config.products?.aiProviders?.price !== "") {
+    errors.push("AI Providers must distinguish its published 1.0.0 listing from pending DGS 4.0 compatibility.");
+  }
+  if (!/\/packages\/tools\/ai-ml-integration\/ai-providers-for-unity-beka-forge-384482\/?$/.test(config.products?.aiProviders?.assetStoreUrl || "")) {
+    errors.push("AI Providers must use its current verified Asset Store listing URL.");
   }
 
   const extension = config.products?.aiExtension || {};
-  if (extension.status !== "Coming Soon" || extension.assetStoreUrl || extension.price || extension.version) {
-    errors.push("AI Extension must remain Coming Soon without price, version, or store URL.");
+  if (extension.status !== "Included in DGS 4.0.0" || extension.assetStoreUrl || extension.price || extension.docsPath !== "Dialogue Graph System/guides/ai-generation-workflow.html") {
+    errors.push("AI Extension must remain an included DGS component without a separate listing.");
   }
 
   const flat = flatten(config);
@@ -172,7 +175,7 @@ let referenceCount = 0;
 for (const file of htmlFiles) {
   const source = await readFile(file, "utf8");
   htmlSources.set(file, source);
-  for (const match of source.matchAll(/(?:^|\s)(?:href|src)\s*=\s*["']([^"']+)["']/gim)) {
+  for (const match of source.matchAll(/(?:^|\s)(?:href|src|data-preview-src)\s*=\s*["']([^"']+)["']/gim)) {
     referenceCount += 1;
     await resolveLocalReference(file, match[1]);
   }
@@ -203,11 +206,29 @@ const publicFiles = htmlFiles.filter((file) => {
   return !relative.startsWith("Dialogue Graph AI Extension/") || relative === "Dialogue Graph AI Extension/index.html";
 });
 const publicSource = publicFiles.map((file) => htmlSources.get(file)).join("\n");
+const dgsSetupPages = [
+  "getting-started.html",
+  "installation.html",
+  "index.html",
+  "quick-tutorial.html",
+  "guides/creating-a-dialog.html",
+  "guides/integrating-actions.html",
+  "modules/graph-editor.html",
+  "modules/settings-system.html",
+  "modules/import-export.html"
+].map((page) => htmlSources.get(path.join(projectRoot, "Dialogue Graph System", page)) || "").join("\n");
 const stalePatterns = [
   /store link pending/i,
   /public asset placeholders/i,
   /own public folder/i,
   /Dialogue Graph System v2\.0\.0/i,
+  /Dialogue Graph System 3\.0(?:\.0)?/i,
+  /\$24\.99/,
+  /Available Free|Get free on Asset Store/i,
+  /AI Extension is a separate product/i,
+  /AI Extension.*Coming Soon/i,
+  /Unity 2021\.3 LTS or newer/i,
+  /DemoScenes\/DialogueDemo\.unity|three sample graphs|Demo_ControlRoomActions/i,
   /fed to the AI extension/i,
   /shipped AI extension/i
 ];
@@ -215,14 +236,28 @@ for (const pattern of stalePatterns) {
   if (pattern.test(publicSource)) errors.push(`Public pages contain forbidden stale copy: ${pattern}`);
 }
 
-const publicAiTechnicalLink = /Dialogue(?:%20| )Graph(?:%20| )AI(?:%20| )Extension\/(?:getting-started|architecture|troubleshooting|api\/public-api|modules\/)/i;
-if (publicAiTechnicalLink.test(publicSource)) {
-  errors.push("Public navigation exposes unreleased AI Extension technical documentation.");
+if (!/Unity 6000\.3 or newer/i.test(dgsSetupPages) || !/Unity 6000\.3\.6f1/i.test(dgsSetupPages)) {
+  errors.push("Current DGS setup pages must separate the declared Unity minimum from the observed 6000.3.6f1 environment.");
+}
+if (!/com\.unity\.ugui.*2\.0\.0/i.test(dgsSetupPages) || !/com\.unity\.nuget\.newtonsoft-json.*3\.2\.2/i.test(dgsSetupPages)) {
+  errors.push("Current DGS setup pages must list the declared uGUI and Newtonsoft dependencies.");
+}
+if (!/TMP Essential Resources.*not included/i.test(dgsSetupPages) || !/Do not add the separate.*com\.unity\.textmeshpro/i.test(dgsSetupPages)) {
+  errors.push("Current DGS setup pages must explain TMP Essentials and reject the separate TextMeshPro shim.");
+}
+if (!/Samples\/2DMarketDemo\/Scenes\/MarketDemo\.unity/i.test(dgsSetupPages)) {
+  errors.push("Current DGS setup pages must point to the sample scene present in the prepared bundle.");
+}
+if (/Tools\s*(?:â†|&gt;)\s*Dialogue Graph System|DemoScenes\/DialogueDemo\.unity|3 playable graphs/i.test(dgsSetupPages)) {
+  errors.push("Current DGS setup pages contain an obsolete menu, demo path, or sample count.");
+}
+if (!/base Interaction Playground/i.test(dgsSetupPages) || !/optional typed Input System adapter/i.test(dgsSetupPages) || !/SimpleInteractionDemo.*not included/i.test(dgsSetupPages)) {
+  errors.push("Current DGS setup pages must state the included Interaction sample/adapter boundary.");
 }
 
-const extensionTeaser = htmlSources.get(path.join(projectRoot, "Dialogue Graph AI Extension", "index.html"));
-if (/(?:assetstore\.unity\.com|\bbuy\b|\bpurchase\b|\bprice\b|\binstall\b)/i.test(extensionTeaser)) {
-  errors.push("AI Extension teaser exposes a purchase or installation path.");
+const extensionLegacyRoute = htmlSources.get(path.join(projectRoot, "Dialogue Graph AI Extension", "index.html"));
+if (!/url=\.\.\/Dialogue%20Graph%20System\/guides\/ai-generation-workflow\.html/i.test(extensionLegacyRoute || "")) {
+  errors.push("Legacy AI Extension URL must redirect to the included DGS AI authoring guide.");
 }
 
 if (errors.length) {

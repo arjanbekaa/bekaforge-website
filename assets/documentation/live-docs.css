@@ -1,0 +1,52 @@
+/* Reading and live examples share the existing product documentation palette. */
+html { color-scheme: dark; }
+body .doc-article { border-radius: 8px; }
+body .doc-article p, body .doc-article li, body .doc-article td { color: #b9c2d0; }
+body .doc-article strong { color: var(--text, #f0f2f5); }
+body .doc-article :is(h1, h2, h3) { text-wrap: balance; }
+body .doc-article :is(h2, h3, section[id]) { scroll-margin-top: 6rem; }
+body .doc-article a { text-underline-offset: 3px; }
+body .doc-article p a, body .doc-article li a { text-decoration: underline; }
+body .content-shell, body .doc-article, body .page-toc { min-width: 0; }
+body .toc-card { max-height: calc(100vh - 6rem); overflow: auto; scrollbar-width: thin; }
+body :is(a, button, input, select, textarea, summary):focus-visible { outline: 2px solid var(--accent, #e8541a); outline-offset: 3px; }
+body .doc-article :is(ol, ul) { padding-inline-start: 1.5rem; }
+body .doc-article ol > li::marker { color: var(--text, #f0f2f5); font-weight: 600; }
+body .doc-article table { font-variant-numeric: tabular-nums; }
+body .doc-article :is(th, td) { overflow-wrap: anywhere; }
+
+.doc-index, .reference-index { display: flex; flex-wrap: wrap; gap: 6px 14px; padding: 1rem; border: 1px solid var(--line, #252e42); border-radius: 6px; background: var(--bg, #0e1117); }
+.doc-index a, .reference-index a { font-size: 13px; }
+.doc-step, .tutorial-step { padding-block: 1rem; border-top: 1px solid var(--line, #252e42); }
+.doc-note, .expected-result, .try-it { padding: .85rem 1rem; border-inline-start: 3px solid var(--accent, #e8541a); background: var(--bg, #0e1117); border-radius: 0 4px 4px 0; }
+.doc-flow, .flow-diagram { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 1rem; margin-block: 1.25rem; border: 1px solid var(--line, #252e42); border-radius: 6px; background: var(--bg, #0e1117); }
+.doc-flow > :is(span, li), .flow-diagram > :is(span, li) { padding: .4rem .65rem; border: 1px solid var(--line, #252e42); border-radius: 4px; color: var(--text, #f0f2f5); }
+.doc-article svg { max-width: 100%; height: auto; }
+
+body .preview-embed { margin-block: 1rem 1.5rem; border-radius: 6px; }
+.live-preview-toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: .8rem 1rem; border-bottom: 1px solid var(--line, #252e42); }
+.live-preview-toolbar button { min-height: 36px; padding: .4rem .75rem; border: 1px solid var(--line, #3c475c); border-radius: 4px; background: var(--surface, #1c2333); color: var(--text, #f0f2f5); font: inherit; font-size: 13px; cursor: pointer; touch-action: manipulation; }
+.live-preview-toolbar button:hover { border-color: var(--accent, #e8541a); }
+.live-preview-toolbar button:disabled { opacity: .6; cursor: wait; }
+.live-preview-toolbar [hidden], body .preview-embed iframe[hidden] { display: none; }
+.live-preview-status { flex: 1 1 200px; color: #aeb9ca; font-size: 12px; line-height: 1.5; }
+body .preview-embed__frame { display: block; width: 100%; height: 680px; border: 0; background: #1c1d21; }
+body .preview-embed figcaption { margin: 0; }
+
+@media (max-width: 1180px) {
+  body .page-layout { grid-template-columns: var(--sidebar-width, 252px) minmax(0, 1fr); }
+  body .page-toc { display: none; }
+}
+@media (max-width: 960px) {
+  body .page-layout { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 640px) {
+  body .doc-article { padding: 1rem; }
+  body .preview-embed__frame { height: 560px; }
+  body .doc-article :is(th, td) { padding: .55rem .5rem; font-size: 12px; }
+  .live-preview-toolbar { padding: .7rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .fade-in, .sidebar { animation: none !important; transition: none !important; }
+}

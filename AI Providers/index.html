@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>AI Providers for Unity Docs | Beka Forge</title>
-  <meta name="description" content="Documentation for the free AI Providers for Unity package: provider setup, request transport, local key handling, API usage, and operational constraints.">
+  <meta name="description" content="Documentation for the separate AI Providers for Unity package. DGS 4.0 AI features require the unpublished 2.2.0 update; the current published listing is 1.0.0.">
   <link rel="stylesheet" href="assets/styles.css">
   <link rel="icon" type="image/x-icon" href="favicon/favicon.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
@@ -37,14 +37,14 @@
 
       <main class="content-shell" id="main-content">
         <section class="page-hero">
-          <span class="eyebrow">Available Free | Standalone provider layer | Reusable across tools</span>
+          <span class="eyebrow">Separate package | DGS 4.0 requires the unpublished 2.2.0 update</span>
           <h1 class="hero-title">AI Providers for Unity documentation.</h1>
           <p class="hero-subtitle">
             Product-specific documentation for the reusable provider connectivity layer behind Beka Forge AI-enabled tools.
             It covers provider assets, request transport, local key handling, runtime/editor request paths, and the public API core.
           </p>
           <div class="hero-actions">
-            <a class="button button-primary" href="https://assetstore.unity.com/packages/package/384482" data-resource-href="products.aiProviders.assetStoreUrl" target="_blank" rel="noopener">Get free on Asset Store</a>
+            <a class="button button-primary" href="https://assetstore.unity.com/packages/tools/ai-ml-integration/ai-providers-for-unity-beka-forge-384482" data-resource-href="products.aiProviders.assetStoreUrl" target="_blank" rel="noopener">View current AI Providers listing</a>
             <a class="button button-primary" href="getting-started.html">Start with Getting Started</a>
             <a class="button button-secondary" href="architecture.html">Open Architecture</a>
             <a class="button button-secondary" href="../docs.html">Beka Forge Docs Hub</a>
@@ -55,19 +55,19 @@
             <article class="hero-card">
               <h2>What this product owns</h2>
               <p>
-                AI Providers owns provider assets, request DTOs, request execution, local project-scoped key lookup,
-                timeout/retry behavior, and provider-specific response extraction. It does not own graph authoring workflows.
+                This guide describes the prepared AI Providers 2.2.0 source: saved provider profiles, API and editor-only subscription transports,
+                protected local credentials, request execution, and response handling. The current Store listing remains 1.0; the compatible update must be supplied separately.
               </p>
               <div class="stat-grid">
                 <div class="stat"><strong>5</strong><span>Built-in provider families</span></div>
-                <div class="stat"><strong>2</strong><span>Request modes: blocking + coroutine</span></div>
+                <div class="stat"><strong>2</strong><span>Transport choices: API or editor subscription</span></div>
                 <div class="stat"><strong>0</strong><span>Dependencies on DGS or AI Extension</span></div>
               </div>
             </article>
 
             <article class="hero-card">
               <h3>Provider layer overview</h3>
-              <img class="screenshot-img" src="assets/images/provider-settings-overview.png" alt="AI Providers settings overview" loading="lazy">
+              <img class="screenshot-img" src="../Dialogue%20Graph%20System/4.0/screenshots/ai-providers-setup.jpg" alt="AI Providers 2.2 setup checklist before connecting a provider" loading="lazy" width="1920" height="1161">
             </article>
           </div>
         </section>
@@ -75,9 +75,9 @@
         <section class="homepage-section panel">
           <h2>Documentation map</h2>
           <div class="feature-grid">
-            <article class="doc-card"><h3>Setup and first request</h3><p>Import flow, provider asset creation, local API key entry, and the first editor/runtime prompt send.</p></article>
-            <article class="doc-card"><h3>Provider assets and transport</h3><p>Built-in provider families, request DTOs, service ownership, and response extraction boundaries.</p></article>
-            <article class="doc-card"><h3>Keys, APIs, and limits</h3><p>PlayerPrefs-based local secret storage, public API surfaces, blocking/runtime tradeoffs, and security caveats.</p></article>
+            <article class="doc-card"><h3><a href="getting-started.html">Setup and first connection</a></h3><p>Choose the right transport, create a saved profile, configure its model and credentials, and check readiness.</p></article>
+            <article class="doc-card"><h3><a href="modules/provider-assets.html">Profiles and transport</a></h3><p>Understand what a profile stores and when to use an API, a local model, or an editor subscription tool.</p></article>
+            <article class="doc-card"><h3><a href="api/public-api.html">Make a request from C#</a></h3><p>Copy a source-verified minimal request example. Read the response and error handling before connecting it to your game.</p></article>
           </div>
         </section>
 
@@ -86,9 +86,10 @@
           <div class="card-grid">
             <article class="doc-card"><h3>Standalone transport layer</h3><p>The package is dependency-free and can be reused by tools outside Dialogue Graph System.</p></article>
             <article class="doc-card"><h3>Provider assets over hardcoded switches</h3><p>Each provider subclass owns its request shape and response parsing instead of relying on one monolithic service switch.</p></article>
-            <article class="doc-card"><h3>Local secrets, shared config</h3><p>Provider assets are shareable, but keys stay local and are scoped by project hash plus provider GUID.</p></article>
+            <article class="doc-card"><h3>Local secrets, shared config</h3><p>Provider assets store configuration. Supported protected credential storage keeps API keys local; never put keys in shared assets, screenshots, or a shipped player.</p></article>
             <article class="doc-card"><h3>Runtime caveat</h3><p><code>TrySendPrompt</code> is blocking and best described as editor-oriented. Runtime callers should generally use the coroutine path.</p></article>
           </div>
+          <figure class="preview-embed"><iframe class="preview-embed__frame" data-preview-src="../assets/unity-preview/embed.html?window=ai-providers&amp;surface=profiles&amp;embed=1" hidden title="Interactive preview of the AI Providers profiles window" loading="lazy"></iframe><figcaption>Interactive preview: <strong>AI Providers &gt; Profiles</strong>, recreated from the product source with fictitious example values. No provider is contacted and no key is stored. <a href="../assets/unity-preview/embed.html?window=ai-providers&amp;surface=profiles">Open the full preview</a> or <a href="../Dialogue%20Graph%20System/preview/index.html">browse the DGS preview</a>.</figcaption></figure>
         </section>
 
         <section class="homepage-section panel">
@@ -123,7 +124,7 @@
         </div>
       </aside>
     </div>
-    <footer class="footer"><div class="footer-inner"><span>AI Providers for Unity · Available Free</span><span>&copy; <span data-current-year></span> Beka Forge</span></div></footer>
+    <footer class="footer"><div class="footer-inner"><span>AI Providers 1.0.0 published · DGS 4.0 requires unpublished 2.2.0</span><span>&copy; <span data-current-year></span> Beka Forge</span></div></footer>
   </div>
   <script src="assets/app.js"></script>
 </body>

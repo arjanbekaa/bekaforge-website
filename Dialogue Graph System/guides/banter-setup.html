@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Guide: Set Up Banter | Dialogue Graph System 4.0 Docs</title>
+  <meta name="description" content="Set up contextual Banter in DGS 4.0, author and validate exchanges, and connect requests to gameplay and dialogue events.">
+  <link rel="stylesheet" href="../assets/styles.css">
+  <link rel="icon" type="image/x-icon" href="../favicon/favicon.ico">
+  <meta name="theme-color" content="#E8541A">
+</head>
+<body data-page="banter-setup" data-base="../">
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <div class="site-shell">
+    <header class="topbar"><div class="topbar-inner"><a class="brand" href="../index.html"><img src="../brand/logo-primary-transparent-dark@1x.png" alt="BekaForge Dialogue Graph System" height="34"></a><div class="topbar-spacer"></div><div class="top-actions"><a class="back-to-site" href="../../index.html">&#8592; Beka Forge</a><button class="menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-controls="sidebar">Menu</button></div></div></header>
+    <div class="page-layout">
+      <aside class="sidebar" id="sidebar"><div class="sidebar-inner" data-sidebar-nav></div></aside>
+      <main class="content-shell" id="main-content">
+        <article class="doc-article" data-doc-content>
+          <nav class="breadcrumb"><a href="../index.html">Home</a> / <span>Banter setup</span></nav>
+          <h1>Set up contextual Banter</h1>
+          <p class="lede">Get a working contextual line in the included Dungeon Market sample, then create your own exchanges and connect them to gameplay moments. Banter is authored content plus an initialized runtime host; creating an asset alone does not make it play.</p>
+
+          <div class="callout"><strong>What you need:</strong> DGS 4.0 with the Banter module imported, a Unity scene, and the character and actor identities your game will use. You do not need an AI provider to author Banter by hand. AI authoring drafts DGS dialogue graphs; it does not create Banter collections or sound sequences.</div>
+
+          <h2>First, see Banter working</h2>
+          <ol>
+            <li>Let the DGS 4.0 project finish importing. In the Unity menu, open <strong>Tools &gt; Beka Forge &gt; Banter &gt; Getting Started</strong>.</li>
+            <li>Under <strong>Open the sample</strong>, click <strong>Open 2D Market Demo</strong>. The window opens <code>Assets/Beka Forge/Dialogue Graph System/Samples/2DMarketDemo/Scenes/MarketDemo.unity</code>.</li>
+            <li>Press <strong>Play</strong>. Follow the scene guide and talk to the merchant. At the welcome and later market milestones, contextual Banter lines appear in the subtitle UI. Press <strong>R</strong> to reset the sample and try again.</li>
+          </ol>
+          <p><strong>Checkpoint:</strong> the line appears when its market trigger is submitted. The sample uses authored fallback text and subtitle presentation; it has no recorded Banter voice and does not demonstrate the optional Banter HUD.</p>
+          <figure><img class="screenshot-img" src="../4.0/screenshots/banter-workspace.jpg" alt="Banter Getting Started provides the sample launcher, authoring-kit creation, and collection validation." loading="lazy" width="1920" height="1161"><figcaption>Banter Getting Started provides the sample launcher, authoring-kit creation, and collection validation.</figcaption></figure>
+<figure><img class="screenshot-img" src="../4.0/screenshots/dungeon-market-runtime.jpg" alt="The Dungeon Market sample in Play Mode with its objective HUD and contextual subtitle. The sample uses authored text; this capture does not demonstrate Banter voice audio." loading="lazy" width="1920" height="1161"><figcaption>The Dungeon Market sample in Play Mode with its objective HUD and contextual subtitle. The sample uses authored text; this capture does not demonstrate Banter voice audio.</figcaption></figure>
+
+          <figure class="preview-embed"><iframe class="preview-embed__frame" data-preview-src="../../assets/unity-preview/embed.html?window=banter&amp;surface=getting-started&amp;embed=1" title="Banter Getting Started example" loading="lazy" hidden></iframe><figcaption>Example setup choices only; the browser view does not inspect Unity assets. <a href="../../assets/unity-preview/embed.html?window=banter&amp;surface=getting-started">Open the full Getting Started example</a>.</figcaption></figure>
+          <h2>Try your own exchange in the working sample</h2>
+          <p>Use this path for your first custom Banter. The sample already supplies actors, subtitles, a profile, and a runtime host, so you can focus on the content. Save a copy of the sample assets before editing them.</p>
+          <ol>
+            <li>Exit Play Mode. In <code>Assets/Beka Forge/Dialogue Graph System/Samples/2DMarketDemo/Banter/Exchanges/</code>, right-click and choose <strong>Create &gt; Beka Forge &gt; Banter &gt; Exchange</strong>. Name it <code>MyMarketGreeting</code>.</li>
+            <li>Select it. Give it a title, keep it enabled, and set its content revision to <code>1</code>. Set the trigger to <code>market.welcome</code> and the category to <strong>Reaction</strong>.</li>
+            <li>Add a role with RoleId <code>merchant</code> and required CharacterID <code>market-merchant</code>. Add a second role with RoleId <code>player</code> and required CharacterID <code>market-player</code>. These exact character IDs match the sample's registered actors.</li>
+            <li>Add a line using Speaker Role <code>merchant</code> and your own Fallback Text, then a reply using Speaker Role <code>player</code>. Click <strong>Generate Missing Stable IDs</strong>, then <strong>Validate Exchange</strong>. Save the asset.</li>
+            <li>Select <code>Assets/Beka Forge/Dialogue Graph System/Samples/2DMarketDemo/Banter/MarketBanterCollection.asset</code>. Add your exchange once to its <strong>Exchanges</strong> list. Temporarily disable the sample's built-in <code>Welcome</code> exchange so this trigger has one eligible greeting. Validate the selected collection.</li>
+            <li>Open <code>MarketDemo.unity</code> and enter Play Mode again. Move to the merchant and press <strong>E</strong> to talk. The sample submits <code>market.welcome</code> when its merchant-talked state changes.</li>
+            <li>Look for your authored text in the contextual subtitle area. Press <strong>R</strong> to reset the sample, then talk again. Exit and re-enter Play Mode after changing the collection so the host initializes from the latest assets.</li>
+          </ol>
+          <p><strong>Checkpoint:</strong> your two-line exchange appears from the existing market trigger. Restore the built-in Welcome exchange and remove your test exchange from the sample collection when you have finished experimenting.</p>
+
+          <h2>Create a small authoring kit</h2>
+          <p>The fastest safe start is the built-in kit. It creates three validated authoring assets in a folder you choose; it does not create scene objects, register actors, or initialize runtime playback.</p>
+          <ol>
+            <li>Open <strong>Tools &gt; Beka Forge &gt; Banter &gt; Getting Started</strong>.</li>
+            <li>In <strong>New kit folder name</strong>, enter a new folder name, such as <code>TownBanter</code>.</li>
+            <li>Click <strong>Choose parent and create kit</strong>, then select an existing parent folder inside your project's <code>Assets</code> folder. The destination must be new.</li>
+            <li>Wait for the window to report <strong>Created and validated</strong>. Use <strong>Ping Exchange</strong> and the other Ping buttons to locate the created assets.</li>
+          </ol>
+          <p><strong>Checkpoint:</strong> the folder contains a <code>BanterExchangeSO</code>, a <code>BanterCollectionSO</code>, and a <code>BanterDirectorProfileSO</code>. The example exchange has two fallback-only lines and generic roles. Replace them with your own authored content before wiring a game host.</p>
+
+          <h2>Author one useful exchange</h2>
+          <p>Select the Exchange asset and edit its Inspector. For a first greeting, use a distinct trigger such as <code>town.merchant.greeting</code>, category <strong>Reaction</strong>, topic <code>town.greeting</code>, and a positive selection weight. Keep the exchange enabled.</p>
+          <ol>
+            <li>In <strong>Identity</strong>, give the exchange a clear title and description. Keep <code>contentRevision</code> at <code>1</code> or higher.</li>
+            <li>In <strong>Trigger / Selection</strong>, enter the trigger key your gameplay code will submit. Use <strong>Ambient</strong> only for the reserved <code>ambient</code> trigger; for a one-time world reaction, <strong>Reaction</strong> is a straightforward choice.</li>
+            <li>In <strong>Roles</strong>, add a role for each speaker. Each role has a RoleId, for example <code>merchant</code> and <code>player</code>. When the role is bound to a DGS character, its <code>requiredCharacterId</code> must match that character asset's exact <code>CharacterID</code>.</li>
+            <li>In <strong>Lines</strong>, add at least one line. Choose its <strong>Speaker Role</strong> from the roles above and enter non-empty <strong>Fallback Text</strong>. Add another line if you want a short back-and-forth. Audio clips and localization variants are optional for this subtitle-first first pass.</li>
+            <li>Click <strong>Generate Missing Stable IDs</strong>. This fills blank exchange and line IDs while preserving nonblank IDs. It is Undo-supported and does not save the asset for you.</li>
+          </ol>
+          <div class="callout"><strong>Keep these IDs distinct:</strong> RoleId is the role name inside this exchange; CharacterID identifies a DGS character definition; ActorId identifies one live actor instance in the scene. For example, a role may be <code>merchant</code>, its character may have CharacterID <code>market_merchant</code>, and the scene actor may use ActorId <code>town-merchant-01</code>. Do not paste one kind of ID into another field.</div>
+
+          <h2>Put it in a collection and validate it</h2>
+          <ol>
+            <li>In the Project window, choose <strong>Create &gt; Beka Forge &gt; Banter &gt; Collection</strong>.</li>
+            <li>Name the collection, add your Exchange once to <code>exchanges</code>, and use <strong>Generate Missing Collection ID</strong> if its stable ID is blank.</li>
+            <li>Select the Exchange and click <strong>Validate Exchange</strong> in its Inspector. Fix each reported issue, then validate again.</li>
+            <li>Select the collections your host will use. Return to <strong>Tools &gt; Beka Forge &gt; Banter &gt; Getting Started</strong> and click <strong>Validate selected collections</strong>, or open <strong>Tools &gt; Beka Forge &gt; Banter &gt; Catalog Validation</strong> to configure the full ordered collection set explicitly.</li>
+          </ol>
+          <p><strong>Checkpoint:</strong> the exchange validator reports clean content, and catalog validation reports clean results for the exact collections you supplied. A clean single-exchange result does not validate other collections the host may load.</p>
+          <figure><img class="screenshot-img" src="../4.0/screenshots/banter-catalog.jpg" alt="Catalog validation for the selected MarketBanterCollection succeeded with eight retained exchanges, zero exclusions, and zero diagnostics. Validate your own complete collection set after editing." loading="lazy" width="1920" height="1161"><figcaption>Catalog validation for the selected MarketBanterCollection succeeded with eight retained exchanges, zero exclusions, and zero diagnostics. Validate your own complete collection set after editing.</figcaption></figure>
+
+          <figure class="preview-embed"><iframe class="preview-embed__frame" data-preview-src="../../assets/unity-preview/embed.html?window=banter&amp;surface=catalog-validation&amp;embed=1" title="Banter catalog validation example" loading="lazy" hidden></iframe><figcaption>Illustrative validation output only: the browser demo does not run a validator against Unity collections. <a href="../../assets/unity-preview/embed.html?window=banter&amp;surface=catalog-validation">Open the full catalog example</a>.</figcaption></figure>
+          <h2>Connect a request to gameplay or dialogue</h2>
+          <p>A dialogue graph and contextual Banter solve different jobs. DGS dialogue owns an authored conversation, its choices and graph actions. Banter is a separate, queued contextual exchange that your game requests at a moment such as opening a gate, finishing a quest step, or leaving a conversation. A graph action handler can submit a Banter request, but the request still needs an initialized Banter host and registered actor identities.</p>
+          <p>For a first project integration, copy the wiring pattern from <code>MarketDemoBanter.cs</code> and its scene builder. The host initializes a <code>BanterCompositionRoot</code> with its director, foreground bridge, profile, collections, audio/subtitle collaborators, actors and context. Wait until <code>root.IsReady</code> before submitting a request.</p>
+          <p>Once your own host has completed that setup, this is the request shape used by the current runtime API:</p>
+<pre><code>using BekaForge.DGS.Banter.Assets;
+using BekaForge.DGS.Banter.Contracts;
+using BekaForge.DGS.Banter.Integration;
+using UnityEngine;
+
+public static class MerchantBanterRequests
+{
+    public static void RequestGreeting(BanterCompositionRoot root)
+    {
+        if (root == null || !root.IsReady)
+        {
+            Debug.LogWarning("Banter is not initialized yet.");
+            return;
+        }
+
+        var result = root.SubmitSelectionRequest(new BanterRequestSubmission(
+            triggerKey: "town.merchant.greeting",
+            category: BanterExchangeCategory.Reaction,
+            originActorId: "town-player",
+            targetActorId: "town-merchant-01",
+            deduplicationKey: "merchant-greeting:" + Time.frameCount,
+            zoneId: "town-square"));
+
+        if (!result.IsAccepted &amp;&amp; result.Status != BanterRequestSubmitStatus.Coalesced)
+            Debug.LogWarning("Banter request was not accepted: " + result.Failure);
+    }
+}</code></pre>
+          <p>Change the trigger and actor IDs to the exact values your exchange, scene registration and request use. A request being accepted means it entered the Banter selection queue; it does not prove that a line matched, that voice played, or that a listener heard it.</p>
+          <p>When a DGS graph was drafted with AI, review and apply that graph in the DGS editor, then wire the graph's gameplay event to your Banter request where appropriate. AI authoring does not automatically generate or initialize Banter assets. See <a href="ai-generation-workflow.html">AI authoring in DGS</a> and <a href="creating-a-dialog.html">Creating a dialogue graph</a>.</p>
+
+          <h2>Common problems</h2>
+          <table>
+            <thead><tr><th>What you see</th><th>What to check</th></tr></thead>
+            <tbody>
+              <tr><td>The kit was created, but no line plays.</td><td>The kit creates assets only. Check that your runtime host initialized successfully and that the gameplay request uses the exchange trigger and a registered origin ActorId.</td></tr>
+              <tr><td>The request is accepted, but no exchange is selected.</td><td>Check trigger key, category, enabled state, start conditions, collection membership, character-role bindings, and cooldown or prerequisite rules. Run catalog validation on the full configured collection set.</td></tr>
+              <tr><td>A speaker or actor cannot be resolved.</td><td>Compare the role's exact DGS CharacterID with the character definition, and compare request/actor registration ActorIds with the live scene instances. RoleIds are local to the exchange.</td></tr>
+              <tr><td>The exchange validator reports missing text.</td><td>Enter fallback text or a valid localization source for each line. A subtitle-only profile still needs visible text.</td></tr>
+              <tr><td>The validation result says stale.</td><td>Run the relevant validator again after your edits. Exchange and catalog validation have different scopes.</td></tr>
+              <tr><td>I expected Banter to start inside the dialogue graph automatically.</td><td>Author a gameplay hook or action handler that submits a Banter request. The graph and Banter queue are separate runtime systems.</td></tr>
+            </tbody>
+          </table>
+
+          <figure class="preview-embed"><iframe class="preview-embed__frame" data-preview-src="../../assets/unity-preview/embed.html?window=banter&amp;surface=decisions&amp;embed=1" title="Banter Decision Debugger example" loading="lazy" hidden></iframe><figcaption>Fabricated trace data for orientation only; the browser does not inspect a Unity project. <a href="../../assets/unity-preview/embed.html?window=banter&amp;surface=decisions">Open the full Decision Debugger example</a>.</figcaption></figure>
+
+          <h2>Keep exploring</h2>
+          <ul>
+            <li><a href="creating-a-dialog.html">Create a DGS dialogue graph</a></li>
+            <li><a href="integrating-actions.html">Connect graph actions to gameplay code</a></li>
+            <li><a href="ai-generation-workflow.html">Use the optional AI authoring workflow</a></li>
+            <li>In the installed module: <code>Banter/Documentation/QUICKSTART.md</code>, <code>AUTHORING.md</code>, and <code>Samples/2DMarketDemo/README.md</code>.</li>
+          </ul>
+          <p class="small-note"><strong>Source basis:</strong> this page follows the current DGS 4 Banter Getting Started window, exchange/collection inspectors, Banter composition APIs, and the included Dungeon Market sample. The sample's subtitle text is not a human audio test.</p>
+          <nav class="page-nav" data-prev-next></nav>
+        </article>
+      </main>
+      <aside class="page-toc" data-page-toc></aside>
+    </div>
+    <footer class="footer"><div class="footer-inner"><span>Dialogue Graph System v4.0.0 · local documentation draft</span><span>&copy; <span data-current-year></span></span></div></footer>
+  </div>
+  <script src="../assets/app.js"></script>
+</body>
+</html>

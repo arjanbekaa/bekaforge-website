@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
@@ -21,86 +21,75 @@
       <aside class="sidebar" id="sidebar"><div class="sidebar-inner" data-sidebar-nav></div></aside>
       <main class="content-shell" id="main-content">
         <article class="doc-article" data-doc-content>
-          <nav class="breadcrumb"><a href="../index.html">Home</a> / <span>Integrating Actions</span></nav>
-          <h1>Guide: Integrating Actions</h1>
-          <p class="lede">Use action nodes when a conversation should trigger gameplay or UI behavior without turning the dialogue system into a game logic monolith.</p>
+<nav class="breadcrumb"><a href="../index.html">Home</a> / <span>Integrating Actions</span></nav>
+<h1>Integrating Gameplay Actions</h1>
+<p class="lede">Action nodes connect a graph to your own gameplay code through stable action IDs. The graph describes when an action runs; your handler owns the game-specific behavior.</p>
 
-          <h2>See it in action â€” the Control Room Actions demo</h2>
-          <p>The included <strong>Demo_ControlRoomActions</strong> graph (open <code>DialogueDemo.unity</code> and choose "Control Room Actions" from the demo menu) demonstrates action nodes at work. It shows both fire-and-forget UnityEvent bindings and blocking coroutine handlers â€” study it before building your own to understand how the graph pauses and resumes around action nodes.</p>
+<h2>1. Create an action definition</h2>
+<ol>
+  <li>Open <strong>Tools &gt; Beka Forge &gt; Dialogue Graph System &gt; Open Editor</strong>, then open the <strong>Definitions</strong> workspace and its <strong>Actions</strong> section.</li>
+  <li>Select the <strong>+</strong> button to create an action asset. You can also use Unity's <strong>Create &gt; Beka Forge &gt; Dialogue Graph System &gt; Actions &gt; Action</strong> menu.</li>
+  <li>Set a stable <strong>Action ID</strong>, for example <code>UnlockGate</code>, and a readable display name and description.</li>
+  <li>Set <strong>Default Payload JSON</strong> if the handler needs data. Keep it valid JSON. Choose <strong>Wait For Completion</strong> if the graph should wait for the handler coroutine; configure a default delay only when that delay is intentional.</li>
+</ol>
+<p>Use the exact same ID in the graph node and the handler's <code>CanHandle</code> method. An action definition is data: it does not create the gameplay effect by itself.</p>
 
-          <h2>When to use action nodes</h2>
-          <ul>
-            <li>play a sound effect or music cue</li>
-            <li>start a countdown or timer</li>
-            <li>open or close a UI panel</li>
-            <li>unlock a door or trigger a physics event</li>
-            <li>trigger a cutscene step or camera cut</li>
-            <li>award items or update game state</li>
-          </ul>
+<figure class="preview-embed"><iframe class="preview-embed__frame" src="../preview/index.html?window=dgs&amp;surface=definitions&amp;embed=1" title="Interactive preview of the Definitions workspace from the Dialogue Graph System editor" loading="lazy"></iframe><figcaption>Interactive preview: <strong>Definitions</strong>, recreated from the 4.0 editor source with example assets. Select the <strong>Actions</strong> section for action IDs and payloads; nothing is saved. <a href="../preview/index.html?window=dgs&amp;surface=definitions">Open the full preview</a>.</figcaption></figure>
 
-          <h2>DialogActionSO â€” defining an action</h2>
-          <p>Each action is defined as a <code>DialogActionSO</code> asset. Create one via <code>Right-click â†’ Create â†’ Dialogue Graph System â†’ Definitions â†’ Action</code>. Fill in:</p>
-          <ul>
-            <li><strong>Action ID</strong> â€” the stable string key your handler checks (e.g. <code>PlayExplosion</code>, <code>UnlockDoor</code>). Use this exact ID in graph action nodes and in <code>CanHandle()</code>.</li>
-            <li><strong>Display Name</strong> â€” human-readable label shown in the Actions sidebar tab.</li>
-            <li><strong>Description</strong> â€” tooltip text shown in the editor.</li>
-            <li><strong>Wait For Completion</strong> â€” if true, the dialogue pauses until your coroutine finishes.</li>
-            <li><strong>Default Delay</strong> â€” optional seconds to wait after a fire-and-forget action before advancing.</li>
-            <li><strong>Default Payload JSON</strong> â€” default JSON string passed to your handler if no payload is set on the node.</li>
-          </ul>
-          <p>The <strong>Actions</strong> sidebar tab in the graph editor shows all <code>DialogActionSO</code> assets in your project. Browse them and assign IDs to action nodes without leaving the editor.</p>
+<figure class="preview-embed"><iframe class="preview-embed__frame" data-preview-src="../../assets/unity-preview/embed.html?window=dgs&amp;surface=definitions&amp;embed=1" title="Dialog Action definition example" loading="lazy" hidden></iframe><figcaption>Illustrative definition fields; no project asset is accessed or changed. <a href="../../assets/unity-preview/embed.html?window=dgs&amp;surface=definitions">Open the Definitions preview</a>.</figcaption></figure><h2>2. Place an action in the graph</h2><figure class="preview-embed"><iframe class="preview-embed__frame" data-preview-src="../../assets/unity-preview/embed.html?component=node%3AAction&amp;embed=1" title="Editable Action node field example" loading="lazy" hidden></iframe><figcaption>Example Action card fields; asset picking and gameplay effects are not available in the browser. <a href="../../assets/unity-preview/embed.html?component=node%3AAction">Open the full Action preview</a>.</figcaption></figure>
+<ol>
+  <li>Open a graph and create an Action node from the graph context menu.</li>
+  <li>On the Action card in the graph, set <strong>Action ID</strong> and assign the definition in <strong>Registered Action</strong>. Expand <strong>Payload &amp; Timing</strong> to review the payload and wait/delay fields.</li>
+  <li>Connect the node into the intended route. Save the graph and review its links in the active Graphs workspace.</li>
+</ol>
+<p class="try-it"><strong>Try the Action example:</strong> change <strong>Action ID</strong>, expand <strong>Payload &amp; Timing</strong>, edit the raw <strong>Payload</strong> JSON, and toggle <strong>Wait For Completion</strong>. The preview shows authored values only; it does not invoke a handler or animate a gate.</p>
+<p><strong>Expected result:</strong> the graph contains a reachable action node with an assigned definition. The action will only do work at runtime if an appropriate handler is registered on the scene's action set.</p>
 
-          <h2>Runtime wiring</h2>
-          <ol>
-            <li>Add <code>DialogActionRunner</code> to the scene.</li>
-            <li>Assign it to <code>DialogManager.actionRunner</code>.</li>
-            <li>Add your <code>IActionHandler</code> MonoBehaviours to the scene â€” the runner discovers them automatically.</li>
-          </ol>
+<figure class="preview-embed"><iframe class="preview-embed__frame" src="../preview/index.html?window=dgs&amp;surface=graph-editor&amp;embed=1" title="Interactive preview of the graph editor with example action nodes from the Dialogue Graph System editor" loading="lazy"></iframe><figcaption>Interactive preview: <strong>Graphs &gt; Graph editor</strong>, recreated from the 4.0 editor source. The example graph contains action nodes you can select to inspect; nothing is saved.</figcaption></figure>
 
-          <h2>Fire-and-forget (UnityEvent)</h2>
-          <p>For simple one-shot triggers, bind a UnityEvent directly on the <code>DialogActionSO</code> asset. No code needed.</p>
-
-          <h2>Blocking coroutine handler</h2>
-          <p>Implement <code>IActionHandler</code> when the dialogue must wait for a result â€” a countdown, a fade, a door opening animation, or any async gameplay event.</p>
+<h2>3. Implement an explicit handler</h2>
+<p>Implement <code>IActionHandler</code> on a scene <code>MonoBehaviour</code>. Register that component in a <code>ConversationActionSet</code>'s <strong>handlers</strong> list; handlers are not automatically discovered.</p>
 <pre><code>using System.Collections;
 using DialogSystem.Runtime.Interfaces;
 using UnityEngine;
 
-public class CountdownHandler : MonoBehaviour, IActionHandler
+public sealed class UnlockGateHandler : MonoBehaviour, IActionHandler
 {
-    public bool CanHandle(string actionId) => actionId == "Countdown";
+    [SerializeField] private Animator gateAnimator;
+
+    public bool CanHandle(string actionId) =&gt; actionId == "UnlockGate";
 
     public IEnumerator Handle(string actionId, string payloadJson)
     {
-        // Dialogue pauses here until this coroutine completes
-        yield return new WaitForSeconds(3f);
+        if (gateAnimator != null)
+            gateAnimator.SetTrigger("Unlock");
+
+        // Keep the coroutine alive here if dialogue must wait for your animation.
+        yield return null;
     }
 }</code></pre>
+<p><code>CanHandle</code> selects the action IDs this component accepts. <code>Handle</code> receives the ID and payload JSON. Parse payloads defensively and keep the ID comparison consistent with the definition and graph node.</p>
 
-          <h2>Other definition ScriptableObjects</h2>
-          <p>Three more definition assets help you set up characters and AI context quickly â€” all under <code>Create â†’ Dialogue Graph System â†’ Definitions</code>:</p>
+<h2>4. Register the action set</h2>
+<p>Add a <code>DialogActionRunner</code> to the manager GameObject or assign it in the manager component. In the runner, use its global action set or add a dialogue-specific <code>ConversationActionSet</code>. For a dialogue-specific mapping, make its <code>dialogueKey</code> match the manager's <code>dialogID</code> and add the handler component to that set's <strong>handlers</strong> list. The runner can use its configured global fallback when enabled.</p>
+<p>For a one-off scene action, use the supplied DGS sample as a reference for its action runner and handler wiring. Do not assume that adding a component to the scene automatically registers it.</p>
 
-          <h3>DialogCharacterSO â€” character definitions</h3>
-          <p>Create via <code>Create â†’ Dialogue Graph System â†’ Definitions â†’ Character</code>. Assign in the <strong>Characters</strong> sidebar tab for bulk portrait, name, and audio assignment across all matching nodes. Key fields:</p>
-          <ul>
-            <li><strong>Character ID</strong> â€” stable key used to match dialog nodes.</li>
-            <li><strong>Display Name</strong> â€” shown in the runtime UI speaker nameplate.</li>
-            <li><strong>Portrait</strong> â€” sprite shown in the portrait/avatar frame.</li>
-            <li><strong>Short Description, Personality Traits, Speech Style, Example Lines</strong> - reusable character-writing context for authors and optional future integrations.</li>
-          </ul>
+<h2>UnityEvent alternative</h2>
+<p>For a simple serialized callback, add an <code>ActionBinding</code> to the selected action set, enter the matching <code>actionId</code>, and wire its <code>On Invoke (string payload)</code> UnityEvent. This binding belongs to the action set, not the <code>DialogActionSO</code> definition. Use an <code>IActionHandler</code> for coroutine timing, payload parsing, or reusable logic that should be tested in code. Keep critical state changes in your game systems rather than putting them in dialogue UI code.</p>
 
-          <h3>DialogEnvironmentSO â€” location context</h3>
-          <p>Create via <code>Create â†’ Dialog Graph System â†’ Definitions â†’ Environment</code>. Set in the Context tab to give the AI a sense of place. Key fields: <strong>Display Name</strong>, <strong>Description</strong>, <strong>Atmosphere</strong>, <strong>Mood</strong>, <strong>Time of Day</strong>, <strong>Canon Rules</strong>, <strong>Default Tone</strong>.</p>
-
-          <h3>DialogSceneContextSO â€” full scene context for AI</h3>
-          <p>Create via <code>Create â†’ Dialog Graph System â†’ Definitions â†’ Scene Context</code>. Combines environment, characters, and available actions into one asset. Assign it in the <strong>Context</strong> tab of the graph editor sidebar. The AI reads this when building prompts â€” filling it in produces significantly more coherent, canon-consistent results. Key fields: <strong>Environment</strong>, <strong>Participating Characters</strong>, <strong>Available Actions</strong>, <strong>Scene Goal</strong>, <strong>Tone</strong>, <strong>Extra Rules</strong>.</p>
-
-          <nav class="page-nav" data-prev-next></nav>
-        </article>
+<h2>Troubleshooting</h2>
+<ul>
+  <li><strong>No effect occurs:</strong> compare the action ID in the definition, graph node, and handler; verify the handler is listed in the selected action set.</li>
+  <li><strong>The dialogue does not wait:</strong> check <strong>Wait For Completion</strong> and ensure the handler returns a coroutine that yields for the work you need to finish.</li>
+  <li><strong>Payload is empty or invalid:</strong> verify the node payload and default payload are valid JSON and that the handler reads the same shape.</li>
+  <li><strong>Action works for one dialogue only:</strong> check the dialogue-specific key against the manager's registered <code>dialogID</code>, or configure the intended global set/fallback.</li>
+</ul>
+<nav class="page-nav" data-prev-next></nav>
+</article>
       </main>
       <aside class="page-toc" data-page-toc></aside>
     </div>
-    <footer class="footer"><div class="footer-inner"><span>Dialogue Graph System v3.0.0</span><span>&copy; <span data-current-year></span></span></div></footer>
+    <footer class="footer"><div class="footer-inner"><span>Dialogue Graph System v4.0.0</span><span>&copy; <span data-current-year></span></span></div></footer>
   </div>
   <script src="../assets/app.js"></script>
 </body>

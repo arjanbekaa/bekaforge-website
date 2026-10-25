@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Provider Assets | AI Providers Docs</title>
-  <meta name="description" content="Built-in provider assets and their intended usage in AI Providers: OpenAI, DeepSeek, Gemini, Ollama, and Custom JSON.">
+  <meta name="description" content="Provider profile types, endpoint behavior, local credentials, and editor-only subscription connections in AI Providers.">
   <link rel="stylesheet" href="../assets/styles.css">
   <link rel="icon" type="image/x-icon" href="../favicon/favicon.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="../favicon/favicon-32x32.png">
@@ -32,19 +32,22 @@
         <article class="doc-article" data-doc-content>
           <nav class="breadcrumb"><a href="../index.html">Home</a> / <span>Provider Assets</span></nav>
           <h1>Provider Assets</h1>
-          <p class="lede">Provider assets are the main extension surface in AI Providers. Each built-in provider is a concrete <code>LlmProviderDefinitionBase</code> implementation with its own endpoint, auth behavior, and response parser.</p>
+          <p class="lede">API and local profiles share the <code>LlmProviderDefinitionBase</code> configuration model while supplying endpoint, authentication, and response parsing appropriate to their provider family. Codex and Claude Code are editor-only subscription connections, not runtime API profiles.</p>
 
           <h2>Built-in providers</h2>
           <table>
             <thead><tr><th>Provider</th><th>Endpoint style</th><th>Notes</th></tr></thead>
             <tbody>
               <tr><td>OpenAI</td><td><code>/v1/chat/completions</code></td><td>Reference shape for OpenAI-compatible providers.</td></tr>
+              <tr><td>OpenAI Compatible</td><td>Configurable OpenAI-style base URL and chat endpoint</td><td>Use when a service implements the compatible chat-completions request/response shape.</td></tr>
               <tr><td>DeepSeek</td><td>OpenAI-compatible chat completions</td><td>Same general transport shape with a different base endpoint.</td></tr>
               <tr><td>Gemini</td><td><code>generateContent</code> style</td><td>Uses Google-style API key header rules.</td></tr>
               <tr><td>Ollama</td><td><code>/api/chat</code></td><td>Local or remote Ollama endpoint, no remote cloud key by default.</td></tr>
-              <tr><td>Custom JSON</td><td>User-defined</td><td>Generic adapter for custom or OpenAI-compatible HTTP+JSON flows.</td></tr>
+              <tr><td>Custom JSON</td><td>User-defined method, body, and response path</td><td>Configure this for a custom JSON API; choose OpenAI Compatible when the endpoint follows that common schema.</td></tr>
             </tbody>
           </table>
+
+          <figure class="preview-embed"><iframe class="preview-embed__frame" data-preview-src="../../assets/unity-preview/embed.html?window=ai-providers&amp;surface=profiles&amp;embed=1" hidden title="Interactive preview of the AI Providers profiles window" loading="lazy"></iframe><figcaption>Interactive preview: <strong>Profiles</strong>, recreated from the product source with fictitious example values. Select profiles to inspect their stored fields; no provider is contacted. <a href="../../assets/unity-preview/embed.html?window=ai-providers&amp;surface=profiles">Open the full preview</a>.</figcaption></figure>
 
           <h2>What provider assets store</h2>
           <ul>
@@ -58,10 +61,13 @@
           <h2>What provider assets do not store</h2>
           <p>Local API keys are not serialized into the shared asset file. That boundary is intentional and matters both for version control and for honest public documentation.</p>
 
+          <h2>Editor-only subscription connections</h2>
+          <p>Codex and Claude Code profiles use native tools that the editor user installs and signs into. They are not part of player builds and do not store subscription tokens as API keys. Use an HTTP/API provider for runtime requests.</p>
+
           <div class="placeholder-grid">
             <article class="placeholder-card">
               <h3>Built-in provider surface</h3>
-              <img class="screenshot-img" src="../assets/images/provider-settings-overview.png" alt="AI Providers panel with built-in provider choices" loading="lazy">
+              <img class="screenshot-img" src="../../Dialogue%20Graph%20System/4.0/screenshots/ai-providers-setup.jpg" alt="AI Providers 2.2 setup checklist before configuring a provider" width="1920" height="1161" loading="lazy">
               <p>The built-in provider tabs show the supported provider families and the editable asset fields each provider exposes.</p>
             </article>
           </div>

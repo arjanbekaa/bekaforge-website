@@ -1,0 +1,714 @@
+{
+  "schema": 1,
+  "updated": "2026-10-20",
+  "source": {
+    "project": "DialogueGraphSystem",
+    "branch": "codex/dgs-4.0-final",
+    "commit": "5fb59bc4",
+    "unity": "6000.3.6f1",
+    "envVar": "DGS_SOURCE_ROOT",
+    "defaultLocalRoot": "C:\\Users\\arjan\\Desktop\\BekaForge\\DialogueGraphSystem"
+  },
+  "evidenceSummary": {
+    "strings": "VERBATIM from pinned source",
+    "layout": "APPROXIMATE browser recreation rounded to the DGS palette",
+    "nativeCaptures": "NOT OBSERVED",
+    "behavior": "EXAMPLE interactions only; no Unity, project, provider, or file access"
+  },
+  "windows": [
+    {
+      "id": "dgs",
+      "label": "Dialogue Graph System",
+      "module": "assets/unity-preview/surfaces/dgs.js",
+      "stylesheets": [
+        "assets/unity-preview/dgs.css",
+        "assets/unity-preview/nodes.css"
+      ],
+      "evidence": {
+        "strings": "VERBATIM from pinned source",
+        "layout": "BROWSER RECREATION; native captures NOT OBSERVED",
+        "behavior": "EXAMPLE ONLY; no graph read, edit, execute, import, or export"
+      }
+    },
+    {
+      "id": "ai-providers",
+      "label": "AI Providers",
+      "module": "assets/unity-preview/surfaces/ai-providers.js",
+      "stylesheets": [
+        "assets/unity-preview/ai-providers.css"
+      ],
+      "evidence": {
+        "strings": "VERBATIM from pinned source",
+        "layout": "BROWSER RECREATION; native captures NOT OBSERVED",
+        "behavior": "EXAMPLE ONLY; no credentials, CLI, auth, or network access"
+      }
+    },
+    {
+      "id": "banter",
+      "label": "Banter (DGS)",
+      "module": "assets/unity-preview/surfaces/banter.js",
+      "stylesheets": [
+        "assets/unity-preview/product.css",
+        "assets/unity-preview/banter.css"
+      ],
+      "evidence": {
+        "strings": "VERBATIM from pinned source",
+        "layout": "BROWSER RECREATION; native captures NOT OBSERVED",
+        "behavior": "EXAMPLE ONLY; no project scan, validation run, or runtime recording"
+      }
+    },
+    {
+      "id": "sound",
+      "label": "Sound Sequencer (DGS)",
+      "module": "assets/unity-preview/surfaces/sound.js",
+      "stylesheets": [
+        "assets/unity-preview/product.css",
+        "assets/unity-preview/sound.css"
+      ],
+      "evidence": {
+        "strings": "VERBATIM from pinned source",
+        "layout": "BROWSER RECREATION; native captures NOT OBSERVED",
+        "behavior": "EXAMPLE ONLY; no audio playback, scene query, or asset write"
+      }
+    },
+    {
+      "id": "themes",
+      "label": "UI Themes (DGS)",
+      "module": "assets/unity-preview/surfaces/themes.js",
+      "stylesheets": [
+        "assets/unity-preview/product.css",
+        "assets/unity-preview/themes.css"
+      ],
+      "evidence": {
+        "strings": "VERBATIM from pinned source",
+        "layout": "BROWSER RECREATION; native captures NOT OBSERVED",
+        "behavior": "EXAMPLE ONLY; no theme definition rendering, prefab copy, or asset write"
+      }
+    },
+    {
+      "id": "inspectors",
+      "label": "DGS inspectors",
+      "module": "assets/unity-preview/surfaces/inspectors.js",
+      "stylesheets": [
+        "assets/unity-preview/product.css"
+      ],
+      "evidence": {
+        "strings": "VERBATIM from pinned source",
+        "layout": "BROWSER RECREATION; native captures NOT OBSERVED",
+        "behavior": "EXAMPLE ONLY; no asset load, rename, duplicate, or delete"
+      }
+    },
+    {
+      "id": "dgs-dialogs",
+      "label": "DGS dialogs",
+      "module": "assets/unity-preview/surfaces/dgs-dialogs.js",
+      "stylesheets": [
+        "assets/unity-preview/dgs-dialogs.css"
+      ],
+      "evidence": {
+        "strings": "VERBATIM from pinned source",
+        "layout": "BROWSER RECREATION; native captures NOT OBSERVED",
+        "behavior": "EXAMPLE ONLY; no asset create, save, validation, import, export, or translation"
+      }
+    },
+    {
+      "id": "dgs-ai",
+      "label": "DGS AI Assistant",
+      "module": "assets/unity-preview/surfaces/ai-panel.js",
+      "stylesheets": [
+        "assets/unity-preview/product.css",
+        "assets/unity-preview/ai-panel.css"
+      ],
+      "evidence": {
+        "strings": "VERBATIM from pinned source",
+        "layout": "BROWSER RECREATION; native captures NOT OBSERVED",
+        "behavior": "EXAMPLE ONLY; no provider request, graph operation, or file access"
+      }
+    }
+  ],
+  "sourceFiles": [
+    {
+      "path": "Assets/DialogGraphSystem/Scripts/Editor/Windows/DialogSystemMainWindow.cs",
+      "usedBy": [
+        "dgs"
+      ],
+      "sha256": "f5d0ce89c4dd284af8f5edff821622cfc60b35d2597ecc5431e4e5c3c4fcbf48"
+    },
+    {
+      "path": "Assets/DialogGraphSystem/Scripts/Editor/Windows/Tabs/SettingsTabController.cs",
+      "usedBy": [
+        "dgs"
+      ],
+      "sha256": "81475dac509c96e5db209a68d975383dcf3579f46198d961e1489c4627e4d803"
+    },
+    {
+      "path": "Assets/DialogGraphSystem/Scripts/Editor/SettingsWindow/Panels/TextPanel.cs",
+      "usedBy": [
+        "dgs"
+      ],
+      "sha256": "f0cf3541c6c0b716e7a224cafef4a2965c6753b2d370a2b1093881dabcae2338"
+    },
+    {
+      "path": "Assets/DialogGraphSystem/Scripts/Editor/SettingsWindow/Panels/ChoicePanel.cs",
+      "usedBy": [
+        "dgs"
+      ],
+      "sha256": "8442908be0840ccd025bd89b5f70ee787f260bb9a3e585d24e1d4af3ef4cf9c1"
+    },
+    {
+      "path": "Assets/DialogGraphSystem/Scripts/Editor/SettingsWindow/Panels/AudioPanel.cs",
+      "usedBy": [
+        "dgs"
+      ],
+      "sha256": "f5e3385560594d2c3bd6696a7f02157251a6b8cb51389337fa751cf3c0c44a72"
+    },
+    {
+      "path": "Assets/DialogGraphSystem/Scripts/Editor/SettingsWindow/Panels/RuntimeUIPanel.cs",
+      "usedBy": [
+        "dgs"
+      ],
+      "sha256": "8ff0a1a13c5ddf2206dab6142c8e6f3423d5fc4f8b937c7f274ef5764831d921"
+    },
+    {
+      "path": "Assets/DialogGraphSystem/Scripts/Editor/SettingsWindow/Panels/AiSettingsPanel.cs",
+      "usedBy": [
+        "dgs"
+      ],
+      "sha256": "41663f848a7d1d1d27708d921ce487a1e418e1b273cfb2275a943822f6ef1793"
+    },
+    {
+      "path": "Assets/DialogGraphSystem/Scripts/Editor/SettingsWindow/Panels/GraphViewPanel.cs",
+      "usedBy": [
+        "dgs"
+      ],
+      "sha256": "84936bf615b39c7f3e63d0b3d2fe0e0ccd8ea31858c0af432485a1b5ab9fb446"
+    },
+    {
+      "path": "Assets/DialogGraphSystem/Scripts/Editor/SettingsWindow/Panels/AboutPanel.cs",
+      "usedBy": [
+        "dgs"
+      ],
+      "sha256": "4bb92f09345d6e2506f075fee1b669939b078951808c49c6c1550776fbeea27a"
+    },
+    {
+      "path": "Assets/DialogGraphSystem/Scripts/Editor/Windows/Tabs/DialogProductionTabController.cs",
+      "usedBy": [
+        "dgs",
+        "dgs-dialogs"
+      ],
+      "sha256": "701075067bf24d0d23da29d5e5b547d955b304cc8ba28e659cae61f08389b6fd"
+    },
+    {
+      "path": "Assets/DialogGraphSystem/Scripts/Editor/Windows/Tabs/ProjectHealthTabController.cs",
+      "usedBy": [
+        "dgs"
+      ],
+      "sha256": "abf06de3b23102a05132085371e1fb25ec73c8d8312f61a269cc88b94057db0c"
+    },
+    {
+      "path": "Assets/DialogGraphSystem/Scripts/Runtime/Models/NodeKind.cs",
+      "usedBy": [
+        "dgs"
+      ],
+      "sha256": "613b930f1e6452b67b8704cac6d51a5d0691ac850cabed3aa0f0e784253fb497"
+    },
+    {
+      "path": "Assets/DialogGraphSystem/Scripts/Editor/USS/BekaForgePalette.uss",
+      "usedBy": [
+        "dgs"
+      ],
+      "sha256": "3243fe370f6db6d7b616631b71ef17731bdcfc331acc81cbcb679c5db4e4e54f"
+    },
+    {
+      "path": "Assets/DialogGraphSystem/Scripts/Editor/USS/NodeTypes.uss",
+      "usedBy": [
+        "dgs"
+      ],
+      "sha256": "6f8e54666618ebe1480f5057dd83b10a2a949ca77967d07a97acd0df963ebd44"
+    },
+    {
+      "path": "Assets/Beka Forge/AI Providers/Editor/AiProvidersSettingsPanel.cs",
+      "usedBy": [
+        "ai-providers"
+      ],
+      "sha256": "d478b060bac5b84dbbdf0e858515350be2c44a50308faf8ba55e304eb7eca93b"
+    },
+    {
+      "path": "Assets/Beka Forge/AI Providers/Editor/AiProvidersSettingsWindow.cs",
+      "usedBy": [
+        "ai-providers"
+      ],
+      "sha256": "586c092cf39e0920e2c18fba70f1785b73d93cf40fc8a119a152904ece41a585"
+    },
+    {
+      "path": "Assets/Beka Forge/AI Providers/Editor/AiProfilePicker.cs",
+      "usedBy": [
+        "ai-providers"
+      ],
+      "sha256": "037177b4a491be1ba31dbefd603d6f7839db751ed497d976bd3144d28e290623"
+    },
+    {
+      "path": "Assets/Beka Forge/AI Providers/Editor/AiLocalConnectionPanel.cs",
+      "usedBy": [
+        "ai-providers"
+      ],
+      "sha256": "e8e74a86f9a3824c0f5c5fdd1b2af9e81dfc3a2ad8c1fe67ddc9cfb36389b71f"
+    },
+    {
+      "path": "Assets/Beka Forge/AI Providers/Editor/AiProvidersOnlineLinks.cs",
+      "usedBy": [
+        "ai-providers"
+      ],
+      "sha256": "2cc10a151124af815848fe7442ad218972fa64402aa682a36e1117d34ac4ae82"
+    },
+    {
+      "path": "Assets/Beka Forge/Dialogue Graph System/Banter/Editor/BanterGettingStartedWindow.cs",
+      "usedBy": [
+        "banter"
+      ],
+      "sha256": "756b4f1820c5db888f5946fa43558f56437e2cf942f32389370e94f65ac49471"
+    },
+    {
+      "path": "Assets/Beka Forge/Dialogue Graph System/Banter/Editor/BanterCatalogValidationWindow.cs",
+      "usedBy": [
+        "banter"
+      ],
+      "sha256": "4de714a3995236ba63b473aa7bc7871ad95e9e1fe232b8349c3ec44da2d038b7"
+    },
+    {
+      "path": "Assets/Beka Forge/Dialogue Graph System/Banter/Editor/BanterCatalogValidationReport.cs",
+      "usedBy": [
+        "banter"
+      ],
+      "sha256": "fca7eed96a0e8b06c496ff6d1280b054a8a711548c111ca7bc36a61d34631a4c"
+    },
+    {
+      "path": "Assets/Beka Forge/Dialogue Graph System/Banter/Editor/BanterDecisionDebuggerWindow.cs",
+      "usedBy": [
+        "banter"
+      ],
+      "sha256": "facbd8fe589af5cbddc581cf510ae5d60243065b12b3e05f9d94577c2a3bad48"
+    },
+    {
+      "path": "Assets/Beka Forge/Dialogue Graph System/Banter/Editor/BanterDecisionTraceExporter.cs",
+      "usedBy": [
+        "banter"
+      ],
+      "sha256": "13909a09716103d129588ba555dea650c88dde7d96a37406a52ce25ed6409aa8"
+    },
+    {
+      "path": "Assets/Beka Forge/Dialogue Graph System/Sound Sequencer/Editor/Window/SoundSequenceWindow.cs",
+      "usedBy": [
+        "sound"
+      ],
+      "sha256": "fa7b6be9492e95b1c2b3261a05c769d95090a0998c01e341d0d70ac3af2542f1"
+    },
+    {
+      "path": "Assets/Beka Forge/Dialogue Graph System/Sound Sequencer/Editor/SoundSequenceInspectors.cs",
+      "usedBy": [
+        "sound"
+      ],
+      "sha256": "001738e008a5d0405a2379f681ef2730977cdc95f0bb31b5d02c75439ef2c1ff"
+    },
+    {
+      "path": "Assets/Beka Forge/Dialogue Graph System/UI Themes/Editor/UILayoutPresetSOEditor.cs",
+      "usedBy": [
+        "themes"
+      ],
+      "sha256": "b63cdde372e3b358daa2d0feab507c4d66db4fcf83fe5990ba4270c2be7738d6"
+    },
+    {
+      "path": "Assets/Beka Forge/Dialogue Graph System/UI Themes/Editor/UIThemeWorkbenchElement.cs",
+      "usedBy": [
+        "themes"
+      ],
+      "sha256": "703e66d8f004c80a188d6b9de5b65a7d3d7cfcc3ea54244bcd7527d356cb6fa4"
+    },
+    {
+      "path": "Assets/Beka Forge/Dialogue Graph System/UI Themes/Editor/UIThemeWorkbench.uss",
+      "usedBy": [
+        "themes"
+      ],
+      "sha256": "bb5e1247554b869e41ebf83a3bf4fed0c998d0ee902160101d077cad15696cfa"
+    },
+    {
+      "path": "Assets/Beka Forge/Dialogue Graph System/UI Themes/UI/UILayoutPresetSO.cs",
+      "usedBy": [
+        "themes"
+      ],
+      "sha256": "6fa836d3d61e1dcfdbdbed61e87ddfd0f826b28c9a70a159560fa0c36f0eb0c3"
+    },
+    {
+      "path": "Assets/Beka Forge/Dialogue Graph System/UI Themes/IntegrationEditor/DgsThemeWorkbenchWindow.cs",
+      "usedBy": [
+        "themes"
+      ],
+      "sha256": "b328caa18b07a7e3ac08ff440e06262c3c14d646598622f0129d3fa9eaf99f22"
+    },
+    {
+      "path": "Assets/Beka Forge/Dialogue Graph System/UI Themes/IntegrationEditor/DgsThemeWorkbenchView.cs",
+      "usedBy": [
+        "themes"
+      ],
+      "sha256": "f2e6ef04280f8212bd0ec69bfb4ca3a4384a3e3fe371c57be12fb371bf27671c"
+    },
+    {
+      "path": "Assets/Beka Forge/Dialogue Graph System/UI Themes/IntegrationEditor/DgsThemeCatalogElement.cs",
+      "usedBy": [
+        "themes"
+      ],
+      "sha256": "37a2d5f0123e31a58781628fed1825297ed06c22e4b1d7bfa2773c52f090a295"
+    },
+    {
+      "path": "Assets/Beka Forge/Dialogue Graph System/UI Themes/IntegrationEditor/MinimalCleanUIIntegration.cs",
+      "usedBy": [
+        "themes"
+      ],
+      "sha256": "858250272305ac5e0a50856896f9c195c04801a8959d677086cfd7f373e57c89"
+    },
+    {
+      "path": "Assets/Beka Forge/Dialogue Graph System/UI Themes/IntegrationEditor/OpenAdventureUIIntegration.cs",
+      "usedBy": [
+        "themes"
+      ],
+      "sha256": "feeaa8e85c92d10db4c0ca35b61e68da2f701fd0c1845f4e20f06706ba953a06"
+    },
+    {
+      "path": "Assets/Beka Forge/Dialogue Graph System/UI Themes/IntegrationEditor/UIThemeScenePreviewSession.cs",
+      "usedBy": [
+        "themes"
+      ],
+      "sha256": "280b94e07d9059eb0fc5e59eacb2581accde2a6a82ff6747b9e0314b76e441fe"
+    },
+    {
+      "path": "Assets/Beka Forge/Dialogue Graph System/UI Themes/IntegrationEditor/DgsDialogueCanvasPreviewSource.cs",
+      "usedBy": [
+        "themes"
+      ],
+      "sha256": "9ab8f38e0f0dc2632c59ebf2dc790a5e56e15d8d4490c4b4f2b80b30ab9fa8f5"
+    },
+    {
+      "path": "Assets/DialogGraphSystem/Scripts/Editor/Inspectors/DgsAssetSOEditors.cs",
+      "usedBy": [
+        "inspectors"
+      ],
+      "sha256": "f5ec790c567baf4982704103fc93f80dc836c4e72efa83474242aa1e2a240dc4"
+    },
+    {
+      "path": "Assets/DialogGraphSystem/Scripts/Editor/Inspectors/DialogNodeEditor.cs",
+      "usedBy": [
+        "inspectors"
+      ],
+      "sha256": "b617ae6b4344af923ad03f2b49d13b51c3ea6c839ce3b9e104a486a9410d055a"
+    },
+    {
+      "path": "Assets/DialogGraphSystem/Scripts/Editor/Inspectors/DialogVariableSOEditor.cs",
+      "usedBy": [
+        "inspectors"
+      ],
+      "sha256": "7537bc6131918437c9bbc7aa73b18c1c68361d461cc6cc2aa8f5cf47fd2167f4"
+    },
+    {
+      "path": "Assets/DialogGraphSystem/Scripts/Editor/Inspectors/DialogueVariableStoreEditor.cs",
+      "usedBy": [
+        "inspectors"
+      ],
+      "sha256": "3c463bfa941ba69c12752e1f4ed7d12cdd68efa938b1bc9490a0188d115c30ee"
+    },
+    {
+      "path": "Assets/DialogGraphSystem/Scripts/Editor/Inspectors/NativeComponentEditors.cs",
+      "usedBy": [
+        "inspectors"
+      ],
+      "sha256": "8866d2f774dd419fb2c66543c2607a8134bf45b9bfa0003fd551cd7edb84581f"
+    },
+    {
+      "path": "Assets/DialogGraphSystem/Scripts/Editor/Util/BekaForgeInspectorHeader.cs",
+      "usedBy": [
+        "inspectors"
+      ],
+      "sha256": "41a884fcf66aa21abb26705b3a780151dd5b3a69d26d522e2a5b1d479ce8812d"
+    },
+    {
+      "path": "Assets/DialogGraphSystem/Scripts/Editor/Util/ComponentInspectorHeader.cs",
+      "usedBy": [
+        "inspectors"
+      ],
+      "sha256": "bb2f47f7cf2d4861c14219b072618d58f739edd45f8aa7f445825da48cdeb175"
+    },
+    {
+      "path": "Assets/Beka Forge/Camera Controller/Editor/BekaForgeCameraControllerManagerEditor.cs",
+      "usedBy": [
+        "inspectors"
+      ],
+      "sha256": "40e8c14194ae41f71020d10d08cb27e5fa2cfeae3c392ee9f5ac0908b6c4b8b2"
+    },
+    {
+      "path": "Assets/Beka Forge/Camera Controller/Editor/NativeCameraComponentEditors.cs",
+      "usedBy": [
+        "inspectors"
+      ],
+      "sha256": "df014ca2080a0856abbac80643fe2886a56ebd5f9f792b07574ab9b05c62d421"
+    },
+    {
+      "path": "Assets/Beka Forge/Camera Controller/Editor/BekaForgeCameraControllerInspectorHeader.cs",
+      "usedBy": [
+        "inspectors"
+      ],
+      "sha256": "97b7f2bc0cf438f52596f705b36649fa268ebd3012ebdf4ee5b10dc38bda438b"
+    },
+    {
+      "path": "Assets/Beka Forge/Camera Controller/Editor/BekaForgeInspectorHeader.cs",
+      "usedBy": [
+        "inspectors"
+      ],
+      "sha256": "da81c771e01ae4c1aec7bbcbe76520cf6299e319f2d2f5c8f856b6c27780eb3c"
+    },
+    {
+      "path": "Assets/Beka Forge/Interaction System/Editor/BekaForgeInspectorHeader.cs",
+      "usedBy": [
+        "inspectors"
+      ],
+      "sha256": "afca207c763cd81b83f06f9870adf3187b80807cd566d0bbeda11451bcfe4309"
+    },
+    {
+      "path": "Assets/Beka Forge/Interaction System/Editor/InteractableEditor.cs",
+      "usedBy": [
+        "inspectors"
+      ],
+      "sha256": "3d3395b0568cd70ecad4f8219201461d2069c9f4b985a0219527f23290826b28"
+    },
+    {
+      "path": "Assets/Beka Forge/Interaction System/Editor/InteractorEditor.cs",
+      "usedBy": [
+        "inspectors"
+      ],
+      "sha256": "ddfe5ec932179858f2ac98ba3ece841c60d126e344f2d498df01d7d1e8a1f039"
+    },
+    {
+      "path": "Assets/Beka Forge/Interaction System/Editor/InteractionPromptEditors.cs",
+      "usedBy": [
+        "inspectors"
+      ],
+      "sha256": "7b7be2c5fcfb75fa65f0ad57e5a0cbf9193ec2eaa361e2b3170cc593e6b01585"
+    },
+    {
+      "path": "Assets/Beka Forge/Interaction System/Editor/InteractionValidation.cs",
+      "usedBy": [
+        "inspectors"
+      ],
+      "sha256": "9682b8c83ff26e8ec2c03e56ebef2ca9faf6183e175bc30c80e7c2699eeb1067"
+    },
+    {
+      "path": "Assets/Beka Forge/Interaction System/Editor/InteractionEditorMenu.cs",
+      "usedBy": [
+        "inspectors"
+      ],
+      "sha256": "884d669bb2ad583b8f3a3e5b20ad6b537b86ee7ff4e0fa918c4e6ad95f586032"
+    },
+    {
+      "path": "Assets/DialogGraphSystem/Scripts/Editor/Windows/DialogWelcomeWindow.cs",
+      "usedBy": [
+        "dgs-dialogs"
+      ],
+      "sha256": "3bcd34aea9b396cba21ae3b9635048fedb74dd069356220b5fe402cec6784a29"
+    },
+    {
+      "path": "Assets/DialogGraphSystem/Scripts/Editor/Onboarding/DialogWelcomeStartup.cs",
+      "usedBy": [
+        "dgs-dialogs"
+      ],
+      "sha256": "2dda1d08cb5f1abbd164ae2d55fc8600f571763581fbc9ed19a1690a06d5b6b2"
+    },
+    {
+      "path": "Assets/DialogGraphSystem/Scripts/Editor/PublicInformation/DialogPublicInformationWindow.cs",
+      "usedBy": [
+        "dgs-dialogs"
+      ],
+      "sha256": "5e1803de0d05d681abb3c65e3745b18b9ff6832fa2b884926b4bccf022c33b9b"
+    },
+    {
+      "path": "Assets/DialogGraphSystem/Scripts/Editor/PublicInformation/DialogPublicInformationCatalog.cs",
+      "usedBy": [
+        "dgs-dialogs",
+        "dgs-ai"
+      ],
+      "sha256": "3d368960be6206efe766fa09b74f2cd294e79611a6957e374fb8f07d70351b73"
+    },
+    {
+      "path": "Assets/DialogGraphSystem/Scripts/Editor/Windows/DialogCreateAssetWindow.cs",
+      "usedBy": [
+        "dgs-dialogs"
+      ],
+      "sha256": "88f924921bbb8f0b8ec7c8d65f7cb22f245709947c391a5e41cac0a5dd538585"
+    },
+    {
+      "path": "Assets/DialogGraphSystem/Scripts/Editor/Windows/DialogGraphValidationPanelWindow.cs",
+      "usedBy": [
+        "dgs-dialogs"
+      ],
+      "sha256": "08883c6ec01365e898b801a70c061b353e94afd3273407fd69aae45de1d094ef"
+    },
+    {
+      "path": "Assets/DialogGraphSystem/Scripts/Editor/Windows/DialogRewritePreviewWindow.cs",
+      "usedBy": [
+        "dgs-dialogs"
+      ],
+      "sha256": "02253aadaeb62a19ae70a5080261cd6946be9029354d2596c979098e26bd5864"
+    },
+    {
+      "path": "Assets/DialogGraphSystem/Scripts/Editor/Windows/SaveGraphPromptWindow.cs",
+      "usedBy": [
+        "dgs-dialogs"
+      ],
+      "sha256": "b9e17b74caa6d52fdc82e35870d496e8cbbd0ee486a13d1b962202a0fc0a2ab2"
+    },
+    {
+      "path": "Assets/DialogGraphSystem/Scripts/Editor/Windows/Localization/AddLanguageDialog.cs",
+      "usedBy": [
+        "dgs-dialogs"
+      ],
+      "sha256": "00df04f851df106ddcee259161bcca734ca91c92a8fa585259fa71aad4b7232a"
+    },
+    {
+      "path": "Assets/DialogGraphSystem/Scripts/Editor/Windows/Localization/AiTranslationChoiceDialog.cs",
+      "usedBy": [
+        "dgs-dialogs"
+      ],
+      "sha256": "b0627e6c21b5f7391f293fc93597ff7b3dd5e188ad4e03c9241155ccbb5f99d3"
+    },
+    {
+      "path": "Assets/DialogGraphSystem/Scripts/Editor/Windows/Localization/DialogLocalizationIOWindow.cs",
+      "usedBy": [
+        "dgs-dialogs"
+      ],
+      "sha256": "cfea3481cd964008eabb4a0458508ff32d3f255cf22ddcae0e2816f65c203452"
+    },
+    {
+      "path": "Assets/Beka Forge/AI Providers/Editor/AiModelPickerField.cs",
+      "usedBy": [
+        "dgs-dialogs"
+      ],
+      "sha256": "44a36246d079526e1fae34a8e59dc86a01a77b5a756eae2647f122157b1d396a"
+    },
+    {
+      "path": "Assets/DialogGraphSystem/Scripts/Editor/Windows/DialogGraphAiFloatingPanel.cs",
+      "usedBy": [
+        "dgs-ai"
+      ],
+      "sha256": "e7a7b0bac7bf41128e9c2ba3663ee52766634b87ab2652b1c4b7111ea4d446f1"
+    },
+    {
+      "path": "Assets/Beka Forge/Dialogue AI Extension/Editor/Windows/DialogGraphAiSidebarContent.cs",
+      "usedBy": [
+        "dgs-ai"
+      ],
+      "sha256": "2c2feee08fd93b0455995decc698215fc01aa9c9ffe2055426fccecd56231ce3"
+    },
+    {
+      "path": "Assets/Beka Forge/Dialogue AI Extension/Editor/Windows/AiDraftPreviewWindow.cs",
+      "usedBy": [
+        "dgs-ai"
+      ],
+      "sha256": "a59001a98e89b3ad05ee3288fadd6dd604d8fa6dcfea0552c691da3ed3b89183"
+    },
+    {
+      "path": "Assets/Beka Forge/Dialogue AI Extension/Editor/Windows/DialogGraphAiComposer.uss",
+      "usedBy": [
+        "dgs-ai"
+      ],
+      "sha256": "2786c055dfef3698a354914283daaf6cff3480b7a9a6916fe6afe08e5648b25e"
+    },
+    {
+      "path": "Assets/Beka Forge/Dialogue AI Extension/Editor/Windows/AiLocalizationPreviewWindow.cs",
+      "usedBy": [
+        "dgs-ai"
+      ],
+      "sha256": "ec6b35201cc35a88a8a3bdc19854e18c4469a0fcf722ea785c5c01cf86132d7c"
+    },
+    {
+      "path": "Assets/Beka Forge/Dialogue AI Extension/Editor/Windows/BatchRewritePreviewWindow.cs",
+      "usedBy": [
+        "dgs-ai"
+      ],
+      "sha256": "a0ffb96dd967d19dce244ccea8aae887a3f156cc26702fb3f22957c1344f7232"
+    },
+    {
+      "path": "Assets/Beka Forge/Dialogue AI Extension/Editor/Windows/DialogFlowDraftPreviewWindow.cs",
+      "usedBy": [
+        "dgs-ai"
+      ],
+      "sha256": "3fff743b10eee2a1b77bcfbb2c33101ae4e1ba9b49d45e04ce9b49718b3bbdd3"
+    },
+    {
+      "path": "Assets/Beka Forge/Dialogue AI Extension/Editor/AI/Characters/UI/CharacterBanterReviewWindow.cs",
+      "usedBy": [
+        "dgs-ai"
+      ],
+      "sha256": "b20f8e89c7ed9e30bc8dc0d18f838cc12565a41c0fb7e594292129fd618535f4"
+    },
+    {
+      "path": "Assets/Beka Forge/Dialogue AI Extension/Editor/AI/Characters/UI/CharacterFillReviewWindow.cs",
+      "usedBy": [
+        "dgs-ai"
+      ],
+      "sha256": "df0f885a6fb57f73b6c2cda53b335e32cb1b62ee5c2cb031e35489571fadbbc6"
+    },
+    {
+      "path": "Assets/Beka Forge/Dialogue AI Extension/Editor/AI/Plans/GraphOperationPlanPreviewWindow.cs",
+      "usedBy": [
+        "dgs-ai"
+      ],
+      "sha256": "56dd6dbbaf3bd9c5418ae73734d12328f8b66af7bd544ea8faff669a70eb9af6"
+    },
+    {
+      "path": "Assets/Beka Forge/Dialogue AI Extension/Editor/Windows/AiAuthoringProgressPopupWindow.cs",
+      "usedBy": [
+        "dgs-ai"
+      ],
+      "sha256": "66d6746de21b2954ff1d7b7fe4d78149f7a12390b794c6f7a3ee5b2f342c7620"
+    },
+    {
+      "path": "Assets/Beka Forge/Dialogue AI Extension/Editor/Windows/AiAuthoringActivitySessionView.cs",
+      "usedBy": [
+        "dgs-ai"
+      ],
+      "sha256": "6537f06a0e75cf49ae70b7c6545eec29e3da5b83e094f2b3e1891d5c235a5c00"
+    },
+    {
+      "path": "Assets/Beka Forge/Dialogue AI Extension/Editor/Windows/AiAuthoringActivity.uss",
+      "usedBy": [
+        "dgs-ai"
+      ],
+      "sha256": "511e7257f942da54b099c5be3bc841aae29889b6e649ea10cd26e42694f098b6"
+    },
+    {
+      "path": "Assets/DialogGraphSystem/Scripts/Editor/Addons/DialogManagerEditor.cs",
+      "usedBy": [
+        "inspectors"
+      ],
+      "sha256": "343633d63dc1e45e854ff400a261c41cab88eed591d2967a14860b878e701084"
+    },
+    {
+      "path": "Assets/Beka Forge/AI Providers/Editor/AiProviderTemplateCatalog.cs",
+      "usedBy": [
+        "ai-providers"
+      ],
+      "sha256": "c6a5240274b9bd431634a6346e691e663c43de12d1b021b971b2694de70602b1"
+    },
+    {
+      "path": "Assets/DialogGraphSystem/Scripts/Editor/View/Elements/Nodes/GraphJumpNodeView.cs",
+      "usedBy": [
+        "dgs"
+      ],
+      "sha256": "6c79d073aa2dd02b440ec97949451c85b3cc18626648db09928fbb357495f97c"
+    },
+    {
+      "path": "Assets/Beka Forge/Dialogue Graph System/Sound Sequencer/Integrations/DgsEditor/SoundGraphBindingFreshnessGate.cs",
+      "usedBy": [
+        "sound"
+      ],
+      "sha256": "ed7d2da32f3cd324c9f9057562193d418e2dded23337004abadc58e956ba240c"
+    }
+  ]
+}

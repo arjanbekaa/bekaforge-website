@@ -2,11 +2,96 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta http-equiv="refresh" content="0; url=../../Dialogue Graph AI Extension/index.html">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Moved: AI Authoring Workflow</title>
+  <title>AI Authoring | Dialogue Graph System 4.0 Docs</title>
+  <meta name="description" content="AI authoring features included with the DGS 4.0 package and the separate AI Providers requirement.">
+  <link rel="stylesheet" href="../assets/styles.css">
+  <link rel="icon" type="image/x-icon" href="../favicon/favicon.ico">
+  <meta name="theme-color" content="#E8541A">
 </head>
-<body>
-  <p>The optional AI authoring product is coming soon. See the <a href="../../Dialogue Graph AI Extension/index.html">Dialogue Graph AI Extension preview</a>.</p>
+<body data-page="ai-generation-workflow" data-base="../">
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <div class="site-shell">
+    <header class="topbar"><div class="topbar-inner"><a class="brand" href="../index.html"><img src="../brand/logo-primary-transparent-dark@1x.png" alt="Beka Forge Dialogue Graph System" height="34"></a><div class="topbar-spacer"></div><div class="top-actions"><a class="back-to-site" href="../../index.html">&#8592; Beka Forge</a><button class="menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-controls="sidebar">Menu</button></div></div></header>
+    <div class="page-layout">
+      <aside class="sidebar" id="sidebar"><div class="sidebar-inner" data-sidebar-nav></div></aside>
+      <main class="content-shell" id="main-content">
+        <article class="doc-article" data-doc-content>
+          <nav class="breadcrumb"><a href="../index.html">Home</a> / <span>AI Authoring</span></nav>
+          <h1>AI authoring in DGS</h1>
+          <p class="lede">DGS 4.0 includes the AI Extension in the single DGS package. AI Providers is a separate connector required only for AI features. The DGS 4.0 integration requires the matching Providers 2.2 release, which is not yet published; the <a href="https://assetstore.unity.com/packages/tools/ai-ml-integration/ai-providers-for-unity-beka-forge-384482">current public Providers listing</a> is 1.0 and is not a compatible prerequisite. Graph authoring and runtime continue to work without AI.</p>
+
+          <h2>Set up the editor</h2>
+          <ol>
+            <li>Install the DGS 4.0 single package when that release is available. It includes Core, AI Extension, Camera Controller, Interaction, and Banter/Sound features; there is no separate AI Extension package.</li>
+            <li>Install the separate AI Providers package only if you plan to use AI. Wait for the 2.2-compatible release before connecting it to the DGS 4.0 integration. The public 1.0 listing does not satisfy this requirement.</li>
+            <li>Open <code>Tools &gt; Beka Forge &gt; AI Providers</code>, create or select an API profile, check its endpoint and model, enter the credential into the masked local field, and run <strong>Test connection</strong>. See the <a href="../../AI Providers/getting-started.html">provider setup guide</a>.</li>
+            <li>Open the DGS dialogue editor, select the graph or node you want to work on, and open the AI authoring panel. A broad request can draft a new graph; a selected node gives the authoring flow a local editing context.</li>
+          </ol>
+          <figure class="preview-embed"><iframe class="preview-embed__frame" src="../preview/index.html?window=dgs-ai&amp;surface=floating-panel&amp;embed=1" title="Interactive preview of the AI Assistant floating panel from the Dialogue Graph System editor" loading="lazy"></iframe><figcaption>Interactive preview: the <strong>AI Assistant floating panel</strong>, recreated from the 4.0 editor source with fabricated example prompts. It demonstrates the command form only; no provider is contacted. <a href="../preview/index.html?window=dgs-ai&amp;surface=floating-panel">Open the full preview</a> or <a href="../../AI%20Providers/preview/index.html">browse the AI Providers preview</a>.</figcaption></figure><figure class="screenshot-figure"><img class="screenshot-img" src="../4.0/screenshots/clean/ai-authoring-launcher-prompt.png" alt="DGS Home workspace with the AI Assistant open, showing an entered conversation prompt and current authoring status." loading="lazy" width="1913" height="986"><figcaption>Native Unity capture of the AI Assistant open over Home with a conversation prompt entered. The visible status is specific to this capture.</figcaption></figure>
+          <figure class="screenshot-figure">
+            <img class="screenshot-img" src="../4.0/screenshots/clean/dgs-launcher.png" alt="DGS Home shows nine graphs with MarketTutorial selected." loading="lazy" width="1915" height="992">
+            <figcaption>Open the DGS workspace from its editor menu, then select an existing graph or begin a new graph task.</figcaption>
+          </figure>
+          <figure class="screenshot-figure">
+            <img class="screenshot-img" src="../4.0/screenshots/clean/graph-ai-settings-p1.png" alt="DGS Graph AI settings showing authoring limits and batching controls; provider controls are not shown." loading="lazy" width="1918" height="989">
+            <figcaption>Graph AI settings show authoring limits and batching controls. Provider controls and connection status are not shown.</figcaption>
+          </figure>
+
+          <h2>Prompt, plan, review, apply, validate</h2><figure class="preview-embed"><iframe class="preview-embed__frame" data-preview-src="../../assets/unity-preview/embed.html?component=node%3ADialog&amp;embed=1" title="Dialog node field example for reviewing AI edits" loading="lazy" hidden></iframe><figcaption>Use this example to review line fields before accepting a proposed edit. Nothing is sent to a provider or saved here. <a href="../../assets/unity-preview/embed.html?component=node%3ADialog">Open the full Dialog preview</a>.</figcaption></figure>
+          <ol>
+            <li><strong>Describe the task.</strong> Give the scene purpose, speakers, important choices, and intended outcomes. For example: <em>“Create a short conversation between Arjan and Kira on a deserted island. Add one choice that lets the player ask for help or leave, and give both choices a clear ending.”</em></li>
+            <li><strong>Inspect the plan.</strong> The extension turns the request into typed graph operations and checks required identities and structure before applying. Read the operation list and any warnings; revise or retry if the plan misses a speaker, choice, condition, or outcome.</li>
+            <li><strong>Review the preview.</strong> Check the nodes, connections, names, and dialogue text that will change. A generated response is a proposal. Use the preview controls to choose whether to apply valid operations; do not apply an item whose effect you do not understand.</li>
+            <li><strong>Apply deliberately.</strong> Applying changes the selected graph through DGS authoring operations. The extension does not silently apply every provider response as raw graph data.</li>
+            <li><strong>Validate the result.</strong> Show the graph sidebar, select <strong>Validate</strong>, and click <strong>Validate Graph</strong>. Review the result, then inspect relevant connections, speaker fields, and condition routes in the Graphs workspace.</li>
+          </ol>
+          <figure class="preview-embed"><iframe class="preview-embed__frame" src="../preview/index.html?window=dgs-ai&amp;surface=plan-preview&amp;embed=1" title="Interactive preview of the AI graph plan preview window from the Dialogue Graph System editor" loading="lazy"></iframe><figcaption>Interactive preview: the <strong>graph plan preview</strong>, recreated from the 4.0 editor source with a fabricated operation plan. It shows operation cards, warnings, and the partial-apply gate; nothing is applied to a graph.</figcaption></figure><figure class="screenshot-figure"><img class="screenshot-img" src="../4.0/screenshots/clean/ai-authoring-progress-and-graph.png" alt="DGS graph editor with the AI activity panel open; the captured report shows one retained result, 16 applied operations, graph validation passed, and assets saved." loading="lazy" width="1917" height="979"><figcaption>Native Unity capture of a completed AI-authoring example. The visible activity report records one retained result, 16 applied operations, graph validation passed, and assets saved; these results describe this captured run only.</figcaption></figure>
+          <figure class="screenshot-figure">
+            <img class="screenshot-img" src="../4.0/screenshots/clean/graph-far.png" alt="MarketFriend graph overview in the Graphs workspace, with its node canvas, sidebar, and minimap." loading="lazy" width="1914" height="986">
+            <figcaption>Use the graph editor to inspect dialogue, branch connections, and the graph after applying a reviewed plan. This capture documents the editor surface; it does not depict a completed AI run.</figcaption>
+          </figure>
+          <!-- The clean capture below documents a completed Unity AI-authoring example; it is separate from the fabricated browser plan preview. -->
+
+          <figure class="preview-embed"><iframe class="preview-embed__frame" data-preview-src="../../assets/unity-preview/embed.html?window=dgs-ai&amp;surface=plan-preview&amp;embed=1" title="AI operation plan review example" loading="lazy" hidden></iframe><figcaption>Fabricated plan data demonstrates review controls only; no graph mutation occurs. <a href="../../assets/unity-preview/embed.html?window=dgs-ai&amp;surface=plan-preview">Open the full plan preview</a>.</figcaption></figure><h2>Focused edits</h2>
+          <p>Select the intended node or branch before asking for a local edit. Keep the request specific, such as <em>“Add a short action for lighting a cigarette after this line, then continue the same branch.”</em> Confirm the preview is anchored to the intended branch before applying. For a broad new-scene request, clear the selection and describe the full scene rather than implying a local edit.</p>
+
+          <h2>What AI does not do</h2>
+          <ul>
+            <li>AI Providers credentials and provider profiles are not bundled into the DGS package or copied into graph assets.</li>
+            <li>The editor remains the authority for graph identities and mutations; provider text is reviewed as a proposed change.</li>
+            <li>AI authoring is optional. Existing graphs, DGS runtime, and non-AI editor workflows do not require an AI provider.</li>
+          </ul>
+
+          <h2>Editor extension hook</h2>
+          <p>Tools that extend the DGS editor can query the public bridge registered by the AI Extension. Put this code in an editor assembly and use the live <code>IDialogGraphOwner</code> supplied by the host; do not construct or cache a graph owner yourself. The compatibility quick-action call is synchronous and may block while it waits for AI, so normal user workflows should use the DGS AI panel and its review flow.</p>
+<pre><code class="language-csharp">using DialogSystem.EditorTools.Services;
+using DialogSystem.EditorTools.Windows;
+
+public static class DgsAiEditorExtension
+{
+    public static bool TryRewriteSelection(IDialogGraphOwner owner, out string error)
+    {
+        var bridge = DialogGraphAiBridgeLocator.Current;
+        if (owner == null || bridge == null || !bridge.IsAvailable)
+        {
+            error = "The DGS AI Extension is not available for this editor scope.";
+            return false;
+        }
+
+        return bridge.TryRunQuickAction(
+            owner, DialogGraphAiQuickAction.RewriteDialog, out error);
+    }
+}</code></pre>
+
+          <div class="callout"><strong>Release status:</strong> DGS 4.0 and the matching AI Providers 2.2 connector are still unpublished. Do not use the currently published Providers 1.0 package as the DGS 4.0 AI dependency.</div>
+          <nav class="page-nav" data-prev-next></nav>
+        </article>
+      </main>
+      <aside class="page-toc" data-page-toc></aside>
+    </div>
+    <footer class="footer"><div class="footer-inner"><span>Dialogue Graph System v4.0.0 · documentation prepared, not published</span><span>&copy; <span data-current-year></span></span></div></footer>
+  </div>
+  <script src="../assets/app.js"></script>
 </body>
 </html>

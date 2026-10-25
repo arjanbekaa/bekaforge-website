@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Guide: Set Up Walla Sound | Dialogue Graph System 4.0 Docs</title>
+  <meta name="description" content="Create a Walla sound sequence, preview imported clips, assign graph and dialogue-node sounds, and prepare runtime bindings in DGS 4.0.">
+  <link rel="stylesheet" href="../assets/styles.css">
+  <link rel="icon" type="image/x-icon" href="../favicon/favicon.ico">
+  <meta name="theme-color" content="#E8541A">
+</head>
+<body data-page="walla-setup" data-base="../">
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <div class="site-shell">
+    <header class="topbar"><div class="topbar-inner"><a class="brand" href="../index.html"><img src="../brand/logo-primary-transparent-dark@1x.png" alt="Beka Forge Dialogue Graph System" height="34"></a><div class="topbar-spacer"></div><div class="top-actions"><a class="back-to-site" href="../../index.html">&#8592; Beka Forge</a><button class="menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-controls="sidebar">Menu</button></div></div></header>
+    <div class="page-layout">
+      <aside class="sidebar" id="sidebar"><div class="sidebar-inner" data-sidebar-nav></div></aside>
+      <main class="content-shell" id="main-content">
+        <article class="doc-article" data-doc-content>
+          <nav class="breadcrumb"><a href="../index.html">Home</a> / <span>Walla setup</span></nav>
+          <h1>Set up Walla sound in DGS</h1>
+          <p class="lede">Create a short sound sequence, put audio clips on its timeline, and attach the sequence to a dialogue graph or one dialogue node. Walla is the DGS Sound Sequencer: it authors clip timing and graph sound behavior; your scene still needs a runtime bridge to play that behavior during dialogue.</p>
+
+          <div class="callout"><strong>Before you start:</strong> import the DGS 4.0 bundle and an <code>AudioClip</code> into your Unity project. The graph editor integration is included with the DGS Sound Sequencer module. You do not need an AI provider or the optional Input System package to author a sequence.</div>
+
+          <h2>Make a sound sequence</h2>
+          <ol>
+            <li>Open <strong>Window &gt; Beka Forge &gt; Dialogue Graph System &gt; Sound Sequencer</strong>.</li>
+            <li>In the toolbar, click <strong>New sequence</strong>. The new asset is created under <code>Assets/Beka Forge/Dialogue Graph System/Sound Sequencer/Sequences</code>.</li>
+            <li>Set <strong>Length (seconds)</strong> or <strong>Duration (frames)</strong> to cover the sound you want, for example <code>10</code> seconds at <code>30</code> fps. A new sequence lasts only one frame: adding a clip before increasing its duration trims the cue to that one-frame length. Set the frame rate before placing cues.</li>
+            <li>Use the existing <strong>Track</strong>, or in <strong>New track</strong>, type a useful name such as <code>Room tone</code>, then click <strong>Add Track</strong>. Select the track row you want to edit.</li>
+            <li>In <strong>New clip</strong>, choose an imported audio clip. Set <strong>Start frame</strong> to <code>0</code> for a clip beginning at the sequence start, then click <strong>Add Cue</strong>. Add more cues or tracks as needed.</li>
+            <li>Use the timeline to drag a cue to a new start time or another track. Drag a cue edge to trim it. Select a cue to edit its clip and timing details in the inspector.</li>
+            <li>Choose <strong>Save</strong> in the toolbar.</li>
+          </ol>
+          <p><strong>Checkpoint:</strong> a named track and a cue are visible on the timeline, and the sequence asset is saved. New sequences start at 30 frames per second. The timeline can show seconds or frames; stored cue positions remain frame-based.</p>
+          <figure><img class="screenshot-img" src="../4.0/screenshots/walla-sequencer.jpg" alt="The Sound Sequencer with a saved 30 fps sequence, one track, and an imported cue. This documentation example uses a short sound effect; replace it with your own room tone or ambience." loading="lazy" width="1920" height="1161"><figcaption>The Sound Sequencer with a saved 30 fps sequence, one track, and an imported cue. This documentation example uses a short sound effect; replace it with your own room tone or ambience.</figcaption></figure>
+
+          <h2>Preview a sequence in Play Mode</h2>
+          <ol>
+            <li>In Unity, use the sequence inspector and the relevant Sound tools to review its authored data. The browser transport below does not test an AudioListener or play audio.</li>
+            <li>In the Sound Sequencer window, open the sequence you want to preview and click <strong>Create Play Mode rig</strong>. The command adds a <code>SoundSequencePlayer</code> to the active scene and assigns the current sequence.</li>
+            <li>Enter Play Mode and use the sequencer transport to play, pause or stop the preview. If you are testing in a built game, use the graph runtime setup below instead; the editor preview rig is for scene Play Mode.</li>
+          </ol>
+          <p>The steps above describe Unity editor behavior. The website example only changes its local transport state: it does not create a Play Mode rig, access a scene, play audio, save an asset, or test a built game.</p>
+
+          <figure class="preview-embed"><iframe class="preview-embed__frame" data-preview-src="../../assets/unity-preview/embed.html?window=sound&amp;surface=sequencer&amp;embed=1" title="Sound Sequencer example" loading="lazy" hidden></iframe><figcaption>Example sequence and transport state only. The browser demo makes no sound and saves nothing. <a href="../../assets/unity-preview/embed.html?window=sound&amp;surface=sequencer">Open the full Sound Sequencer example</a>.</figcaption></figure>
+
+          <h2>Assign sound to a dialogue graph</h2>
+          <p>The DGS graph editor installs a <strong>Sound</strong> strip in its bottom dock when a graph is loaded. You do not add a special sound node to make the editor appear.</p>
+          <ol>
+            <li>Open <strong>Tools &gt; Beka Forge &gt; Dialogue Graph System &gt; Open Editor</strong>, select the <strong>Graphs</strong> tab, and open the graph you want to edit.</li>
+            <li>Expand the graph's <strong>Sound</strong> strip. Select <strong>Graph background</strong> as the scope.</li>
+            <li>If the graph has no background yet, choose <strong>Create background…</strong> to make and assign a new sequence, or choose <strong>Choose existing</strong> to assign a sequence already in the Project.</li>
+            <li>Click <strong>+ Add sound</strong>. Choose an audio asset already in the Project, or choose the import action and copy an audio file into your project when prompted. Select or create a track destination and confirm the add action.</li>
+            <li>Save the sequence in the timeline. The graph assignment is stored with the graph's sound sidecar; keep the graph asset and its sidecar together when moving or versioning authored content.</li>
+          </ol>
+          <p><strong>Checkpoint:</strong> the Sound strip's summary names the graph background sequence, and the timeline shows its track and cue. Selecting a different graph or node in the editor is authoring; it does not start that sound in the running game.</p>
+          <figure class="preview-embed"><iframe class="preview-embed__frame" data-preview-src="../../assets/unity-preview/embed.html?window=sound&amp;surface=graph-attached&amp;embed=1" title="Graph-attached Sound panel example" loading="lazy" hidden></iframe><figcaption>Example graph-to-sequence assignment only; no project graph is loaded and no audio plays. <a href="../../assets/unity-preview/embed.html?window=sound&amp;surface=graph-attached">Open the full graph-attached example</a>.</figcaption></figure>
+          <figure><img class="screenshot-img" src="../4.0/screenshots/clean/dgs-graph-walla.png" alt="MarketMerchant graph Sound panel with two tracks, paused audition, and status “Rejected: No change”." loading="lazy" width="1918" height="1003"><figcaption>MarketMerchant Sound panel with two tracks and a paused audition; the displayed status is “Rejected: No change”. This capture does not establish a successful binding or audible playback.</figcaption></figure>
+
+          <h2>Give one dialogue node its own sound</h2>
+          <p>Use node scope for sound that belongs to one part of a conversation. A node can have two independent settings: a replacement background chosen when the node starts, and a local sound that runs during that node.</p>
+          <ol>
+            <li>In the graph, select exactly one node, then switch the Sound panel to <strong>Selected node</strong>.</li>
+            <li>Use the slot dropdown to choose <strong>Sound for this node</strong> for a local cue, or <strong>Background sound</strong> for a replacement background.</li>
+            <li>If the slot is empty, choose <strong>Create node sound…</strong> or <strong>Create background…</strong>, or choose an existing sequence. The new sequence is assigned to the selected node and slot.</li>
+            <li>For a replacement background, open the assignment options and set <strong>When this node starts</strong> to <strong>Change background</strong>. Leave the default <strong>Continue current background</strong> when the node should not replace the graph's current bed. Other supported policies are <strong>Return to graph background</strong> and <strong>Stop background</strong>.</li>
+            <li>Use <strong>+ Add sound</strong> to add a clip to the sequence, then save it. The node's sound only takes effect when dialogue execution reaches that node.</li>
+          </ol>
+          <p><strong>Checkpoint:</strong> the compact node summary shows the assigned local sound or replacement sequence. The <strong>Background on entry</strong> policy is separate from <strong>Sound during this node</strong>; you can author either or both.</p>
+
+          <h2>Prepare graph sound for runtime</h2>
+          <p>The graph panel edits sidecar authoring data. A player build uses a prepared <code>SoundGraphBindingAsset</code>, which contains direct asset references and is checked against that graph's latest sidecar. For a small editor utility, call the current preparation API for the graph you intend to ship:</p>
+<pre><code>#if UNITY_EDITOR
+using BekaForge.DGS.SoundSequencer.DgsEditor;
+using UnityEditor;
+using UnityEngine;
+
+public static class PrepareTownGraphSound
+{
+    [MenuItem("Tools/My Game/Prepare Town Graph Sound")]
+    private static void Prepare()
+    {
+        const string graphPath = "Assets/MyGame/Graphs/TownConversation.asset";
+        var result = SoundGraphBindingPreparer.Prepare(graphPath);
+        if (!result.Prepared)
+        {
+            Debug.LogError("Sound binding was not prepared: " + result.Reason);
+            return;
+        }
+
+        EditorGUIUtility.PingObject(result.Asset);
+        Debug.Log("Prepared graph sound binding at " + result.AssetPath);
+    }
+}
+#endif</code></pre>
+          <p>Change <code>graphPath</code> to the actual <code>DialogGraph</code> asset path. Put this helper in an <code>Editor</code> folder in your game project. Preparation can refuse invalid or out-of-date authored data; read the reason and fix the graph before continuing.</p>
+          <ol>
+            <li>In the scene that runs the conversation, add <strong>Graph Sound Runtime Bridge</strong> to a GameObject.</li>
+            <li>Assign the conversation's <code>DialogManager</code>, the prepared binding asset, and two separate <code>SoundSequencePlayer</code> components: one for the persistent ambience and one for node-local cues. The bridge does not share those players with dialogue voice or Banter audio.</li>
+            <li>In an editor compiled with <code>BEKA_FORGE_DEVELOPMENT</code>, the optional diagnostic is <strong>Tools &gt; Beka Forge &gt; Developer &gt; Dialogue Graph System &gt; Sound Sequencer &gt; Check Runtime Sound Binding Freshness</strong>. It checks loaded scenes but does not prepare or update bindings. The Play Mode and player-build freshness gates run automatically; after changing graph sound assignments, rerun the preparation helper above and keep the bridge assigned to the returned binding.</li>
+          </ol>
+          <p>The editor gate automatically refuses Play Mode when a loaded scene uses a stale binding, and the build callback checks each scene Unity is building. The manual menu check is a development-only diagnostic; it does not repair stale data. After changing the graph's sound assignments, prepare the binding again and keep the scene's bridge pointed at the prepared asset.</p>
+
+          <h2>Dialogue and AI: what connects</h2>
+          <p>Walla follows DGS graph execution at runtime. A graph background is persistent sound for that graph; a node-local cue starts and stops with that node's execution; a node's replacement background follows its selected entry policy. This is different from a dialogue action that calls your own audio code.</p>
+          <p>The included DGS AI Extension helps author dialogue graphs. It does not automatically choose, import or prepare Walla sequences. If AI helped create or revise a graph, review and apply the graph first, then select the exact graph and nodes in the Sound panel and prepare a fresh runtime binding. See <a href="ai-generation-workflow.html">AI authoring in DGS</a> and <a href="integrating-actions.html">Integrating dialogue actions</a>.</p>
+
+          <h2>Common problems</h2>
+          <table>
+            <thead><tr><th>What you see</th><th>What to check</th></tr></thead>
+            <tbody>
+              <tr><td>A new clip is only one frame long.</td><td>Increase the sequence duration before adding the cue. If you already added it, select the cue and extend its end within the new duration, or remove and add it again.</td></tr>
+              <tr><td>The Sound strip is missing.</td><td>Open the DGS main window, switch to <strong>Graphs</strong>, and load a graph. In development builds, use <strong>Tools &gt; Beka Forge &gt; Developer &gt; Dialogue Graph System &gt; Sound Sequencer &gt; Graph Sound Panel Status</strong> for an editor status message.</td></tr>
+              <tr><td><strong>+ Add sound</strong> is unavailable.</td><td>Create or choose a sequence first. For node scope, select exactly one graph node and choose a slot that applies to the current policy.</td></tr>
+              <tr><td>A node's replacement sequence is assigned but has no effect.</td><td>For a replacement background, set <strong>When this node starts</strong> to <strong>Change background</strong> and ensure the slot has a sequence.</td></tr>
+              <tr><td>Play Mode refuses to start or the build reports stale sound.</td><td>Run the preparation helper for the current graph and check that the scene's bridge uses the returned binding. Then rerun the freshness check.</td></tr>
+              <tr><td>The panel says nothing is playing during a dialogue.</td><td>Confirm the scene has the correct <code>DialogManager</code>, prepared binding, two distinct player components, and a conversation that actually executes the assigned graph/node. Selecting a node in Edit Mode is not playback.</td></tr>
+              <tr><td>The transport says it is playing but there is no audible output.</td><td>Check the clip, AudioListener, output mixer/device and system volume. A successful editor transport state is not proof of hearing.</td></tr>
+            </tbody>
+          </table>
+
+          <h2>Further reading</h2>
+          <ul>
+            <li><a href="creating-a-dialog.html">Create a branching DGS dialogue graph</a></li>
+            <li><a href="integrating-actions.html">Connect graph actions to your game</a></li>
+            <li><a href="ai-generation-workflow.html">Use DGS AI authoring responsibly</a></li>
+            <li>In the installed module: <code>Sound Sequencer/Documentation/README.md</code>.</li>
+          </ul>
+          <p class="small-note"><strong>Source basis:</strong> this page follows the current standalone Sound Sequencer window, graph Sound panel, sidecar binding preparer, runtime bridge and freshness gate. Preview, build, and editor status checks do not replace an audible device check.</p>
+          <nav class="page-nav" data-prev-next></nav>
+        </article>
+      </main>
+      <aside class="page-toc" data-page-toc></aside>
+    </div>
+    <footer class="footer"><div class="footer-inner"><span>Dialogue Graph System v4.0.0 · local documentation draft</span><span>&copy; <span data-current-year></span></span></div></footer>
+  </div>
+  <script src="../assets/app.js"></script>
+</body>
+</html>

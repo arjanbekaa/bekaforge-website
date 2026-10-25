@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
@@ -21,30 +21,55 @@
       <aside class="sidebar" id="sidebar"><div class="sidebar-inner" data-sidebar-nav></div></aside>
       <main class="content-shell" id="main-content">
         <article class="doc-article" data-doc-content>
-          <nav class="breadcrumb"><a href="../index.html">Home</a> / <span>Runtime UI Components</span></nav>
-          <h1>Runtime UI Components</h1>
-          <p class="lede">The runtime UI layer is intentionally thin. It should render the active conversation state and forward user interaction back to the manager.</p>
-          <h2>DialogUIController</h2>
-          <p><code>DialogUIController</code> is the bridge between <code>DialogManager</code> and the actual scene or prefab UI. It expects references for the panel root, speaker label, dialog text, portrait image, choice container, choice prefab, skip button, panel button, and autoplay visuals.</p>
-          <h2>ChoiceButtonView</h2>
-          <p><code>ChoiceButtonView</code> renders and animates one selectable choice row. It supports hover selection, click handling, outline highlighting, pulse animation, and optional hotkey hints.</p>
-          <h2>DialogueHistoryView</h2>
-          <p><code>DialogueHistoryView</code> is a pooled list renderer for history entries, designed for append-heavy backlog display with scroll-to-bottom behavior.</p>
-          <h2>Common mistakes</h2>
-          <ul>
-            <li>forgetting a <code>Button</code> on the choice prefab root</li>
-            <li>letting child TMP labels intercept raycasts</li>
-            <li>replacing prefabs without matching the controller's expected field layout</li>
-          </ul>
-          <div class="placeholder-grid">
-            <article class="placeholder-card"><h3>Runtime dialogue UI</h3><img class="screenshot-img" src="../assets/images/runtime-dialog-ui.png" alt="Runtime Dialog Ui" loading="lazy"><p>Best visual for this page.</p></article><article class="placeholder-card screenshot-card"><h3>History panel</h3><img class="screenshot-img" src="../assets/images/runtime-history-panel.png" alt="History panel" loading="lazy"><p>The DialogueHistoryView rendering the backlog of shown lines and player-selected choices.</p></article>
-          </div>
-          <nav class="page-nav" data-prev-next></nav>
-        </article>
+<nav class="breadcrumb"><a href="../index.html">Home</a> / <span>Runtime UI</span></nav>
+<h1>Runtime UI Setup</h1>
+<p class="lede">Use the supplied manager prefab first. Replace UI bindings only when you need a different layout, and keep the required controller references explicit.</p>
+
+<h2>Recommended: start from the supplied prefab</h2>
+<ol>
+  <li>Drag <code>Assets/DialogGraphSystem/Resources/Prefabs/DialogueManager.prefab</code> into the scene.</li>
+  <li>Confirm its <strong>Dialog Manager</strong> component has a <code>DialogUIManager</code> assigned and that the UI manager can resolve its default controller.</li>
+  <li>Register a graph and ID in <strong>Dialog Graphs</strong>, then start it with a button or script.</li>
+</ol>
+<p>The prefab provides the safest starting point because its manager/UI references are already wired. Avoid adding a second manager or a second overlapping UI unless you have deliberately designed that scene arrangement.</p>
+<p>See the <a href="../inspector-reference.html#dialog-manager">Dialog Manager Inspector reference</a> for registry and scene-reference fields.</p><figure class="preview-embed"><iframe class="preview-embed__frame" data-preview-src="../../assets/unity-preview/embed.html?component=inspector%3Adialog-manager&amp;embed=1" title="Dialog Manager Inspector example" loading="lazy" hidden></iframe><figcaption>Illustrative references only; no scene is loaded or changed. <a href="../../assets/unity-preview/embed.html?component=inspector%3Adialog-manager">Open the full Dialog Manager preview</a>.</figcaption></figure>
+
+<h2>Custom controller bindings</h2><p>Use the <a href="../inspector-reference.html#asset-runtime-ui-settings">Runtime UI Settings Inspector reference</a> for optional panel and control settings.</p>
+<p>A <code>DialogUIController</code> binds the visible objects used during playback. In the controller component, assign the references that match your hierarchy:</p>
+<ul>
+  <li><code>panelRoot</code> — root object shown or hidden for the dialogue panel.</li>
+  <li><code>speakerName</code> and <code>dialogText</code> — TextMeshProUGUI fields for the speaker and current line.</li>
+  <li><code>portraitImage</code> — optional Image for a character portrait.</li>
+  <li><code>choicesContainer</code> and <code>choiceButtonPrefab</code> — parent and button prefab for available answers. The prefab root should provide a Button and <code>ChoiceButtonView</code>; use a vertical layout for the answer list.</li>
+  <li><code>skipButton</code> and <code>skipLineButton</code> — optional controls for skipping a choice wait or advancing a line, according to the configured feature.</li>
+  <li><code>historyPanelButton</code>, <code>settingsPanelButton</code>, <code>autoPlayButton</code>, and <code>languageButton</code> — optional controls when those panels/features are present in your UI.</li>
+</ul>
+<p>Use the supplied <code>DialogUIManager</code> and controller prefab as a reference for the expected hierarchy. Custom panels should remain active in the scene hierarchy for their references to resolve; visibility is managed by the UI controller.</p>
+<figure class="screenshot-figure"><img class="screenshot-img" src="../4.0/screenshots/dialogue-runtime.jpg" alt="Tutorial dialogue text displayed during runtime playback" loading="lazy" width="1920" height="1161"><figcaption>A runtime line rendered in the configured dialogue presentation.</figcaption></figure>
+
+<h2>Check the bindings in Play mode</h2>
+<ol>
+  <li>Start a registered graph with a Dialog line, a speaker name, and at least one Choice answer.</li>
+  <li>Confirm the panel opens, speaker and line text are readable, and the answer button appears in the expected container.</li>
+  <li>Select an answer and verify the graph follows the matching answer connection.</li>
+  <li>If using optional portrait, history, settings, auto-play, or language controls, test each one in the actual scene.</li>
+</ol>
+<p><strong>Expected result:</strong> the panel displays each line and the player can select visible responses. Project Health diagnostics do not prove that your custom hierarchy is correctly bound or legible at runtime.</p>
+
+<h2>Troubleshooting</h2>
+<ul>
+  <li><strong>No panel appears:</strong> verify the scene uses the supplied manager prefab or has a correctly assigned <code>DialogUIManager</code>.</li>
+  <li><strong>Text does not change:</strong> check the two TMP references and import TMP Essential Resources if Unity requests them.</li>
+  <li><strong>Choices are missing:</strong> check <code>choicesContainer</code>, the choice button prefab, and that the graph reaches a Choice node.</li>
+  <li><strong>Buttons look wrong or do not respond:</strong> check that the prefab root contains a Button and <code>ChoiceButtonView</code>, and that no overlay blocks pointer input.</li>
+  <li><strong>Optional button is null:</strong> leave a feature unbound only when you do not need it; otherwise assign a real button in the active controller hierarchy.</li>
+</ul>
+<nav class="page-nav" data-prev-next></nav>
+</article>
       </main>
       <aside class="page-toc" data-page-toc></aside>
     </div>
-    <footer class="footer"><div class="footer-inner"><span>Dialogue Graph System v3.0.0</span><span>&copy; <span data-current-year></span></span></div></footer>
+    <footer class="footer"><div class="footer-inner"><span>Dialogue Graph System v4.0.0</span><span>&copy; <span data-current-year></span></span></div></footer>
   </div>
   <script src="../assets/app.js"></script>
 </body>

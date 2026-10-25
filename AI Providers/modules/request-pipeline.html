@@ -32,43 +32,125 @@
         <article class="doc-article" data-doc-content>
           <nav class="breadcrumb"><a href="../index.html">Home</a> / <span>Request Pipeline</span></nav>
           <h1>Request Pipeline</h1>
-          <p class="lede">AI Providers exposes both a blocking request path and a coroutine-based runtime path. Both use the same provider asset abstraction and the same service-level timeout and retry options.</p>
+          <p class="lede">Build a request from a provider profile and prompt DTO. For Unity runtime components, use a coroutine handle; for asynchronous editor or service workflows, create a DTO-only snapshot on the main thread and await the request.</p>
 
-          <h2>Blocking editor path</h2>
-<pre><code class="language-csharp">public static bool TrySendPrompt(
-    LlmProviderDefinitionBase provider,
-    LlmChatRequest chat,
-    out string responseText,
-    out string error,
-    RequestOptions options)</code></pre>
+          <h2>Runtime coroutine with cancellation</h2>
+<pre><code class="language-csharp">using BekaForge.AIProviders.Runtime;
+using UnityEngine;
 
-          <p>This path is synchronous and editor-oriented. The service builds the request, sends it through <code>UnityWebRequest</code>, reads the raw response, and then asks the provider to extract provider-specific text.</p>
+public sealed class NpcReply : MonoBehaviour
+{
+    [SerializeField] private LlmProviderDefinitionBase provider;
+    private PromptCoroutineHandle active;
 
-          <h2>Coroutine runtime path</h2>
-<pre><code class="language-csharp">StartCoroutine(AiProvidersService.SendPromptCoroutine(
-    provider,
-    chat,
-    result =>
+    public void Request(string playerLine)
     {
-        if (result.Success) Debug.Log(result.ResponseText);
-        else Debug.LogError(result.Error);
-    },
-    new AiProvidersService.RequestOptions
+        if (active != null) return;
+
+        var prompt = LlmPromptRequest.CreateWithSystemPrompt(
+            "Reply as a concise game character.", playerLine,
+            temperature: 0.6f, maxTokens: 160);
+
+        PromptCoroutineHandle requestHandle = null;
+        requestHandle = AiProvidersService.BeginPromptCoroutine(provider, prompt,
+            result =>
+            {
+                if (active != requestHandle) return;
+                if (result.Success) Debug.Log(result.ResponseText);
+                else Debug.LogError($"{result.Error}: {result.Diagnostic?.hint}");
+                active = null;
+            });
+        active = requestHandle;
+        StartCoroutine(requestHandle.Coroutine);
+    }
+
+    private void OnDisable()
     {
-        timeoutSeconds = 30,
-        retryCount = 1,
-        retryDelaySeconds = 0.5f
-    }));</code></pre>
+        var requestHandle = active;
+        active = null;
+        requestHandle?.Cancel();
+    }
+}</code></pre>
+          <p><code>BeginPromptCoroutine</code> returns a <code>PromptCoroutineHandle</code>. Run its <code>Coroutine</code> through a live <code>MonoBehaviour</code> and call <code>Cancel()</code> if the component or request is no longer needed.</p>
 
-          <h2>Request options</h2>
-          <p><code>RequestOptions</code> currently exposes timeout seconds, retry count, and retry delay seconds. The defaults are conservative: 120 seconds, zero retries, zero delay.</p>
+          <h2>Async execution from a snapshot</h2>
+<pre><code class="language-csharp">using System.Threading;
+using System.Threading.Tasks;
+using BekaForge.AIProviders.Runtime;
 
-          <h2>Response normalization</h2>
-          <p>The service owns common response normalization fallbacks for generic <code>"content"</code> or <code>"text"</code> shapes after provider-specific extraction runs. That makes the transport layer slightly more forgiving while keeping provider ownership of real parsing logic.</p>
+public sealed class SummaryRequest
+{
+    private readonly LlmProviderDefinitionBase provider;
 
-          <h2>Reality check</h2>
-          <p>The blocking path still busy-waits and is best treated as editor-oriented tooling rather than ideal runtime behavior.</p>
+    public SummaryRequest(LlmProviderDefinitionBase provider) => this.provider = provider;
 
+    public async Task<AiProvidersService.PromptResult> RunAsync(
+        CancellationToken cancellationToken)
+    {
+        var prompt = LlmPromptRequest.CreateUserOnly("Summarize this scene.");
+        if (!AiProvidersService.TryBuildExecutionSnapshot(
+                provider, prompt, out var snapshot, out var error))
+        {
+            return new AiProvidersService.PromptResult(false, string.Empty, error);
+        }
+
+        return await AiProvidersService.SendPromptAsync(snapshot, cancellationToken);
+    }
+}</code></pre>
+          <p>Call the snapshot builder on Unity's main thread; it reads provider configuration. The async method returns a nested <code>AiProvidersService.PromptResult</code>, so the caller owns presentation and cancellation.</p>
+          <p>Call <code>TryBuildExecutionSnapshot</code> on Unity's main thread because it reads provider configuration. The returned snapshot contains request data rather than live Unity objects and can then be passed to <code>SendPromptAsync</code>.</p>
+
+          <h2>Streaming</h2>
+<pre><code class="language-csharp">using System.Text;
+using BekaForge.AIProviders.Runtime;
+using UnityEngine;
+
+public sealed class StreamedNpcReply : MonoBehaviour
+{
+    [SerializeField] private LlmProviderDefinitionBase provider;
+    private readonly StringBuilder received = new StringBuilder();
+    private PromptCoroutineHandle active;
+
+    public void Request(string playerLine)
+    {
+        if (active != null) return;
+        lock (received) received.Clear();
+
+        var prompt = LlmPromptRequest.CreateUserOnly(playerLine, maxTokens: 160);
+        PromptCoroutineHandle requestHandle = null;
+        requestHandle = AiProvidersService.BeginStreamPromptCoroutine(provider, prompt,
+            onDelta: delta =&gt;
+            {
+                if (active != requestHandle) return;
+                lock (received) received.Append(delta);
+            },
+            onCompleted: result =&gt;
+            {
+                if (active != requestHandle) return;
+                if (result.Success) Debug.Log(received.ToString());
+                else Debug.LogError(result.Error);
+                active = null;
+            });
+        active = requestHandle;
+        StartCoroutine(requestHandle.Coroutine);
+    }
+
+    private void OnDisable()
+    {
+        var requestHandle = active;
+        active = null;
+        requestHandle?.Cancel();
+    }
+}</code></pre>
+          <p>For HTTP profiles, streaming supports OpenAI-compatible server-sent events (including OpenAI and DeepSeek) and Ollama newline-delimited JSON. Gemini and Custom JSON do not currently advertise streaming support. The editor-only Codex and Claude Code transports also expose streamed deltas through their local tools. Check the selected provider's <code>SupportsStreaming</code> value before enabling a streaming UI.</p>
+
+          <h2>Timeouts, retries, and results</h2>
+          <p><code>AiProvidersService.RequestOptions</code> exposes timeout seconds, retry count, and retry delay. Provider assets also expose reliability settings used when creating default options. The service retries configured transient failures; authentication errors and malformed requests fail without transient retries. Inspect <code>AiProvidersService.PromptResult.Error</code> and its <code>Diagnostic.hint</code> to show an actionable message.</p>
+
+          <h2>Response handling</h2>
+          <p>Each provider parses its supported response shape and extracts text. Custom JSON profiles require a response-text path that matches the endpoint's actual JSON. Do not assume an arbitrary API response can be normalized automatically.</p>
+
+          <div class="callout"><strong>Avoid the obsolete synchronous API:</strong> <code>TrySendPrompt</code> blocks the calling thread and is marked obsolete. Prefer the cancellable coroutine path for runtime or the snapshot plus async path for editor workflows.</div>
           <nav class="page-nav" data-prev-next></nav>
         </article>
       </main>

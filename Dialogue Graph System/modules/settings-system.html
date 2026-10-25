@@ -23,70 +23,66 @@
         <article class="doc-article" data-doc-content>
           <nav class="breadcrumb"><a href="../index.html">Home</a> / <span>Settings System</span></nav>
           <h1>Settings System &amp; Theming</h1>
-          <p class="lede">The settings system centralizes runtime behavior that would otherwise be scattered across prefabs and scripts. The theming system lets you swap the entire visual style of the dialogue UI at runtime by assigning a different <code>DialogThemeSO</code>.</p>
+          <p class="lede">DGS settings define runtime reading, choice, input, audio, and optional UI behavior. Dialogue themes and UI layout presets are related presentation tools, but they are authored separately from the runtime settings asset.</p>
 
           <h2>Runtime model</h2>
-          <p><code>DialogSettingsRuntime</code> loads a master settings asset from <code>Resources</code> and exposes helper accessors for text, choice, input, and audio settings. <code>DialogManager</code> uses these settings to resolve effective runtime behavior, with optional local overrides on the component.</p>
+          <p><code>DialogSettingsRuntime</code> loads the master asset at <code>Assets/DialogGraphSystem/Resources/DialogSettingsSO/DialogSystemSettings.asset</code> through the Resources key <code>DialogSettingsSO/DialogSystemSettings</code>. The master references text, choice, input, audio, and runtime-UI settings; localization runtime configuration is separate. A <code>DialogManager</code> can provide local overrides for the settings it exposes. Packaged defaults are inputs; runtime player preferences are saved separately.</p>
 
           <h2>Settings categories</h2>
           <ul>
-            <li><strong>Text:</strong> reveal effect mode (Typewriter / Fade-in / Word-by-word), speed, fast-forward, skip, autoplay, punctuation pauses.</li>
-            <li><strong>Choices:</strong> navigation, hover selection, outline styling, pulse animation, hint and confirm behavior.</li>
-            <li><strong>Input:</strong> legacy-style key and axis configuration.</li>
-            <li><strong>Audio:</strong> volume, UI SFX, and stop/fade behavior.</li>
+            <li><strong>Text:</strong> reveal mode, reading speed, skip/fast-forward, auto-advance, punctuation pauses, and reveal sound.</li>
+            <li><strong>Choices:</strong> navigation, selection, hotkeys, and choice presentation behavior.</li>
+            <li><strong>Input:</strong> configured dialogue advance, choice, skip, and cancel controls. The optional Input System package is not required for core DGS runtime.</li>
+            <li><strong>Audio:</strong> dialogue voice and effects/reveal sound settings.</li>
+            <li><strong>Runtime UI:</strong> visibility and behavior for settings, history, language, theme, and dialogue controls where the configured UI supports them.</li>
+            <li><strong>Graph editor:</strong> canvas and editor presentation preferences live in their own panel, separate from runtime settings.</li>
+            <li><strong>Graph AI:</strong> an optional panel appears when the AI Extension is available; provider setup is covered in the separate AI guide.</li>
+            <li><strong>UI themes:</strong> theme workbench settings are separate from the runtime settings master and dialogue-theme assets.</li>
+            <li><strong>About:</strong> package information is shown in its own editor panel.</li>
           </ul>
 
           <h2>Editor window</h2>
-          <p>Open <code>Tools &gt; Dialogue Graph System &gt; Settings</code>. The window creates the settings assets if they do not already exist and groups configuration into separate panels.</p>
+          <p>Open <strong>Tools &gt; Beka Forge &gt; Dialogue Graph System &gt; Open Editor</strong> and select <strong>Settings</strong>. The window separates runtime configuration (Text, Choices, Audio, Runtime UI) from editor tools (Graph editor, optional Graph AI, UI themes, and About). Choose <strong>Restore Defaults</strong> carefully; it restores settings state and is not a command to discard project content.</p>
 
-          <h2>UI Theming - DialogThemeSO</h2>
-          <p>A <code>DialogThemeSO</code> is a ScriptableObject that packages every visual asset the dialogue UI needs - sprites, colors, and fonts - into a single swappable file. Assign it to the <strong>DialogUIManager</strong> component in the scene inspector. Changing the assigned theme at runtime instantly updates all UI elements.</p>
+          <h2>Dialogue themes and UI Themes</h2>
+          <p>A <code>DialogThemeSO</code> contains the core dialogue UI’s sprite, color, and font roles. <code>DialogUIManager</code> selects and applies a default or mapped theme to the active dialogue UI. Open <strong>Tools &gt; Beka Forge &gt; Dialogue Graph System &gt; Open Editor</strong>, choose <strong>Settings</strong>, then open the <strong>UI themes</strong> category and its theme editor. The workbench manages catalog entries and layout presets; these are separate assets from the core <code>DialogThemeSO</code>. Do not confuse a dialogue visual theme with <code>DialogSettingsThemeSO</code>, which configures the separate runtime settings overlay.</p>
 
           <h3>What a theme controls</h3>
           <ul>
-            <li><strong>Dialog panel</strong> - dialog box background, nameplate sprite, avatar or portrait frame, skip button sprite, and icon.</li>
-            <li><strong>Choice buttons</strong> - normal and active state sprites, message icon, optional choice-row prefab override, and hotkey background sprite.</li>
-            <li><strong>History panel</strong> - panel background, title bar, character line row, choice row, and choice icon.</li>
-            <li><strong>Buttons</strong> - history button background and icon, close button, autoplay button background, and autoplay play or pause icons.</li>
-            <li><strong>Text colors</strong> - dialog body, speaker name, choice normal or active, history speaker, history line, history choice, skip-all label, and history title.</li>
-            <li><strong>Fonts</strong> - default font fallback, plus per-role overrides for speaker name, dialog body, choice text, choice hotkeys, history labels, and history lines.</li>
+            <li><strong>Dialogue surface and controls</strong> - dialogue background, nameplate/portrait roles, choice states, history/settings buttons, autoplay and skip controls.</li>
+            <li><strong>History</strong> - panel, title, line/choice rows, close control, and text roles.</li>
+            <li><strong>Typography and color</strong> - speaker, dialogue, choice, and history text roles, with font overrides and numeric roles used by dynamic rows.</li>
+            <li><strong>Choice rows</strong> - an optional choice-row prefab override and assigned visual roles.</li>
           </ul>
 
           <h3>Creating a custom theme</h3>
           <ol>
-            <li>Right-click in the Project window and choose <code>Create &gt; Dialog Graph System &gt; UI Theme</code>.</li>
-            <li>Fill in the sprite and color fields with your own assets.</li>
-            <li>Assign the theme asset to the <strong>Theme</strong> field on your <code>DialogUIManager</code> component.</li>
+            <li>For a catalog theme, open the UI Themes workbench from Settings and create or duplicate a catalog entry. The DGS theme catalog and <code>DialogThemeSO</code> are distinct asset types.</li>
+            <li>In the selected theme, assign only the roles you intend to override; unassigned roles keep the configured baseline presentation.</li>
+            <li>For a core <code>DialogThemeSO</code>, assign the asset as the default or in the appropriate mapping on <code>DialogUIManager</code>, then test the runtime UI.</li>
           </ol>
 
-          <h3>Included themes (5 ready to use)</h3>
-          <p>Five complete themes are included in <code>Assets/DialogGraphSystem/Definitions/DialogThemes/</code>.</p>
+          <h3>Included core themes</h3>
+          <p>The core package includes these two legacy-compatible <code>DialogThemeSO</code> assets. The UI Themes module also supplies its own theme catalog and layout presets at <code>Assets/Beka Forge/Dialogue Graph System/UI Themes/Definitions/</code>.</p>
           <table>
             <thead><tr><th>Theme</th><th>Style</th></tr></thead>
             <tbody>
-              <tr><td>Fantasy RPG</td><td>Parchment-style panels, scroll borders, warm palette.</td></tr>
-              <tr><td>Gothic Horror</td><td>Dark stone textures, high-contrast red accents.</td></tr>
-              <tr><td>Minimalist</td><td>Clean flat panels, neutral grays, no decorative borders. Suits any genre.</td></tr>
-              <tr><td>Sci-Fi HUD</td><td>Sharp angular frames, cyan/blue tones, holographic feel.</td></tr>
-              <tr><td>Visual Novel</td><td>Soft gradient panels, rounded corners, pastel palette.</td></tr>
+              <tr><td>Fantasy RPG</td><td>Core dialogue theme asset.</td></tr>
+              <tr><td>Sci-Fi HUD</td><td>Core dialogue theme asset.</td></tr>
             </tbody>
           </table>
 
-          <div class="placeholder-grid">
-            <article class="placeholder-card"><h3>Runtime settings overlay</h3><img class="screenshot-img" src="../assets/images/runtime-settings-overlay.png" alt="Runtime settings overlay" loading="lazy"><p>Shows the player-facing settings screen in context with text speed, audio controls, and language switching.</p></article>
-            <article class="placeholder-card screenshot-card"><h3>Text settings</h3><img class="screenshot-img" src="../assets/images/settings-text.png" alt="Text settings" loading="lazy"><p>Text reveal, speed, skip, and autoplay controls in the editor settings workflow.</p></article>
-            <article class="placeholder-card screenshot-card"><h3>Choice settings</h3><img class="screenshot-img" src="../assets/images/settings-choices.png" alt="Choice settings" loading="lazy"><p>Button layout, input key mappings, and display timing for choice nodes.</p></article>
-            <article class="placeholder-card screenshot-card"><h3>Audio settings</h3><img class="screenshot-img" src="../assets/images/settings-audio.png" alt="Audio settings" loading="lazy"><p>Audio source assignment, volume sliders, and UI sound event bindings.</p></article>
-            <article class="placeholder-card screenshot-card"><h3>Graph View settings</h3><img class="screenshot-img" src="../assets/images/settings-graph-view.png" alt="Current graph view settings" loading="lazy"><p>Configure graph canvas behavior and editor presentation preferences.</p></article>
-            <article class="placeholder-card screenshot-card"><h3>Runtime UI settings</h3><img class="screenshot-img" src="../assets/images/settings-runtime-ui.png" alt="Current runtime UI settings" loading="lazy"><p>Review runtime panel, history, choice, and interaction configuration in one place.</p></article>
-            <article class="placeholder-card screenshot-card"><h3>AI integration settings</h3><img class="screenshot-img" src="../assets/images/settings-ai-current.png" alt="Current optional AI integration settings" loading="lazy"><p>Configure optional integration points separately from the core DGS runtime.</p></article>
-          </div>
+          <p>For theme appearance, locale assets, and runtime visibility, continue to <a href="../guides/camera-interaction-ui.html">Camera, Interaction, and UI Workflows</a> and the <a href="../inspector-reference.html">Inspector Reference</a>.</p><figure class="preview-embed"><iframe class="preview-embed__frame" data-preview-src="../../assets/unity-preview/embed.html?window=dgs&amp;surface=settings-runtime-ui&amp;embed=1" title="Runtime UI settings example" loading="lazy" hidden></iframe><figcaption>Example setting values; this does not update a project asset. <a href="../../assets/unity-preview/embed.html?window=dgs&amp;surface=settings-runtime-ui">Open the full runtime UI settings preview</a>.</figcaption></figure><p class="try-it"><strong>Try the settings example:</strong> the focused preview opens on the <strong>Runtime UI</strong> category. Toggle <strong>Show speaker name</strong> or <strong>Show choice panel</strong>; the sandbox checkboxes update only its example settings state.</p><figure class="preview-embed"><iframe class="preview-embed__frame" data-preview-src="../../assets/unity-preview/embed.html?window=themes&amp;surface=workbench&amp;embed=1" title="UI theme workbench example" loading="lazy" hidden></iframe><figcaption>Example theme workbench; no UI theme asset is loaded or edited. <a href="../../assets/unity-preview/embed.html?window=themes&amp;surface=workbench">Open the Themes workbench preview</a>.</figcaption></figure><p class="try-it"><strong>Try the theme example:</strong> first open the collapsed <strong>Sample content</strong> foldout. Type in <strong>Sample line</strong> and watch the preview update immediately. Toggle <strong>Show portrait</strong> and confirm your edited line remains. The browser <strong>Save</strong> control reports that nothing was written; use the Unity workbench to save assets.</p><h2>Current editor screenshots</h2>
+<figure><img class="screenshot-img" src="../4.0/screenshots/clean/text-settings.png" alt="DGS Settings > Text with reveal, skipping, and auto-advance controls." loading="lazy" width="1923" height="1007"><figcaption>DGS Settings &gt; Text: reveal, skipping, and automatic advancement controls.</figcaption></figure>
+<figure class="preview-embed"><iframe class="preview-embed__frame" src="../preview/index.html?window=dgs&amp;surface=settings-text&amp;embed=1" title="Interactive preview of Settings &gt; Text from the Dialogue Graph System editor" loading="lazy"></iframe><figcaption>Interactive preview: <strong>Settings &gt; Text</strong>, recreated from the 4.0 editor source with example values. Nothing here is saved, and the reveal values are fictitious. <a href="../preview/index.html?window=dgs&amp;surface=settings-text">Open the full preview</a> or <a href="../../AI%20Providers/preview/index.html">browse the AI Providers preview</a>.</figcaption></figure>
+<figure><img class="screenshot-img" src="../4.0/screenshots/clean/graph-ai-settings-p1.png" alt="DGS Graph AI settings showing authoring limits and batching controls; provider controls are not shown." loading="lazy" width="1918" height="989"><figcaption>Graph AI settings show authoring limits and batching controls; provider controls are not shown.</figcaption></figure>
+          <p><a href="../4.0/screenshots/index.html">Browse the full DGS 4.0 screenshot set</a>.</p>
           <nav class="page-nav" data-prev-next></nav>
         </article>
       </main>
       <aside class="page-toc" data-page-toc></aside>
     </div>
-    <footer class="footer"><div class="footer-inner"><span>Dialogue Graph System v3.0.0</span><span>&copy; <span data-current-year></span></span></div></footer>
+    <footer class="footer"><div class="footer-inner"><span>Dialogue Graph System v4.0.0</span><span>&copy; <span data-current-year></span></span></div></footer>
   </div>
   <script src="../assets/app.js"></script>
 </body>

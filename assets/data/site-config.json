@@ -10,28 +10,28 @@
   },
   "products": {
     "dialogueGraphSystem": {
-      "status": "Available",
-      "price": "$24.99",
-      "version": "3.0.0",
+      "status": "4.0 documentation prepared · release not published",
+      "price": "",
+      "version": "4.0.0",
       "assetStoreUrl": "https://assetstore.unity.com/packages/tools/gui/dialogue-graph-system-332234",
       "youtubeUrl": "https://www.youtube.com/watch?v=1K7-WWIBjD0",
       "docsPath": "Dialogue Graph System/index.html"
     },
     "aiProviders": {
-      "status": "Available Free",
-      "price": "Free",
+      "status": "Published 1.0.0 · requires unpublished 2.2.0 for DGS 4.0 AI",
+      "price": "",
       "version": "1.0.0",
-      "assetStoreUrl": "https://assetstore.unity.com/packages/package/384482",
+      "assetStoreUrl": "https://assetstore.unity.com/packages/tools/ai-ml-integration/ai-providers-for-unity-beka-forge-384482",
       "youtubeUrl": "",
       "docsPath": "AI Providers/index.html"
     },
     "aiExtension": {
-      "status": "Coming Soon",
+      "status": "Included in DGS 4.0.0",
       "price": "",
-      "version": "",
+      "version": "2.1.0",
       "assetStoreUrl": "",
       "youtubeUrl": "",
-      "docsPath": "Dialogue Graph AI Extension/index.html"
+      "docsPath": "Dialogue Graph System/guides/ai-generation-workflow.html"
     }
   }
 }

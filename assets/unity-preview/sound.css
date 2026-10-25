@@ -1,0 +1,212 @@
+/* Walla Sound Sequencer surface.
+   Translated from the Sound Sequencer editor sources; shared tokens and controls live in preview.css. */
+
+/* Walla Sound Sequencer */
+
+.walla-sound-theme {
+  font-size: 11px;
+}
+
+.walla-transport {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  padding: 8px;
+  background: var(--bf-raised, #1a1d28);
+  border: 1px solid var(--bf-border, #2a2f45);
+  border-radius: 5px;
+}
+
+.walla-transport__time {
+  min-width: 76px;
+  padding: 3px 8px;
+  background: var(--bf-deep, #0d0f16);
+  border: 1px solid var(--bf-border-strong, #3d4460);
+  border-radius: 4px;
+  color: var(--bf-text-primary, #e8ecf4);
+  font-family: Consolas, "Courier New", monospace;
+  font-size: 11px;
+  text-align: center;
+}
+
+.walla-timeline {
+  position: relative;
+  padding: 10px 0 4px;
+  background: var(--bf-deep, #0d0f16);
+  border: 1px solid var(--bf-border, #2a2f45);
+  border-radius: 5px;
+  overflow: auto;
+}
+
+.walla-timeline__toolbar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  padding: 0 10px 8px;
+}
+
+.walla-ruler {
+  position: relative;
+  height: 18px;
+  margin-left: 176px;
+  border-bottom: 1px solid var(--bf-divider, #1e2235);
+  min-width: 1520px;
+}
+
+.walla-ruler__tick {
+  position: absolute;
+  top: 2px;
+  color: var(--bf-text-subtle, #5c6480);
+  font-size: 9px;
+  transform: translateX(-50%);
+}
+
+.walla-lane {
+  display: flex;
+  min-width: 1696px;
+  border-bottom: 1px solid var(--bf-divider, #1e2235);
+}
+
+.walla-lane--selected .walla-gutter {
+  background: var(--bf-hover-wash, rgba(88, 101, 242, 0.12));
+  border-left: 2px solid var(--bf-selection-edge, #5865f2);
+}
+
+.walla-gutter {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 176px;
+  min-height: 52px;
+  padding: 0 8px;
+  background: var(--bf-raised, #1a1d28);
+  border-right: 1px solid var(--bf-divider, #1e2235);
+  flex: 0 0 auto;
+  cursor: pointer;
+}
+
+.walla-gutter__name {
+  flex: 1 1 auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--bf-text-primary, #e8ecf4);
+  font-weight: 600;
+}
+
+.walla-gutter__id {
+  display: none;
+  color: var(--bf-text-subtle, #5c6480);
+  font-size: 9px;
+}
+
+.walla-lane__canvas {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 52px;
+  background: rgba(255, 255, 255, 0.012);
+}
+
+.walla-clip {
+  position: absolute;
+  top: 6px;
+  bottom: 6px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+  padding: 0 8px;
+  background: linear-gradient(180deg, #2b3355 0%, #20263f 100%);
+  border: 1px solid #3d4460;
+  border-radius: 4px;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.walla-clip__name {
+  color: var(--bf-text-primary, #e8ecf4);
+  font-size: 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.walla-clip__fades {
+  color: var(--bf-text-subtle, #5c6480);
+  font-size: 9px;
+  white-space: nowrap;
+}
+
+.walla-playhead {
+  position: absolute;
+  top: 24px;
+  bottom: 0;
+  width: 1px;
+  margin-left: 176px;
+  background: var(--bf-warning, #f2c05c);
+  pointer-events: none;
+}
+
+.walla-playhead::before {
+  content: "";
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  border: 4px solid transparent;
+  border-top-color: var(--bf-warning, #f2c05c);
+}
+
+.walla-retime {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+  padding: 8px;
+  background: var(--bf-raised, #1a1d28);
+  border: 1px dashed var(--bf-border-strong, #3d4460);
+  border-radius: 5px;
+}
+
+.walla-graph-stage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 220px;
+  margin-bottom: 10px;
+  background: var(--bf-deep, #0d0f16);
+  border: 1px solid var(--bf-border, #2a2f45);
+  border-radius: 5px;
+}
+
+.walla-graph-strip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding: 8px 10px;
+  background: var(--bf-raised, #1a1d28);
+  border: 1px solid var(--bf-border-strong, #3d4460);
+  border-radius: 5px;
+}
+
+.walla-graph-strip__title {
+  color: var(--bf-text-primary, #e8ecf4);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.walla-graph-strip__status {
+  padding: 2px 7px;
+  background: var(--bf-deep, #0d0f16);
+  border: 1px solid var(--bf-border, #2a2f45);
+  border-radius: 999px;
+  color: var(--bf-text-subtle, #5c6480);
+  font-size: 10px;
+}
+
+.walla-graph-strip .bf-button {
+  margin-left: auto;
+}

@@ -43,7 +43,7 @@ for (const route of routes) {
     .split("/")
     .map(encodeURIComponent)
     .join("/")}`;
-  const label = route === "index.html" ? "Dialogue Graph System 3.0 documentation" : route;
+  const label = route === "index.html" ? "Dialogue Graph System 4.0 documentation" : route;
   const source = `<!doctype html>
 <html lang="en">
 <head>

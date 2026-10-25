@@ -36,16 +36,16 @@
 
       <main class="content-shell" id="main-content">
         <section class="page-hero">
-          <span class="eyebrow">Unity Documentation Portal &nbsp;·&nbsp; version 3.0.0</span>
-          <h1 class="hero-title">Dialogue Graph System 3.0 documentation.</h1>
+          <span class="eyebrow">Unity Documentation Portal &nbsp;·&nbsp; version 4.0.0</span>
+          <h1 class="hero-title">Dialogue Graph System 4.0 documentation.</h1>
           <p class="hero-subtitle">
-            Product-specific documentation for Dialogue Graph System. It covers the runtime, editor tooling,
-            settings model, JSON workflow, transcript support, and the core asset workflow.
+            Customer documentation for one DGS package containing Core, Banter, Sound/Walla, AI Extension,
+            Camera Controller, and Interaction. AI Providers is separate and needed only for AI features.
           </p>
           <div class="hero-actions">
             <a class="button button-primary" href="getting-started.html">Start with Getting Started</a>
-            <a class="button button-secondary" href="architecture.html">Open Architecture</a>
-            <a class="button button-secondary" href="changelog.html">What changed in 3.0</a>
+            <a class="button button-secondary" href="guides/creating-a-dialog.html">Build your first dialogue</a> <a class="button button-secondary" href="node-reference.html">Browse node types</a>
+            <a class="button button-secondary" href="changelog.html">DGS 4.0 changelog</a>
             <a class="button button-secondary" href="../docs.html">Beka Forge Docs Hub</a>
           </div>
 
@@ -60,65 +60,70 @@
               <div class="stat-grid">
                 <div class="stat">
                   <strong>1</strong>
-                  <span>Demo scene, 3 playable graphs</span>
+                  <span>Bundled Dungeon Market sample</span>
                 </div>
                 <div class="stat">
-                  <strong>5</strong>
-                  <span>Core node types</span>
+                  <strong>9</strong>
+                  <span>Graphs shown in the Home capture</span>
                 </div>
                 <div class="stat">
-                  <strong>5</strong>
-                  <span>Ready-made UI themes</span>
+                  <strong>Optional</strong>
+                  <span>AI assisted authoring</span>
                 </div>
               </div>
             </article>
 
             <article class="hero-card">
               <h3>Graph Editor Overview</h3>
-              <img class="screenshot-img" src="assets/images/graph-editor-overview.png" alt="Graph Editor Overview" fetchpriority="high" decoding="async">
+              <img class="screenshot-img" src="4.0/screenshots/clean/graph-far.png" alt="MarketFriend graph overview in the Graphs workspace, with its node canvas, sidebar, and minimap." fetchpriority="high" decoding="async" width="1914" height="986">
             </article>
           </div>
         </section>
 
         <section class="homepage-section panel">
-          <h2>Who this documentation is for</h2>
+          <h2>Choose what you want to build</h2>
           <div class="feature-grid">
             <article class="doc-card">
-              <h3>Developers</h3>
-              <p>Learn how to wire <code>DialogManager</code>, play conversations by <code>dialogID</code>, and integrate actions, history, and transcripts.</p>
+              <h3><a href="guides/creating-a-dialog.html">A conversation with choices</a></h3>
+              <p>Create a small graph, connect its nodes, put it in a scene, and test both answers. Start here if you are new to DGS.</p>
             </article>
             <article class="doc-card">
-              <h3>Contributors</h3>
-              <p>Understand the editor/runtime split, asset model, and the safest extension points before changing the graph workflow.</p>
+              <h3><a href="guides/banter-setup.html">Characters who talk around the player</a></h3>
+              <p>Set up Banter speakers, exchanges, a collection, and a profile. Learn how to trigger a line and understand why a request is rejected.</p>
             </article>
             <article class="doc-card">
-              <h3>Reviewers and clients</h3>
-              <p>Inspect the architecture, supported workflows, and major systems without digging through every Unity script first.</p>
+              <h3><a href="guides/walla-setup.html">Background sound and Walla</a></h3>
+              <p>Build a layered sound sequence, preview it, create its scene player, and bind sound to a dialogue graph.</p>
             </article>
+            <article class="doc-card"><h3><a href="../AI%20Providers/getting-started.html">Connect an AI provider</a></h3><p>Install the separate Providers package, choose a transport and model, and configure credentials on your own machine.</p></article>
+            <article class="doc-card"><h3><a href="guides/ai-generation-workflow.html">Create dialogue with AI</a></h3><p>Connect the included AI Extension to your provider, make a small request, review the proposed changes, and validate the result.</p></article>
+            <article class="doc-card"><h3><a href="api/dialog-manager.html">Connect DGS to gameplay</a></h3><p>Use the runtime API when a button, NPC, or gameplay event needs to start or control a conversation.</p></article>
           </div>
+          <p>Each setup guide gives you a small working example, exact editor paths, checkpoints, and fixes for common problems. Click a screenshot to inspect the real editor at full size.</p>
         </section>
 
         <section class="homepage-section panel">
           <h2>Key features</h2>
           <div class="card-grid">
-            <article class="doc-card"><h3>Graph-based authoring</h3><p>Author Start, Dialog, Choice, Action, and End nodes through editor-only GraphView tooling. The graph editor overview below is the visual reference for how authors build and connect dialogue content.</p><img class="screenshot-img" src="assets/images/graph-editor-overview.png" alt="Graph Editor Overview" loading="lazy"></article>
-            <article class="doc-card"><h3>Runtime playback</h3><p>Use TextMeshPro-backed UI for speaker names, portraits, typewriter effects, skip, autoplay, and choice handling. The runtime capture shows what a working conversation looks like in Play Mode.</p><img class="screenshot-img" src="assets/images/runtime-dialog-ui.png" alt="Runtime dialogue UI" loading="lazy"></article>
+            <article class="doc-card"><h3>Graph-based authoring</h3><p>Connect dialogue, choices, conditions, variables, and gameplay actions visually. The MarketFriend overview shows the graph canvas, authoring sidebar, and minimap.</p><img class="screenshot-img" src="4.0/screenshots/clean/graph-far.png" alt="MarketFriend graph overview in the Graphs workspace, with its node canvas, sidebar, and minimap." loading="lazy" width="1914" height="986"></article>
+            <article class="doc-card"><h3>Runtime playback</h3><p>Use TextMeshPro-backed UI for speaker names, portraits, typewriter effects, skip, autoplay, and choice handling. The runtime capture shows what a working conversation looks like in Play Mode.</p><img class="screenshot-img" src="4.0/screenshots/dialogue-runtime.jpg" alt="Runtime dialogue UI" loading="lazy" width="1920" height="1161"></article>
             <article class="doc-card"><h3>JSON workflows</h3><p>Export and import graph JSON for backup, review, migration, and controlled external tooling.</p></article>
             <article class="doc-card"><h3>Action nodes</h3><p>Run UnityEvent bindings or coroutine-based gameplay handlers through <code>DialogActionRunner</code> and <code>IActionHandler</code>.</p></article>
-            <article class="doc-card"><h3>History and transcripts</h3><p>Keep a player-facing backlog and rebuild the exact played branch with deterministic transcript generation.</p></article>
-            <article class="doc-card"><h3>Visual themes and settings</h3><p>Swap the entire UI look at runtime with <code>DialogThemeSO</code>. Five ready-made themes are included, and the settings window keeps runtime behavior in one place.</p><img class="screenshot-img" src="assets/images/settings-text.png" alt="Settings window" loading="lazy"></article>
-            <article class="doc-card"><h3>Validation and editor cleanup</h3><p>Use graph validation plus the layout formatter to keep branching graphs readable and structurally safe as they grow.</p><img class="screenshot-img" src="assets/images/graph-editor-branching-example.png" alt="Graph validation and layout example" loading="lazy"></article>
+            <article class="doc-card"><h3>History and transcripts</h3><p>Show a player-facing conversation backlog. Rebuild a transcript from the current graph and recorded branch choices; see the guide for limits after graph edits.</p></article>
+            <article class="doc-card"><h3>Visual themes and settings</h3><p>Use dialogue themes and the UI Theme Editor to configure presentation. The Settings workspace separates runtime text, choices, audio and UI from editor preferences.</p><img class="screenshot-img" src="4.0/screenshots/clean/text-settings.png" alt="DGS Settings > Text with reveal, skipping, and auto-advance controls." loading="lazy" width="1923" height="1007"></article>
+            <article class="doc-card"><h3>Graph validation and editor cleanup</h3><p>Run Validate Graph from the Graphs sidebar to review errors, warnings, and information messages. Format Layout arranges nodes.</p></article>
           </div>
         </section>
 
         <section class="homepage-section panel">
-          <h2>Visual tour</h2>
-          <p>Polished views of the current Dialogue Graph System 3.0 authoring workflow. Open the focused module pages for full-size technical captures and implementation guidance.</p>
+          <h2>See the current 4.0 editor</h2>
+          <p>These native Unity screenshots document the DGS 4.0 editor. Open any image to zoom in, or <a href="4.0/screenshots/index.html">browse all 51 clean editor screenshots</a>.</p>
           <div class="card-grid">
-            <article class="doc-card"><h3>Graph canvas</h3><img class="screenshot-img" src="assets/images/showcase-graph.png" alt="Polished overview of the Dialogue Graph System graph canvas" width="1536" height="1024" loading="lazy"></article>
-            <article class="doc-card"><h3>Project launcher</h3><img class="screenshot-img" src="assets/images/showcase-launcher.png" alt="Polished overview of the Dialogue Graph System project launcher" width="1536" height="1024" loading="lazy"></article>
-            <article class="doc-card"><h3>Localization workspace</h3><img class="screenshot-img" src="assets/images/showcase-localization.png" alt="Polished overview of the Dialogue Graph System localization workspace" width="1536" height="1024" loading="lazy"></article>
-            <article class="doc-card"><h3>Node types</h3><img class="screenshot-img" src="assets/images/showcase-nodes.png" alt="Polished overview of Dialogue Graph System node types" width="1536" height="1024" loading="lazy"></article>
+            <article class="doc-card"><h3>Home and graphs</h3><figure><img class="screenshot-img" src="4.0/screenshots/clean/dgs-launcher.png" alt="DGS Home shows nine graphs with MarketTutorial selected." loading="lazy" width="1915" height="992"><figcaption>Home lists nine graph assets, with MarketTutorial selected.</figcaption></figure></article>
+            <article class="doc-card"><h3>Banter setup</h3><figure><img class="screenshot-img" src="4.0/screenshots/banter-workspace.jpg" alt="Open the sample, create a kit, and validate collections." loading="lazy" width="1920" height="1161"><figcaption>Open the sample, create a kit, and validate collections.</figcaption></figure></article>
+            <article class="doc-card"><h3>Detached graph Sound window</h3><figure><img class="screenshot-img" src="4.0/screenshots/clean/walla-full-window.png" alt="Detached graph Sound window for MarketMerchant." loading="lazy" width="1920" height="1033"><figcaption>Detached graph Sound window for MarketMerchant.</figcaption></figure></article>
+            <article class="doc-card"><h3>Graph sound assignment</h3><figure><img class="screenshot-img" src="4.0/screenshots/clean/dgs-graph-walla.png" alt="MarketMerchant graph Sound panel with two tracks, paused audition, and status “Rejected: No change”." loading="lazy" width="1918" height="1003"><figcaption>MarketMerchant Sound panel: two tracks, paused audition, and “Rejected: No change”. This does not establish successful binding or audible playback.</figcaption></figure></article>
+            <article class="doc-card"><h3>AI authoring settings</h3><figure><img class="screenshot-img" src="4.0/screenshots/clean/graph-ai-settings-p1.png" alt="DGS Graph AI settings showing authoring limits and batching controls; provider controls are not shown." loading="lazy" width="1918" height="989"><figcaption>Graph AI authoring limits and batching settings; provider controls are not shown.</figcaption></figure></article>
           </div>
         </section>
 
@@ -129,7 +134,7 @@
             <a class="doc-card" href="installation.html"><h3>Installation</h3><p>Unity requirements, package assumptions, scene setup checklist, and runtime/editor setup basics.</p></a>
             <a class="doc-card" href="quick-tutorial.html"><h3>Quick Tutorial</h3><p>Create a graph, wire a <code>dialogID</code>, trigger playback, and inspect the branch transcript.</p></a>
             <a class="doc-card" href="architecture.html"><h3>Architecture</h3><p>Review the editor/runtime split, data flow, extension points, and current coupling boundaries.</p></a>
-            <a class="doc-card" href="changelog.html"><h3>3.0 Changelog</h3><p>Review the headline authoring, runtime, localization, validation, and showcase updates.</p></a>
+            <a class="doc-card" href="changelog.html"><h3>4.0 Changelog</h3><p>Review the prepared package scope and publication status.</p></a>
             <a class="doc-card" href="support.html"><h3>Support</h3><p>Find troubleshooting, public issue reporting, and private support channels.</p></a>
             <a class="doc-card" href="license.html"><h3>License</h3><p>Understand the Unity Asset Store license that applies to this package.</p></a>
           </div>
@@ -138,7 +143,7 @@
         <section class="homepage-section panel">
           <h2>Examples and common workflows</h2>
           <div class="link-grid">
-            <a class="doc-card" href="guides/creating-a-dialog.html"><h3>Create a dialog graph</h3><p>Build a branching conversation, map it to a <code>dialogID</code>, and trigger it from gameplay code.</p></a>
+            <a class="doc-card" href="node-reference.html"><h3>Node Reference</h3><p>Fields, ports, browser examples, and Unity steps for every node kind.</p></a><a class="doc-card" href="inspector-reference.html"><h3>Inspector Reference</h3><p>Contextual setup notes for assets and scene components.</p></a><a class="doc-card" href="guides/camera-interaction-ui.html"><h3>Camera, Interaction, and UI</h3><p>Configure camera IDs, interaction prompts, UI appearance, and locales.</p></a><a class="doc-card" href="guides/creating-a-dialog.html"><h3>Create a dialog graph</h3><p>Build a branching conversation, map it to a <code>dialogID</code>, and trigger it from gameplay code.</p></a>
             <a class="doc-card" href="guides/integrating-actions.html"><h3>Integrate action nodes</h3><p>Connect action nodes to UnityEvents or async handlers without overloading the dialogue layer.</p></a>
             <a class="doc-card" href="modules/import-export.html"><h3>Review JSON workflows</h3><p>Understand export/import responsibilities, DTO mapping, and the safest way to move graph content between tools.</p></a>
             <a class="doc-card" href="modules/history-and-transcripts.html"><h3>Review history and transcripts</h3><p>Understand the difference between the history panel and exact branch transcript reconstruction.</p></a>
@@ -146,14 +151,12 @@
         </section>
 
         <section class="homepage-section panel">
-          <h2>Demo entry points in this repository</h2>
-          <p>Open <code>Assets/DialogGraphSystem/DemoScenes/DialogueDemo.unity</code> and press Play. The demo menu lets you launch any of the three sample graphs.</p>
+          <h2>Included sample entry point</h2>
+          <p>Open <code>Assets/Beka Forge/Dialogue Graph System/Samples/2DMarketDemo/Scenes/MarketDemo.unity</code> and press Play to explore the bundled Dungeon Market integration sample.</p>
           <table>
-            <thead><tr><th>Graph asset</th><th>Purpose</th></tr></thead>
+            <thead><tr><th>Scene</th><th>Purpose</th></tr></thead>
             <tbody>
-              <tr><td><code>Assets/DialogGraphSystem/Graphs/Demo_CafeChoices.asset</code></td><td>Branching conversation with choices.</td></tr>
-              <tr><td><code>Assets/DialogGraphSystem/Graphs/Demo_ControlRoomActions.asset</code></td><td>Action nodes and waitable coroutine behavior.</td></tr>
-              <tr><td><code>Assets/DialogGraphSystem/Graphs/Demo_ProductTour.asset</code></td><td>Linear guided tour demonstrating typewriter and portrait effects.</td></tr>
+              <tr><td><code>MarketDemo.unity</code></td><td>Dialogue, Banter, Camera Controller, and Interaction integrated in one sample scene.</td></tr>
             </tbody>
           </table>
         </section>
@@ -183,6 +186,10 @@
             <li><a class="toc-link" href="components/runtime-ui.html">Runtime UI Components</a></li>
             <li class="toc-section-label">Guides</li>
             <li><a class="toc-link" href="guides/creating-a-dialog.html">Creating a Dialog</a></li>
+            <li><a class="toc-link" href="guides/banter-setup.html">Set Up Banter</a></li>
+            <li><a class="toc-link" href="guides/walla-setup.html">Set Up Walla</a></li>
+            <li><a class="toc-link" href="guides/ai-generation-workflow.html">AI Authoring</a></li>
+            <li><a class="toc-link" href="4.0/screenshots/index.html">4.0 Screenshots</a></li>
             <li><a class="toc-link" href="guides/integrating-actions.html">Integrating Actions</a></li>
             <li class="toc-section-label">Operations</li>
             <li><a class="toc-link" href="troubleshooting.html">Troubleshooting</a></li>
@@ -196,7 +203,7 @@
         </div>
       </aside>
     </div>
-    <footer class="footer"><div class="footer-inner"><span>Dialogue Graph System v3.0.0</span><span>&copy; <span data-current-year></span></span></div></footer>
+    <footer class="footer"><div class="footer-inner"><span>Dialogue Graph System v4.0.0 · documentation prepared, not published</span><span>&copy; <span data-current-year></span></span></div></footer>
   </div>
   <script src="assets/app.js"></script>
 </body>

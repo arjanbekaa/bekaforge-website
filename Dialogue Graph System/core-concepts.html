@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
@@ -23,44 +23,46 @@
         <article class="doc-article" data-doc-content>
           <nav class="breadcrumb"><a href="index.html">Home</a> / <span>Core Concepts</span></nav>
           <h1>Core Concepts</h1>
-          <p class="lede">These are the concepts that appear across the runtime, editor, and JSON workflow. Lock these first and the rest of the system becomes much easier to reason about.</p>
+          <p class="lede">A DGS conversation is a saved graph: dialogue content is linked into a path, the runtime resolves the next node, and optional modules add authored workflows around that core.</p>
 
           <h2>DialogGraph</h2>
-          <p><code>DialogGraph</code> is the primary content asset. It stores directed links, dialog nodes, choice nodes, action nodes, and editor-facing start/end marker data. The graph uses GUID-based links rather than scene references, which keeps it portable for asset workflows and JSON import/export.</p>
+          <p><code>DialogGraph</code> is the conversation asset. It stores nodes and directed links by stable node GUID; Unity scene objects are not the edges in the conversation. Start and End are boundary markers, while the linked nodes hold the playable content. This graph model is the basis for saving, graph validation, JSON transfer and runtime traversal.</p>
 
           <h2>Node types</h2>
           <h3>Start</h3>
           <p>The entry marker. <code>DialogManager</code> resolves the first playable node by reading the outgoing link from <code>startGuid</code>.</p>
           <h3>DialogNode</h3>
-          <p>A spoken line with speaker name, portrait, question text, optional audio clip, and optional display time.</p>
+          <p>A spoken line with speaker and text data, optional character/portrait and voice references, plus authored presentation settings. A line can also use localization keys and runtime variable text formatting.</p>
           <h3>ChoiceNode</h3>
-          <p>A decision point with optional prompt text, a list of <code>Choice</code> entries, and one outgoing path per choice index.</p>
+          <p>A decision point with per-answer text, optional requirements, and one outgoing path per answer. The active graph card has no prompt field; place the question in the preceding Dialog node.</p>
           <h3>ActionNode</h3>
-          <p>A runtime side effect with <code>actionId</code>, <code>payloadJson</code>, optional pre-delay, and optional wait-for-completion behavior.</p>
+          <p>A runtime side effect identified by <code>actionId</code> and optional <code>payloadJson</code>. The runner can invoke UnityEvent bindings or an <code>IActionHandler</code>; the node can also request a delay and wait-for-completion behavior.</p>
+          <h3>Logic and flow nodes</h3>
+          <p><code>ConditionNode</code> checks a registered variable before choosing an outgoing route. <code>VariableMutationNode</code> writes a typed value at runtime. <code>GraphJumpNode</code> transfers execution to a referenced graph, and outcome/branch nodes support authored flow. Camera nodes are available when the Camera Controller integration is used. After changing links or node outputs, open the graph sidebar’s <strong>Validate</strong> tab and choose <strong>Validate Graph</strong>, then inspect the reported issues and visible connections.</p>
           <h3>End</h3>
           <p>The terminal marker.</p>
 
-          <figure class="screenshot-figure"><img class="screenshot-img" src="assets/images/nodes-overview.png" alt="All node types â€” Start, Dialog, Choice, Action, and End â€” as they appear in the graph editor." loading="lazy"><figcaption>All node types â€” Start, Dialog, Choice, Action, and End â€” as they appear in the graph editor.</figcaption></figure><h2>Dialog IDs</h2>
-          <p>Gameplay code generally starts conversations by <code>dialogID</code>, not by direct asset reference. <code>DialogManager.dialogGraphs</code> maps each ID to a graph asset. That same mapping also enables conversation-specific action sets, branch-path persistence, and transcript lookup by ID.</p>
+          <figure><img class="screenshot-img" src="4.0/screenshots/clean/graph-far.png" alt="MarketFriend graph overview in the Graphs workspace, with its node canvas, sidebar, and minimap." loading="lazy" width="1914" height="986"><figcaption>MarketFriend overview in the Graphs workspace. It is a visual reference for graph authoring; the canvas view is not a full inventory of node kinds.</figcaption></figure><h2>Dialog IDs</h2>
+          <p>For a registered conversation, <code>DialogManager.dialogGraphs</code> maps a <code>dialogID</code> to its graph. Use <code>PlayDialogByID</code> when the ID is your stable gameplay key. You can also start from a graph asset reference with <code>StartDialog(DialogGraph)</code>. Conversation action sets and the last-played branch record use the dialog ID when one was supplied.</p>
 
           <h2>Settings model</h2>
-          <p>The settings system uses a master asset plus sub-assets: <code>DialogSystemSettings</code>, <code>DialogTextSettings</code>, <code>DialogChoiceSettings</code>, <code>DialogInputSettings</code>, and <code>DialogAudioSettings</code>. Runtime code reads them through <code>DialogSettingsRuntime</code>.</p>
+          <p>The master <code>DialogSystemSettings</code> references separate text, choice, input, audio, and runtime-UI settings assets. <code>DialogSettingsRuntime</code> loads the shipped master from <code>Resources/DialogSettingsSO/DialogSystemSettings</code>; a <code>DialogManager</code> can also provide local overrides. UI appearance is configured separately with the dialogue theme and, when installed, the UI Themes catalog/layout tools. See <a href="modules/settings-system.html">Settings and theming</a>.</p>
 
           <h2>History versus transcript</h2>
-          <p><code>DialogueHistory</code> records what was shown and chosen during runtime for UI backlog display. <code>DialogGraphTranscriptBuilder</code> reconstructs the exact played branch from the graph and recorded branch-path indices. History is good for player-facing review; transcripts are better for deterministic branch reconstruction.</p>
+          <p><code>DialogueHistory</code> records committed lines and choices for the player-facing backlog, with configurable retention and a pooled view. Separately, the runtime keeps the most recent branch path for a dialog ID. <code>GetLastPlayedDialogTranscript</code> uses that record and the current graph to rebuild a transcript; if the graph or branch record is unavailable, reconstruction can fail. See <a href="modules/history-and-transcripts.html">History and transcripts</a>.</p>
 
           <h2>JSON workflow</h2>
-          <p>The system supports exporting and importing graph JSON for backup, source review, migration, and controlled external tooling. The graph asset remains the canonical source of truth after import.</p>
+          <p>The Production workspace can export graph JSON and preview/validate JSON before import. Imports make a new independent copy by default; explicit Restore is for a matching existing target, while overwrite is a separate operation with transaction safeguards. Review the result in the editor and keep the graph asset as the project’s active source. See <a href="modules/import-export.html">JSON import and export</a>.</p>
 
           <h2>Optional integrations</h2>
-          <p>Character profiles, world/context data, action definitions, and scene summary fields are reusable by optional add-ons, but the add-on-specific behavior is documented in the dedicated AI product docs rather than in the DGS core concepts section.</p>
+          <p>Optional content modules add focused workflows without changing the core graph model. For contextual exchanges, see <a href="guides/banter-setup.html">Set up Banter</a>; for timed clips and graph/node sound behavior, see <a href="guides/walla-setup.html">Set up Walla sound</a>. AI authoring is a separate optional workflow; see the <a href="guides/ai-generation-workflow.html">AI authoring guide</a>.</p>
 
           <nav class="page-nav" data-prev-next></nav>
         </article>
       </main>
       <aside class="page-toc" data-page-toc></aside>
     </div>
-    <footer class="footer"><div class="footer-inner"><span>Dialogue Graph System v3.0.0</span><span>&copy; <span data-current-year></span></span></div></footer>
+    <footer class="footer"><div class="footer-inner"><span>Dialogue Graph System v4.0.0</span><span>&copy; <span data-current-year></span></span></div></footer>
   </div>
   <script src="assets/app.js"></script>
 </body>

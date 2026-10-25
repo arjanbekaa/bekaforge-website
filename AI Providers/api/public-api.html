@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Public API | AI Providers Docs</title>
-  <meta name="description" content="Public-facing API surface for AI Providers: service class, provider base class, DTOs, built-in provider types, and request result types.">
+  <meta name="description" content="AI Providers public Unity API reference with typed prompt requests, snapshots, async execution, cancellable coroutines, and results.">
   <link rel="stylesheet" href="../assets/styles.css">
   <link rel="icon" type="image/x-icon" href="../favicon/favicon.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="../favicon/favicon-32x32.png">
@@ -32,31 +32,105 @@
         <article class="doc-article" data-doc-content>
           <nav class="breadcrumb"><a href="../index.html">Home</a> / <span>Public API</span></nav>
           <h1>Public API</h1>
-          <p class="lede">The strongest public surface in AI Providers is the service plus provider-asset abstraction. Editor panels and inspectors matter for usability, but the reusable runtime contract is the real API core.</p>
+          <p class="lede">The runtime API is in <code>BekaForge.AIProviders.Runtime</code>. Assign a provider asset, create a typed prompt, then use a cancellable coroutine or build a request snapshot on the main thread and await the service. Provider assets contain endpoint configuration; API credentials are read from local credential storage.</p>
+          <div class="callout"><strong>Version scope:</strong> This reference follows the current 2.2 integration candidate. The public AI Providers 1.0 listing is not the matching DGS 4.0 AI prerequisite.</div>
 
-          <h2>Main reusable APIs</h2>
+          <h2>Request path at a glance</h2>
           <table>
-            <thead><tr><th>API</th><th>Purpose</th><th>Practical stability</th></tr></thead>
+            <thead><tr><th>API</th><th>Use</th><th>Important boundary</th></tr></thead>
             <tbody>
-              <tr><td><code>AiProvidersService</code></td><td>Shared prompt transport and normalized request execution.</td><td>High</td></tr>
-              <tr><td><code>LlmProviderDefinitionBase</code></td><td>Base class for all provider assets.</td><td>High</td></tr>
-              <tr><td><code>LlmChatRequest</code></td><td>Chat payload with messages, temperature, max tokens, and model override.</td><td>High</td></tr>
-              <tr><td><code>LlmMessage</code></td><td>Role/content chat message item.</td><td>High</td></tr>
-              <tr><td><code>AiLocalSettings</code></td><td>Project-scoped local provider key storage helper.</td><td>Medium</td></tr>
+              <tr><td><code>LlmPromptRequest</code></td><td>One user turn plus optional system instructions, model override, temperature, token limit, and JSON mode.</td><td>Blank user prompts fail validation.</td></tr>
+              <tr><td><code>AiProvidersService.BeginPromptCoroutine</code></td><td>Runtime-friendly request with a <code>PromptCoroutineHandle</code>.</td><td>Start its <code>Coroutine</code> on a <code>MonoBehaviour</code>; call <code>Cancel()</code> when needed.</td></tr>
+              <tr><td><code>TryBuildExecutionSnapshot</code></td><td>Captures provider configuration into a DTO-only snapshot.</td><td>Call on Unity's main thread before awaiting or moving work off-thread.</td></tr>
+              <tr><td><code>SendPromptAsync</code></td><td>Executes a prepared snapshot and returns <code>PromptResult</code>.</td><td>Use the snapshot overload; do not read ScriptableObject provider fields on a worker thread.</td></tr>
+              <tr><td><code>LlmChatRequest</code> / <code>LlmMessage</code></td><td>Multi-message chat requests with role/content entries.</td><td>Supported by existing service overloads alongside the typed single-turn request.</td></tr>
             </tbody>
           </table>
 
-          <h2>DTO surface</h2>
-<pre><code class="language-csharp">public class LlmChatRequest
-{
-    public List&lt;LlmMessage&gt; messages = new List&lt;LlmMessage&gt;();
-    public float temperature = 0.7f;
-    public int maxTokens = 512;
-    public string modelOverride;
-}</code></pre>
+          <h2>Runtime component example</h2>
+          <p>This example uses only the public runtime API. The provider asset is assigned in the Inspector; no key is embedded in code or the asset.</p>
+<pre><code class="language-csharp">using BekaForge.AIProviders.Runtime;
+using UnityEngine;
 
-          <h2>Built-in provider types</h2>
-          <p>The product ships concrete provider asset types for OpenAI, DeepSeek, Gemini, Ollama, and Custom JSON. Those are the public provider families to document, rather than hidden internal editor helper classes.</p>
+public sealed class DialogueHint : MonoBehaviour
+{
+    [SerializeField] private LlmProviderDefinitionBase provider;
+    private PromptCoroutineHandle activeRequest;
+
+    public void RequestHint(string dialogueText)
+    {
+        // Ignore duplicate submits until the current request completes or is cancelled.
+        if (activeRequest != null) return;
+
+        var prompt = LlmPromptRequest.CreateWithSystemPrompt(
+            systemPrompt: "Suggest one concise, player-facing hint.",
+            userPrompt: $"Dialogue context: {dialogueText}",
+            temperature: 0.3f,
+            maxTokens: 128);
+
+        PromptCoroutineHandle requestHandle = null;
+        requestHandle = AiProvidersService.BeginPromptCoroutine(provider, prompt,
+            result =&gt;
+            {
+                // An older or cancelled request must not clear a newer handle.
+                if (activeRequest != requestHandle) return;
+                if (result.Success) Debug.Log(result.ResponseText);
+                else Debug.LogError($"{result.Error}\n{result.Diagnostic?.hint}");
+                activeRequest = null;
+            });
+        activeRequest = requestHandle;
+        StartCoroutine(requestHandle.Coroutine);
+    }
+
+    private void OnDisable()
+    {
+        var requestHandle = activeRequest;
+        activeRequest = null;
+        requestHandle?.Cancel();
+    }
+}</code></pre>
+          <p>The example stores the returned handle before starting its coroutine and ignores duplicate submits while one is active. This also handles immediate validation failures: the completion callback can run as the coroutine starts. Clear the active handle before cancelling on teardown so a late callback cannot overwrite later state.</p>
+
+          <h2>Async editor or service integration</h2>
+<pre><code class="language-csharp">using System.Threading;
+using System.Threading.Tasks;
+using BekaForge.AIProviders.Runtime;
+
+public sealed class EditorSummaryService
+{
+    private readonly LlmProviderDefinitionBase provider;
+
+    public EditorSummaryService(LlmProviderDefinitionBase provider) => this.provider = provider;
+
+    public async Task<AiProvidersService.PromptResult> SendAsync(
+        CancellationToken cancellationToken)
+    {
+        // Call on Unity's main thread. Snapshot creation reads the provider asset.
+        var prompt = LlmPromptRequest.CreateUserOnly(
+            "Return a one-sentence summary.", maxTokens: 128);
+        if (!AiProvidersService.TryBuildExecutionSnapshot(
+                provider, prompt, out var snapshot, out var error))
+        {
+            return new AiProvidersService.PromptResult(false, string.Empty, error);
+        }
+
+        return await AiProvidersService.SendPromptAsync(snapshot, cancellationToken);
+    }
+}</code></pre>
+          <p>Build the snapshot on the Unity main thread. This helper returns the nested <code>AiProvidersService.PromptResult</code>; let the caller decide how and where to present it. Each call starts an independent request, so a UI should prevent accidental duplicate submits or give each operation its own cancellation token.</p>
+
+          <h2>Request and result types</h2>
+          <ul>
+            <li><code>LlmPromptRequest.CreateUserOnly</code> and <code>CreateWithSystemPrompt</code> create validated single-turn prompts. <code>ToChatRequest()</code> converts them to an ordered chat payload.</li>
+            <li><code>LlmChatRequest</code> carries <code>messages</code>, <code>temperature</code>, <code>maxTokens</code>, <code>modelOverride</code>, <code>jsonMode</code>, and <code>stream</code>.</li>
+            <li><code>AiProvidersService.PromptResult</code> reports <code>Success</code>, <code>ResponseText</code>, <code>Error</code>, <code>Diagnostic</code>, and token <code>Usage</code> when the provider returns it.</li>
+            <li><code>AiProvidersService.RequestOptions</code> configures timeout and transient retry behavior. Authentication and malformed-request failures are not retried as transient errors.</li>
+          </ul>
+
+          <h2>Profiles and editor-only connections</h2>
+          <p>HTTP/API and local profile types include OpenAI, OpenAI Compatible, DeepSeek, Gemini, Ollama, and Custom JSON. Codex and Claude Code profiles are editor-only connections through separately installed native tools; they are not runtime provider assets for player builds. See <a href="../modules/settings-and-keys.html">Settings and Keys</a> for credential handling and <a href="../modules/request-pipeline.html">Request Pipeline</a> for coroutine, streaming, and cancellation details.</p>
+
+          <div class="callout"><strong>Deprecation:</strong> <code>TrySendPrompt</code> is obsolete because it blocks the caller. Use <code>BeginPromptCoroutine</code> in a runtime component, or build a snapshot on the main thread and await <code>SendPromptAsync</code>.</div>
 
           <nav class="page-nav" data-prev-next></nav>
         </article>

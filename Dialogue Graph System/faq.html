@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
@@ -24,25 +24,27 @@
           <nav class="breadcrumb"><a href="index.html">Home</a> / <span>FAQ</span></nav>
           <h1>FAQ</h1>
           <h2>Is this system runtime-only or does it include authoring tools?</h2>
-          <p>It includes both. The runtime and editor tools are split into separate assemblies and folders.</p>
+          <p>It includes both. Runtime, editor, and optional module code are split into product folders and assemblies inside the DGS 4.0 bundle.</p>
           <h2>Can I start dialogues without using dialogID?</h2>
           <p>Yes. <code>DialogManager.StartDialog(DialogGraph graph)</code> starts directly from an asset reference.</p>
           <h2>Does the system support branching?</h2>
-          <p>Yes. Choice nodes branch by option index and the manager tracks selected branch indices for transcript reconstruction.</p>
+          <p>Yes. A choice follows its authored link, and DGS records the selected branch path for transcript reconstruction when the conversation is started through a registered dialog ID.</p>
           <h2>Can I trigger gameplay events during dialogue?</h2>
           <p>Yes. Use action nodes together with <code>DialogActionRunner</code> and, when needed, <code>IActionHandler</code>.</p>
           <h2>Does it support a history or backlog UI?</h2>
           <p>Yes. <code>DialogueHistory</code> and <code>DialogueHistoryView</code> provide that feature.</p>
           <h2>Is there AI generation support?</h2>
-          <p>Dialogue Graph System 3.0 does not require or include AI authoring. The optional Dialogue Graph AI Extension is a separate product that is coming soon.</p>
+          <p>The AI Extension is included in the DGS 4.0 bundle; AI Providers is a separate optional package required only for AI authoring. Core graph authoring and runtime do not require a provider. Check the dedicated <a href="guides/ai-generation-workflow.html">AI authoring guide</a> for the supported provider setup.</p>
           <h2>Can I replace the included UI?</h2>
-          <p>Yes, but keep the manager/UI contract intact or update the integration accordingly.</p>
+          <p>Yes. DGS separates dialogue flow from its runtime UI controller and manager. Keep the public runtime view and choice contracts intact or supply an adapter for your replacement. Theme artwork/layout authoring is covered by the included UI Themes tools.</p>
+          <h2>Can I author contextual Banter or graph sound without AI?</h2>
+          <p>Yes. Banter and the Sound Sequencer are included modules with their own authoring and runtime setup. Start with <a href="guides/banter-setup.html">Set up Banter</a> or <a href="guides/walla-setup.html">Set up Walla sound</a>.</p>
           <nav class="page-nav" data-prev-next></nav>
         </article>
       </main>
       <aside class="page-toc" data-page-toc></aside>
     </div>
-    <footer class="footer"><div class="footer-inner"><span>Dialogue Graph System v3.0.0</span><span>&copy; <span data-current-year></span></span></div></footer>
+    <footer class="footer"><div class="footer-inner"><span>Dialogue Graph System v4.0.0</span><span>&copy; <span data-current-year></span></span></div></footer>
   </div>
   <script src="assets/app.js"></script>
 </body>

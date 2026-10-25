@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
@@ -21,42 +21,76 @@
       <aside class="sidebar" id="sidebar"><div class="sidebar-inner" data-sidebar-nav></div></aside>
       <main class="content-shell" id="main-content">
         <article class="doc-article" data-doc-content>
-          <nav class="breadcrumb"><a href="../index.html">Home</a> / <span>DialogManager API</span></nav>
-          <h1>DialogManager API</h1>
-          <p class="lede"><code>DialogManager</code> is the main runtime entry point for starting, traversing, and observing conversations.</p>
-          <h2>Primary methods</h2>
-<pre><code>DialogManager.Instance.PlayDialogByID("intro_guard");
-DialogManager.Instance.StartDialog(myGraph);
-bool enabled = DialogManager.Instance.ToggleAutoPlay();
-DialogManager.Instance.SkipAll();</code></pre>
-          <h2>Branch and transcript APIs</h2>
-<pre><code>if (DialogManager.Instance.TryGetLastPlayedBranchPath("intro_guard", out var path))
+<nav class="breadcrumb"><a href="../index.html">Home</a> / <span>DialogManager</span></nav>
+<h1>DialogManager</h1>
+<p class="lede">DialogManager resolves registered dialogue IDs, starts graph sessions, and exposes lifecycle events. Use the prefab and ID registry for ordinary scene playback.</p>
+
+<h2>Scene setup</h2>
+<ol>
+  <li>Drag <code>Assets/DialogGraphSystem/Resources/Prefabs/DialogueManager.prefab</code> into your scene.</li>
+  <li>On the <strong>Dialog Manager</strong> component, add an entry to <code>dialogGraphs</code>, assign a <code>DialogGraph</code>, and enter a unique non-empty <code>dialogID</code>.</li>
+  <li>Keep the prefab's assigned <code>DialogUIManager</code> and UI references. Use <a href="../components/runtime-ui.html">Runtime UI</a> if you are replacing or customizing them.</li>
+  <li>Call <code>ValidateDialogRegistry</code> from your own tooling if you assemble the list dynamically. For inspector-authored mappings, check blank or duplicate IDs before relying on them.</li>
+</ol>
+<p><strong>Expected result:</strong> <code>PlayDialogByID</code> resolves exactly one graph and starts it with the configured runtime UI.</p>
+<figure class="screenshot-figure"><img class="screenshot-img" src="../4.0/screenshots/clean/dialogue-manager-inspector.png" alt="DialogManager Inspector showing the graph registry and linked runtime references." loading="lazy" width="672" height="782"><figcaption>Native DialogManager Inspector showing graph registry rows and runtime references. The capture documents serialized setup; it does not demonstrate runtime playback.</figcaption></figure>
+
+<h2>Start by ID</h2>
+<pre><code>using DialogSystem.Runtime.Core;
+
+public void OpenConversation()
 {
-    Debug.Log(string.Join(", ", path));
+    DialogManager.Instance.PlayDialogByID("market_intro", OnConversationEnded);
 }
 
-string transcript = DialogManager.Instance.GetLastPlayedDialogTranscript("intro_guard");</code></pre>
-          <h2>Events</h2>
-          <ul>
-            <li><code>OnLineShown</code></li>
-            <li><code>OnChoicePicked</code></li>
-            <li><code>OnConversationReset</code></li>
-            <li><code>onDialogEnter</code></li>
-            <li><code>onDialogExit</code></li>
-          </ul>
-          <h2>Common edge cases</h2>
-          <ul>
-            <li>missing <code>uiPanel</code> prevents playback</li>
-            <li>missing mapping for <code>dialogID</code> logs a warning and does nothing</li>
-            <li>missing action runner disables action execution</li>
-            <li>direct <code>StartDialog(graph)</code> does not automatically establish a <code>dialogID</code> transcript lookup key</li>
-          </ul>
-          <nav class="page-nav" data-prev-next></nav>
-        </article>
+private void OnConversationEnded()
+{
+    // Continue your scene flow here.
+}</code></pre>
+<p>The ID must exactly match one entry in the manager's <code>dialogGraphs</code> list. Keep the ID non-empty and unique. If there is no unique mapping, the manager refuses the lookup rather than choosing an arbitrary graph.</p>
+
+<h2>Start a graph asset directly</h2>
+<pre><code>using DialogSystem.Runtime.Core;
+using DialogSystem.Runtime.Models;
+using UnityEngine;
+
+public class DirectGraphLauncher : MonoBehaviour
+{
+    [SerializeField] private DialogGraph graph;
+
+    public void Play()
+    {
+        DialogManager.Instance.StartDialog(graph);
+    }
+}</code></pre>
+<p>Use this overload when you intentionally hold a direct graph reference. It does not choose a registry ID for you; use <code>PlayDialogByID</code> when you want a stable scene-facing mapping.</p>
+
+<h2>No-code launch with DialogPlayer</h2>
+<p>Add <code>DialogPlayer</code> to a scene object, then bind a UI Button's <strong>On Click ()</strong> event to <strong>DialogPlayer &gt; StartDialog (string)</strong> and enter the registered ID. The component also exposes <code>StartDialogGraph(DialogGraph)</code> for a direct graph reference and <code>StopDialog()</code> for a stop button.</p>
+
+<h2>Useful lifecycle events and state</h2>
+<ul>
+  <li><code>onDialogEnter</code> and <code>onDialogExit</code> identify the start and exit of a dialog session.</li>
+  <li><code>onDialogEndedWithReason</code> reports why a session ended; <code>OnDialogEndedWithResult</code> exposes the richer completion result.</li>
+  <li><code>OnLineShown</code> and <code>OnChoicePicked</code> let scene systems observe conversation progress.</li>
+  <li><code>OnConversationReset</code> reports reset behavior. <code>GetLastPlayedDialogTranscript("market_intro")</code> returns the last transcript available to the manager.</li>
+  <li><code>ToggleAutoPlay()</code> controls the current session's auto-play behavior.</li>
+</ul>
+<p>Check the public declarations in <code>DialogManager.cs</code> for exact delegate signatures when subscribing from code; event payloads are strongly typed and should not be guessed from their names.</p>
+
+<h2>Common failure checks</h2>
+<ul>
+  <li><strong>No mapped graph:</strong> check the assigned asset and spelling of <code>dialogID</code>.</li>
+  <li><strong>Blank or repeated ID:</strong> give each entry a unique stable key; do not use the graph filename as an implicit runtime ID.</li>
+  <li><strong>Session starts without UI:</strong> confirm an active manager and its Dialog UI Manager/controller references are present.</li>
+  <li><strong>Direct graph call works but ID call does not:</strong> repair the manager registry; a direct graph reference bypasses the ID mapping by design.</li>
+</ul>
+<nav class="page-nav" data-prev-next></nav>
+</article>
       </main>
       <aside class="page-toc" data-page-toc></aside>
     </div>
-    <footer class="footer"><div class="footer-inner"><span>Dialogue Graph System v3.0.0</span><span>&copy; <span data-current-year></span></span></div></footer>
+    <footer class="footer"><div class="footer-inner"><span>Dialogue Graph System v4.0.0</span><span>&copy; <span data-current-year></span></span></div></footer>
   </div>
   <script src="../assets/app.js"></script>
 </body>

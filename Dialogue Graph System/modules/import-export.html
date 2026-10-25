@@ -23,36 +23,37 @@
         <article class="doc-article" data-doc-content>
           <nav class="breadcrumb"><a href="../index.html">Home</a> / <span>JSON Import and Export</span></nav>
           <h1>JSON Import and Export</h1>
-          <p class="lede">The JSON tooling lets the system round-trip dialogue graphs to and from a serializable format for backups, review, migration, and controlled external tooling.</p>
+          <p class="lede">The Production workspace exports graph JSON and validates an import preview before it creates or replaces a graph asset. Keep your original graph and review the result after every import.</p>
           <h2>Key files</h2>
           <ul>
-            <li><code>DialogJsonIOWindow.cs</code></li>
-            <li><code>DialogExportUtility.cs</code></li>
+            <li><code>ImportExportEmbedded.cs</code> (the current workspace UI)</li>
+            <li><code>DialogGraphJsonSerializationUtility.cs</code> and <code>DialogGraphImportTransactionService.cs</code></li>
             <li><code>DialogJsonImportBridge.cs</code></li>
           </ul>
           <h2>Editor entry point</h2>
-          <p>Open <code>Tools &gt; Dialogue Graph System &gt; JSON Import / Export...</code>. The window has Export and Import tabs.</p>
+          <p>Open <strong>Tools &gt; Beka Forge &gt; Dialogue Graph System &gt; Open Editor</strong>, select <strong>Production</strong>, then choose the <strong>Import / Export</strong> subtab. The embedded tool has Export and Import cards.</p>
+          <figure class="preview-embed"><iframe class="preview-embed__frame" src="../preview/index.html?window=dgs&amp;surface=production&amp;embed=1" title="Interactive preview of the Production workspace from the Dialogue Graph System editor" loading="lazy"></iframe><figcaption>Interactive preview: <strong>Production</strong>, recreated from the 4.0 editor source with example values. Choose the <strong>Import / Export</strong> subtab to inspect the JSON cards; nothing is exported or saved. <a href="../preview/index.html?window=dgs&amp;surface=production">Open the full preview</a>.</figcaption></figure><figure class="screenshot-figure"><img class="screenshot-img" src="../4.0/screenshots/clean/import-export.png" alt="Production Import / Export workspace with JSON export and import forms idle and no graph or source JSON selected." loading="lazy" width="1918" height="988"><figcaption>Native Import / Export workspace. No graph or source JSON is selected, so the export and import actions are idle.</figcaption></figure>
           <h2>Export workflow</h2>
-          <p>Choose a <code>DialogGraph</code>, choose an output folder inside <code>Assets</code>, enable pretty print if needed, and optionally include node positions.</p>
+          <p>Choose a <code>DialogGraph</code>, enter an output filename and an in-project destination, then use <strong>Pretty Print</strong> and <strong>Include Node Positions</strong> as needed. Confirm the overwrite prompt before replacing an existing JSON file. Export is graph data, not a Unity package or complete project backup.</p>
           <h2>Import workflow</h2>
-          <p>Load JSON from a <code>TextAsset</code> or external file, validate it, create a new <code>DialogGraph</code> asset, and optionally open that graph in the editor window.</p>
+          <p>Select a <code>TextAsset</code> or browse to an external JSON file, set the destination folder and name, then click <strong>Load &amp; Validate JSON</strong>. Review the preview and validation messages before <strong>Import to Project</strong>. A new import creates an independent copy. If that destination name already exists, read the prompt carefully: create a copy or explicitly confirm overwrite. The lower-level importer also supports identity-preserving Restore for a matching existing target; that specialized mode is not needed for ordinary reuse.</p>
           <h2>Import bridge</h2>
-          <p><code>DialogJsonImportBridge</code> parses JSON into DTOs, validates the structure, creates the graph asset, rebuilds nodes and links, and optionally opens the result in the graph editor. Treat imported JSON as untrusted input and review the resulting graph before using it in a scene.</p>
+          <p><code>DialogJsonImportBridge</code> is an editor API that validates the DTO and executes an import transaction. The UI previews content and reports import stages or refusals. It rebuilds supported graph and node data and selects the resulting asset; open it in Graphs to inspect it. Treat external JSON as untrusted and do not overwrite a valuable graph without a backup.</p>
           <h2>Best practices</h2>
           <ul>
             <li>export graphs before making large structural edits</li>
             <li>keep imported JSON under review if it comes from external tooling</li>
-            <li>preserve the graph asset as the source of truth after import</li>
+            <li>keep a separate backup before overwriting an existing graph</li>
+            <li>use an independent copy for ordinary reuse; reserve identity-preserving Restore for recovery of a matching existing target</li>
+            <li>revalidate graph references after import</li>
           </ul>
-          <div class="placeholder-grid">
-            <article class="placeholder-card"><h3>JSON I/O window</h3><img class="screenshot-img" src="../assets/images/import-export-tool.png" alt="Combined import and export tool" loading="lazy"><p>The combined import and export window shows both tabs and the asset-folder workflow in one capture.</p></article><article class="placeholder-card screenshot-card"><h3>Import window</h3><img class="screenshot-img" src="../assets/images/json-import.png" alt="Import window" loading="lazy"><p>The JSON import interface lets you load a JSON file to create or overwrite a graph asset.</p></article>
-          </div>
+          <p><a href="../4.0/screenshots/index.html">See the current DGS 4.0 editor screenshots</a>.</p>
           <nav class="page-nav" data-prev-next></nav>
         </article>
       </main>
       <aside class="page-toc" data-page-toc></aside>
     </div>
-    <footer class="footer"><div class="footer-inner"><span>Dialogue Graph System v3.0.0</span><span>&copy; <span data-current-year></span></span></div></footer>
+    <footer class="footer"><div class="footer-inner"><span>Dialogue Graph System v4.0.0</span><span>&copy; <span data-current-year></span></span></div></footer>
   </div>
   <script src="../assets/app.js"></script>
 </body>

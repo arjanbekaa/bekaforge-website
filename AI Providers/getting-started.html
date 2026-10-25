@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Getting Started | AI Providers Docs</title>
-  <meta name="description" content="Quick start for AI Providers: import the asset, create a provider asset, store a local key, and send the first prompt from editor or runtime code.">
+  <meta name="description" content="Set up AI Providers profiles, local credentials, connection readiness, and your first asynchronous Unity request.">
   <link rel="stylesheet" href="assets/styles.css">
   <link rel="icon" type="image/x-icon" href="favicon/favicon.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
@@ -32,54 +32,82 @@
         <article class="doc-article" data-doc-content>
           <nav class="breadcrumb"><a href="index.html">Home</a> / <span>Getting Started</span></nav>
           <h1>Getting Started</h1>
-          <p class="lede">AI Providers is independent. You can import it alone or alongside other Beka Forge tools. The first successful setup is: create or select a provider asset, enter a local API key, and send a minimal prompt.</p>
+          <p class="lede">AI Providers connects Unity code and editor tools to HTTP or local-model services. The provider package is separate from Dialogue Graph System (DGS). DGS 4.0 includes its AI Extension, but AI authoring also needs the matching AI Providers 2.2 update. That update is still a release candidate; the <a href="https://assetstore.unity.com/packages/tools/ai-ml-integration/ai-providers-for-unity-beka-forge-384482">public listing</a> is 1.0. Do not treat the public 1.0 listing as the DGS 4.0 prerequisite. DGS graphs continue to work without AI Providers.</p>
 
-          <h2>Requirements and scope</h2>
+          <figure class="preview-embed"><iframe class="preview-embed__frame" data-preview-src="../assets/unity-preview/embed.html?window=ai-providers&amp;surface=setup&amp;embed=1" title="AI Providers setup example" loading="lazy" hidden></iframe><figcaption>Setup screen example only; it does not install a package or connect a provider. <a href="../assets/unity-preview/embed.html?window=ai-providers&amp;surface=setup">Open the full setup example</a>.</figcaption></figure>
+          <h2>Choose a profile type</h2>
+          <p>The profile families below describe the current 2.2 integration candidate. The publicly listed 1.0 package does not provide the DGS 4.0 integration.</p>
           <ul>
-            <li>Unity 2021.3 LTS or newer.</li>
-            <li>No hard dependency on Dialogue Graph System or AI Extension.</li>
-            <li>Runtime assembly: <code>AiProviders.Runtime</code>.</li>
-            <li>Editor assembly: <code>AiProviders.Editor</code>.</li>
+            <li><strong>API and local providers</strong> (OpenAI, OpenAI Compatible, DeepSeek, Gemini, Ollama, and Custom JSON) use an API endpoint and, where required, an API key.</li>
+            <li><strong>Codex and Claude Code</strong> are editor-only subscription connections through tools you install and sign into yourself. They do not run in a player build and do not turn a subscription into API billing.</li>
+            <li>Use an API profile for runtime/player requests. Check the package listing and provider terms for your chosen service before shipping requests.</li>
           </ul>
 
-          <h2>First-time editor flow</h2>
+          <h2>Configure and test an API profile</h2>
           <ol>
-            <li>Import <code>Assets/AiProviders</code>.</li>
-            <li>Open <code>Tools &gt; BekaForge &gt; AI Providers</code>.</li>
-            <li>Create or select a provider asset.</li>
-            <li>Store the API key locally for that provider GUID.</li>
-            <li>Run the provider test request.</li>
-            <li>Use the provider asset from editor tooling or runtime code.</li>
+            <li>Install the AI Providers package that matches your project. For DGS 4.0 AI authoring, wait for the separate 2.2-compatible Providers release; the public 1.0 release is not compatible with that integration.</li>
+            <li>Open <code>Tools &gt; Beka Forge &gt; AI Providers</code> and choose <strong>+ Add profile…</strong>. Select the API/local profile family and provider type, then give the profile a recognizable name.</li>
+            <li>Review the profile's <strong>Base URL</strong>, provider-specific endpoint, and <strong>Model</strong>. Custom JSON profiles also need a valid HTTP method, request-body template, and response-text path for that service's JSON response.</li>
+            <li>Enter the API key in the masked key field and save. The key is stored outside the provider asset in protected OS-backed credential storage where the platform supports it; it is not included in project assets or source control. If protected storage is unavailable, the package reports that limitation instead of falling back to plaintext.</li>
+            <li>Choose <strong>Test connection</strong>. A ready profile has a successful test result and the intended profile selected as the default for tools that use the default. A successful test confirms connectivity and response parsing, not billing, quota, or permission for every model.</li>
           </ol>
 
-          <div class="placeholder-grid">
-            <article class="placeholder-card">
-              <h3>Provider settings panel</h3>
-              <img class="screenshot-img" src="assets/images/provider-settings-overview.png" alt="AI Providers panel with provider selection and local API key" loading="lazy">
-              <p>This is the first editor surface most users touch: choose a provider, enter a local key, test the connection, and save the default configuration.</p>
-            </article>
-          </div>
+          <figure class="preview-embed"><iframe class="preview-embed__frame" data-preview-src="../assets/unity-preview/embed.html?window=ai-providers&amp;surface=profiles&amp;embed=1" hidden title="API profile example" loading="lazy"></iframe><figcaption>Interactive preview: <strong>Profiles</strong>, recreated from the product source with fictitious example values. The API key stays blank and no provider is contacted. <a href="../assets/unity-preview/embed.html?window=ai-providers&amp;surface=profiles">Open the full preview</a>.</figcaption></figure>
 
-          <h2>Minimal blocking request</h2>
-<pre><code class="language-csharp">using AiProviders.Runtime;
-using System.Collections.Generic;
+          <figure class="screenshot-figure">
+            <img class="screenshot-img" src="../Dialogue Graph System/4.0/screenshots/ai-providers-setup.jpg" alt="AI Providers setup panel showing the initial checklist and available API or editor-only profile types" loading="lazy" width="1920" height="1161">
+            <figcaption>First-run setup shows both API profiles and editor-only subscription connections. This screen is for setup orientation; it does not show a connected or verified provider.</figcaption>
+          </figure>
 
-var chat = new LlmChatRequest
+          <figure class="screenshot-figure">
+            <img class="screenshot-img" src="../Dialogue Graph System/4.0/screenshots/ai-provider-api-profile.jpg" alt="Example OpenAI API profile with display name, base URL, endpoint, model, and a blank API key field" loading="lazy" width="1920" height="1161">
+            <figcaption>Example profile fields are shown with the API key blank. The displayed model is the package's example default, not a guarantee that the model is available to your account or current when you configure a provider; this profile has not been connection-tested.</figcaption>
+          </figure>
+
+          <h2>Send a first runtime prompt</h2>
+          <p>Assign a provider asset to a component field in the Inspector. Build the immutable request snapshot on Unity's main thread, then use the coroutine adapter so the request can be cancelled and does not block a frame.</p>
+<pre><code class="language-csharp">using BekaForge.AIProviders.Runtime;
+using UnityEngine;
+
+public sealed class FirstPrompt : MonoBehaviour
 {
-    messages = new List&lt;LlmMessage&gt;
+    [SerializeField] private LlmProviderDefinitionBase provider;
+    private PromptCoroutineHandle request;
+
+    public void Send()
     {
-        new LlmMessage { role = LlmMessageRole.System, content = "You are a helpful assistant." },
-        new LlmMessage { role = LlmMessageRole.User, content = "Hello!" }
+        if (request != null) return;
+
+        var prompt = LlmPromptRequest.CreateWithSystemPrompt(
+            systemPrompt: "Answer in one concise sentence.",
+            userPrompt: "What does a dialogue graph represent?",
+            maxTokens: 128);
+
+        PromptCoroutineHandle requestHandle = null;
+        requestHandle = AiProvidersService.BeginPromptCoroutine(provider, prompt,
+            result =>
+            {
+                if (request != requestHandle) return;
+                if (result.Success) Debug.Log(result.ResponseText);
+                else Debug.LogError($"{result.Error} ({result.Diagnostic?.hint})");
+                request = null;
+            });
+        request = requestHandle;
+        StartCoroutine(requestHandle.Coroutine);
     }
-};
 
-if (AiProvidersService.TrySendPrompt(provider, chat, out string response, out string error))
-{
-    Debug.Log(response);
+    private void OnDisable()
+    {
+        var requestHandle = request;
+        request = null;
+        requestHandle?.Cancel();
+    }
 }</code></pre>
+          <p>For editor workflows built around <code>async</code>/<code>await</code>, call <code>TryBuildExecutionSnapshot</code> on the Unity main thread and pass the resulting snapshot to <code>SendPromptAsync</code>. The older synchronous <code>TrySendPrompt</code> API is obsolete and blocks its caller.</p>
+          <p>See the <a href="api/public-api.html">public API reference</a> for typed requests and service overloads, or use <a href="troubleshooting.html">troubleshooting</a> if profile readiness or a request fails.</p>
 
-          <h2>When to prefer the coroutine path</h2>
-          <p>The blocking path is primarily editor-oriented. For runtime usage, prefer <code>SendPromptCoroutine</code> so the caller is not stuck inside a busy wait loop.</p>
+          <h2>For DGS users</h2>
+          <p>DGS 4.0's AI Extension is bundled with DGS. Providers is installed separately and is needed only for AI features. Once the compatible Providers version is available, use the <a href="../Dialogue Graph System/guides/ai-generation-workflow.html">DGS AI authoring workflow</a> to configure the provider, draft a plan, inspect it, apply selected operations, and validate the graph.</p>
 
           <nav class="page-nav" data-prev-next></nav>
         </article>

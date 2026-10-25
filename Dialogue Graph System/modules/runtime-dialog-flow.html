@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
@@ -23,25 +23,26 @@
         <article class="doc-article" data-doc-content>
           <nav class="breadcrumb"><a href="../index.html">Home</a> / <a href="../architecture.html">Architecture</a> / <span>Runtime Dialog Flow</span></nav>
           <h1>Runtime Dialog Flow</h1>
-          <p class="lede">This module turns a <code>DialogGraph</code> asset into an interactive runtime conversation. The central orchestrator is <code>DialogManager</code>.</p>
+          <p class="lede">A <code>DialogManager</code> resolves the requested graph, obtains a runtime dialogue view, and advances through the graph’s nodes and links.</p>
           <h2>Key files</h2>
           <ul>
             <li><code>Assets/DialogGraphSystem/Scripts/Runtime/Core/DialogManager.cs</code></li>
             <li><code>Assets/DialogGraphSystem/Scripts/Runtime/Core/DialogActionRunner.cs</code></li>
-            <li><code>Assets/DialogGraphSystem/Scripts/Runtime/Core/DialogPlayer.cs</code></li>
-            <li><code>Assets/DialogGraphSystem/Scripts/Runtime/Core/Effects/*</code></li>
+            <li><code>Assets/DialogGraphSystem/Scripts/Runtime/UI/DialogUIController.cs</code> and <code>UI/Theming/DialogUIManager.cs</code></li>
+            <li><code>Assets/DialogGraphSystem/Scripts/Runtime/Models/Nodes/*</code></li>
           </ul>
           <h2>Main responsibilities</h2>
           <ul>
-            <li>resolve a graph by <code>dialogID</code></li>
+            <li>resolve a graph from <code>dialogID</code>, or start from a graph asset</li>
             <li>move between GUID-linked nodes</li>
-            <li>display the current line or choice prompt</li>
+            <li>display the current Dialog line and the selectable answers from a Choice node</li>
             <li>handle input, skip, and autoplay</li>
             <li>invoke action nodes</li>
             <li>raise events for history and integration</li>
             <li>record branch paths for transcript rebuilding</li>
           </ul>
-          <h2>Public usage</h2>
+          <h2>Start a conversation</h2>
+          <p>For ID-based startup, register a graph in <code>DialogManager.dialogGraphs</code> and use the same stable ID in gameplay. You can also pass a graph asset directly.</p>
 <pre><code>DialogManager.Instance.PlayDialogByID("intro_guard");</code></pre>
 <pre><code>public DialogGraph introGraph;
 
@@ -50,20 +51,21 @@ void StartConversation()
     DialogManager.Instance.StartDialog(introGraph);
 }</code></pre>
           <h2>Events</h2>
-          <p>The manager exposes <code>OnLineShown</code>, <code>OnChoicePicked</code>, <code>OnConversationReset</code>, <code>onDialogEnter</code>, and <code>onDialogExit</code>. These are the main integration points for analytics, history, UI reactions, or game systems.</p>
+          <p>The manager exposes events including <code>OnLineShown</code>, <code>OnChoicePicked</code>, <code>OnConversationReset</code>, <code>onDialogEnter</code>, and <code>onDialogExit</code>. Locale-aware line and choice events are also available when a consumer needs localization metadata. The legacy <code>OnChoicePicked</code> event carries the authored choice text.</p>
           <h2>Common mistakes</h2>
           <ul>
-            <li>forgetting to assign <code>uiPanel</code></li>
+            <li>not assigning a usable <code>DialogUIManager</code> or configured UI prefab when the scene has no existing dialog UI</li>
             <li>starting by <code>dialogID</code> without adding a graph mapping</li>
-            <li>using action nodes without assigning <code>actionRunner</code></li>
+            <li>using action nodes without a matching action binding or <code>IActionHandler</code> on the configured or available runner</li>
             <li>assuming history alone is authoritative for exact branch reconstruction</li>
+            <li>treating a transcript reconstructed from the current graph as the exact localized or interpolated text a player saw</li>
           </ul>
           <nav class="page-nav" data-prev-next></nav>
         </article>
       </main>
       <aside class="page-toc" data-page-toc></aside>
     </div>
-    <footer class="footer"><div class="footer-inner"><span>Dialogue Graph System v3.0.0</span><span>&copy; <span data-current-year></span></span></div></footer>
+    <footer class="footer"><div class="footer-inner"><span>Dialogue Graph System v4.0.0</span><span>&copy; <span data-current-year></span></span></div></footer>
   </div>
   <script src="../assets/app.js"></script>
 </body>

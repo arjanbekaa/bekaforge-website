@@ -1,0 +1,215 @@
+/* Product-surface helpers shared by Banter, Sound/Walla, UI Themes, and native inspectors.
+   Shared tokens and controls live in preview.css. */
+
+.bf-chip {
+  white-space: nowrap;
+}
+
+.pf-window {
+  width: min(1200px, 100%);
+}
+
+/* Shared help box (Unity HelpBox styling) */
+
+.pf-helpbox {
+  padding: 8px 10px;
+  margin: 6px 0 10px;
+  border-radius: 4px;
+  border: 1px solid var(--bf-border, #2a2f45);
+  background: var(--bf-raised, #1a1d28);
+  color: var(--bf-text-secondary, #c8d0e0);
+  font-size: 11px;
+  white-space: pre-wrap;
+}
+
+.pf-helpbox--info {
+  border-left: 3px solid var(--bf-info, #6f8ff2);
+}
+
+.pf-helpbox--warning {
+  border-left: 3px solid var(--bf-warning, #f2c05c);
+}
+
+.pf-helpbox--success {
+  border-left: 3px solid var(--bf-success, #5fd08a);
+}
+
+.pf-helpbox--error {
+  border-left: 3px solid var(--bf-error, #e2695c);
+}
+
+/* Native Unity inspectors (Beka Forge header + variable inspectors) */
+
+.insp-header {
+  padding: 10px;
+  margin-bottom: 8px;
+  background: var(--bf-raised, #1a1d28);
+  border: 1px solid var(--bf-border, #2a2f45);
+  border-radius: 4px;
+}
+
+.insp-header__row {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.insp-header__logo {
+  width: 24px;
+  height: 24px;
+  border-radius: 5px;
+  background: linear-gradient(135deg, #5865f2 0%, #2a2f45 100%);
+  border: 1px solid var(--bf-border-strong, #3d4460);
+  flex: 0 0 auto;
+}
+
+.insp-header__labels {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.insp-header__publisher {
+  color: var(--bf-text-label, #9ba3b8);
+  font-size: 10px;
+  word-wrap: break-word;
+}
+
+.insp-header__title {
+  color: var(--bf-text-primary, #e8ecf4);
+  font-size: 12px;
+  font-weight: 700;
+  word-wrap: break-word;
+}
+
+.insp-header__links {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 4px;
+}
+
+.insp-card {
+  padding: 10px;
+  margin: 8px 0;
+  background: var(--bf-raised, #1a1d28);
+  border: 1px solid var(--bf-border, #2a2f45);
+  border-radius: 5px;
+}
+
+.insp-card__header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.insp-card__title {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--bf-text-primary, #e8ecf4);
+}
+
+.insp-card__actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: wrap;
+  margin-bottom: 6px;
+}
+
+.insp-guid {
+  padding: 2px 6px;
+  background: var(--bf-deep, #0d0f16);
+  border: 1px solid var(--bf-control-border, #828d9f);
+  border-radius: 4px;
+  color: var(--bf-text-secondary, #c8d0e0);
+  font-family: Consolas, "Courier New", monospace;
+  font-size: 10px;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.insp-rtv__editbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: 6px 0;
+}
+
+.insp-rtv__editbar .bf-field {
+  flex: 1 1 auto;
+}
+
+.insp-rtv__search {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--bf-text-label, #9ba3b8);
+  font-size: 10px;
+}
+
+.insp-rtv {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin-top: 6px;
+}
+
+.insp-rtv__row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding: 4px 8px;
+  background: var(--bf-deep, #0d0f16);
+  border: 1px solid var(--bf-divider, #1e2235);
+  border-radius: 4px;
+  font-size: 10px;
+}
+
+.insp-rtv__key {
+  min-width: 170px;
+  color: var(--bf-text-primary, #e8ecf4);
+  font-family: Consolas, "Courier New", monospace;
+}
+
+.insp-rtv__type {
+  min-width: 52px;
+  color: var(--bf-text-label, #9ba3b8);
+}
+
+.insp-rtv__val {
+  min-width: 44px;
+  color: var(--bf-text-secondary, #c8d0e0);
+}
+
+.insp-rtv__startup {
+  min-width: 78px;
+  color: var(--bf-text-subtle, #5c6480);
+}
+
+.insp-rtv__state {
+  padding: 1px 6px;
+  border-radius: 8px;
+  background: var(--bf-elevated, #222636);
+  color: var(--bf-text-label, #9ba3b8);
+}
+
+.insp-rtv__state--changed {
+  background: var(--bf-selection, rgba(88, 101, 242, 0.12));
+  color: #aeb6ff;
+}
+
+.insp-rtv__actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: auto;
+}
+
+.insp-rtv__actions .bf-input {
+  width: 72px;
+}

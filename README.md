@@ -13,7 +13,7 @@ Primary public pages:
 - `roadmap.html` - product-grouped public roadmap
 - `Dialogue Graph System/` - Dialogue Graph System product docs
 - `AI Providers/` - published AI Providers for Unity documentation
-- `Dialogue Graph AI Extension/index.html` - public Coming Soon teaser only
+- `Dialogue Graph AI Extension/index.html` - legacy redirect to the AI authoring guide included in DGS
 
 Shared public product metadata lives in:
 
@@ -29,11 +29,10 @@ When adding or changing product names, descriptions, docs paths, screenshots, or
 
 Current public product areas:
 
-- Dialogue Graph System 3.0.0 - available for $24.99
-- AI Providers for Unity 1.0.0 - available free
-- Dialogue Graph AI Extension - Coming Soon teaser only
+- Dialogue Graph System 4.0.0 - one package containing Core, Banter, Sound/Walla, AI Extension, Camera Controller, and Interaction; documentation is prepared locally and the release is not published
+- AI Providers for Unity 1.0.0 - the only separate package in the DGS lineup; DGS 4.0 AI compatibility is pending publication
 
-The detailed AI Extension pages are retained for future release work but must not be linked from public navigation while the product is Coming Soon. Do not invent store links, video links, prices, release dates, compatibility claims, or feature claims. Use `ProjectDocs` from the source project as the source of truth.
+Keep the DGS 4.0 package as one listing. Do not create individual store listings for included components. Do not state an unverified price, release date, or platform support matrix. The current DGS listing remains linked, but its 4.0 update is pending publication. AI Providers uses its separate listing; do not describe it as free unless that is reverified for the actual listing. Use `ProjectDocs` from the source project as the source of truth.
 
 ## Public reports
 
@@ -48,7 +47,7 @@ node --test tests/site-launch.test.mjs
 node scripts/validate-site.mjs
 ```
 
-The validator checks local links and images, dynamic resource bindings, release statuses, forbidden stale copy, the teaser-only AI boundary, and secret-like public config fields.
+The validator checks local links and images, dynamic resource bindings, the DGS single-package boundary, AI Providers requirements, unpublished 4.0 status wording, forbidden stale copy, and secret-like public config fields.
 
 ## Asset Planning
 

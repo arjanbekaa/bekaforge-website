@@ -18,6 +18,8 @@
       items: [
         { id: "runtime-dialog-flow", label: "Runtime Dialog Flow", href: "modules/runtime-dialog-flow.html", search: "dialog manager runtime traversal autoplay skip actions branch path" },
         { id: "graph-editor", label: "Graph Editor", href: "modules/graph-editor.html", search: "graph editor graphview node views launcher save load undo" },
+        { id: "node-reference", label: "Node Reference · Live", href: "node-reference.html", search: "nodes start end dialogue dialog choice action condition set variable mutation graph jump outcome random branch switch wait wait for camera follow point target move look at shake restore" },
+        { id: "inspector-reference", label: "Inspector Reference · Live", href: "inspector-reference.html", search: "inspector dialog manager graph registry node variable store character text choices audio input voice delivery environment context localization welcome runtime ui categories camera rig target interactable interactor" },
         { id: "import-export", label: "JSON Import and Export", href: "modules/import-export.html", search: "json import export legacy bridge tooling dto importer exporter manual" },
         { id: "settings-system", label: "Settings System", href: "modules/settings-system.html", search: "settings runtime master text choice input audio" },
         { id: "history-and-transcripts", label: "History and Transcripts", href: "modules/history-and-transcripts.html", search: "history backlog transcript branch reconstruction" }
@@ -35,7 +37,13 @@
       title: "Guides",
       items: [
         { id: "creating-a-dialog", label: "Creating a Dialog", href: "guides/creating-a-dialog.html", search: "guide creating dialog authoring graph mapping dialogid" },
-        { id: "integrating-actions", label: "Integrating Actions", href: "guides/integrating-actions.html", search: "guide actions integration runner handlers action nodes" }
+        { id: "banter-setup", label: "Set Up Banter", href: "guides/banter-setup.html", search: "banter ambient npc chatter exchange catalog speakers cooldown setup getting started" },
+        { id: "walla-setup", label: "Set Up Walla and Sound", href: "guides/walla-setup.html", search: "walla sound sequencer ambience layers timeline clips binding audio setup" },
+        { id: "integrating-actions", label: "Integrating Actions", href: "guides/integrating-actions.html", search: "guide actions integration runner handlers action nodes" },
+        { id: "camera-interaction-ui", label: "Camera, Interaction & UI", href: "guides/camera-interaction-ui.html", search: "camera controller interaction interactable interactor runtime ui themes setup step by step" },
+        { id: "ai-generation-workflow", label: "AI Authoring", href: "guides/ai-generation-workflow.html", search: "ai authoring extension provider setup review generated changes" },
+        { id: "screenshots", label: "4.0 Screenshots", href: "4.0/screenshots/index.html", search: "screenshots images editor setup banter walla providers gallery" },
+        { id: "interactive-preview", label: "Interactive Preview", href: "preview/index.html", search: "interactive preview editor windows graph nodes settings example rebuild" }
       ]
     },
     {
@@ -43,7 +51,7 @@
       items: [
         { id: "troubleshooting", label: "Troubleshooting", href: "troubleshooting.html", search: "troubleshooting issues problems setup broken choices transcript json ai" },
         { id: "faq", label: "FAQ", href: "faq.html", search: "faq questions answers runtime editor ui ai" },
-        { id: "changelog", label: "Changelog", href: "changelog.html", search: "changelog release version 3.0 changes" },
+        { id: "changelog", label: "Changelog", href: "changelog.html", search: "changelog release version 4.0 package publication status" },
         { id: "license", label: "License", href: "license.html", search: "license unity asset store eula terms" },
         { id: "support", label: "Support", href: "support.html", search: "support report issue email help" },
         { id: "maintainer-notes", label: "Maintainer Notes", href: "maintainer-notes.html", search: "maintainer notes contributors fragile areas conventions refactor" }
@@ -161,7 +169,10 @@
     const article = document.querySelector("[data-doc-content]");
     if (!host || !article) return;
 
-    const headings = Array.from(article.querySelectorAll("h2, h3"));
+    const headings = Array.from(article.querySelectorAll("h2, h3")).filter((heading) => {
+      const entry = heading.closest(".reference-entry");
+      return !entry || heading === entry.querySelector("h2, h3");
+    });
     if (!headings.length) {
       host.innerHTML = "";
       return;
@@ -169,7 +180,11 @@
 
     headings.forEach((heading) => {
       if (!heading.id) {
-        heading.id = slugify(heading.textContent || "");
+        const base = slugify(heading.textContent || "") || "section";
+        let id = base;
+        let suffix = 2;
+        while (document.getElementById(id)) id = `${base}-${suffix++}`;
+        heading.id = id;
       }
     });
 
@@ -282,8 +297,11 @@
     });
 
     document.addEventListener("keydown", (event) => {
-      if (event.key === "Escape" && !overlay.hasAttribute("hidden")) {
-        closeLightbox();
+      if (overlay.hasAttribute("hidden")) return;
+      if (event.key === "Escape") closeLightbox();
+      if (event.key === "Tab") {
+        event.preventDefault();
+        overlay.querySelector(".image-lightbox__close").focus();
       }
     });
 
@@ -321,6 +339,12 @@
       body.classList.remove("nav-open");
       toggle.setAttribute("aria-expanded", "false");
     });
+    document.addEventListener("keydown", (event) => {
+      if (event.key !== "Escape" || !body.classList.contains("nav-open")) return;
+      body.classList.remove("nav-open");
+      toggle.setAttribute("aria-expanded", "false");
+      toggle.focus();
+    });
   }
 
   function setYear() {
@@ -343,7 +367,7 @@
     btn.href = withBase("../roadmap.html");
     btn.className = "roadmap-header-btn";
     btn.textContent = "Roadmap";
-    // Insert before the back-to-site link so it sits between search and â† BekaForge
+    // Insert before the back-to-site link so it sits between search and navigation.
     const backLink = actions.querySelector(".back-to-site");
     if (backLink) {
       actions.insertBefore(btn, backLink);
@@ -361,4 +385,8 @@
   setYear();
   fadeInPanels();
   renderRoadmapButton();
+  document.querySelector('.topbar input[readonly]')?.closest('.search-wrap')?.remove();
+  import(new URL("../../assets/documentation/live-previews.js", document.currentScript.src).href)
+    .then(({ enhanceLivePreviews }) => enhanceLivePreviews())
+    .catch((error) => console.warn("Live examples are unavailable; use the standalone preview links.", error));
 })();

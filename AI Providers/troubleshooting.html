@@ -32,23 +32,40 @@
         <article class="doc-article" data-doc-content>
           <nav class="breadcrumb"><a href="index.html">Home</a> / <span>Troubleshooting</span></nav>
           <h1>Troubleshooting</h1>
-          <p class="lede">Most provider issues are configuration problems rather than code problems: the wrong endpoint, a missing local key, or using the blocking transport path in the wrong place.</p>
+          <p class="lede">Start at the profile's connection test and diagnostic hint. Check the profile type, model, endpoint, local credential status, and request path before changing code.</p>
 
-          <h2>Common failure buckets</h2>
+          <h2>Profile is not ready or connection test fails</h2>
+          <ol>
+            <li>In <code>Tools &gt; Beka Forge &gt; AI Providers</code>, confirm you selected the intended profile and that its provider type matches the service you are calling.</li>
+            <li>Check <strong>Base URL</strong>, the provider-specific endpoint, and the exact model name. A 404 commonly points to a base URL or endpoint mismatch; a model-not-found response usually means the selected model is unavailable to that account or local server.</li>
+            <li>For an API profile, re-enter the key in the masked local field, save, and test again. A 401/403 usually indicates a rejected key, missing permission, or incompatible authentication mode. Never paste the key into a shared asset or bug report.</li>
+            <li>Check <strong>Test connection</strong> and <strong>Check network</strong> separately. A successful network check does not prove the provider accepted the key, model, or request format.</li>
+            <li>For Custom JSON, compare the configured HTTP method, request body template, and response-text path with the endpoint's current API schema. The response path must point to the actual text field.</li>
+          </ol>
+
+          <h2>Credential is missing after moving or duplicating a profile</h2>
+          <p>Credentials are scoped by project and provider asset GUID. Editing a profile keeps its identity; duplicating it creates a new GUID and a new local credential scope. Store the key again for the duplicate. On platforms where protected OS-backed credential storage is unavailable, the package reports that persistence cannot be used rather than saving plaintext.</p>
+
+          <figure class="preview-embed"><iframe class="preview-embed__frame" data-preview-src="../assets/unity-preview/embed.html?window=ai-providers&amp;surface=profile-duplicate&amp;embed=1" hidden title="Interactive preview of the Duplicate AI profile dialog" loading="lazy"></iframe><figcaption>Interactive preview: <strong>Profiles &gt; Duplicate AI profile</strong>, recreated from the product source. The dialog states that credentials, account state, and connection-test history are not copied; nothing is saved. <a href="../assets/unity-preview/embed.html?window=ai-providers&amp;surface=profile-duplicate">Open the full preview</a>.</figcaption></figure>
+
+          <h2>429, quota, and server errors</h2>
           <ul>
-            <li><strong>HTTP errors</strong>: verify base URL, endpoint, auth header behavior, and model name.</li>
-            <li><strong>Local key mismatch</strong>: duplicating a provider asset creates a new GUID and requires a new local key entry.</li>
-            <li><strong>Ollama offline</strong>: verify the local service is running and the model is pulled.</li>
-            <li><strong>Runtime stalls</strong>: prefer the coroutine request path instead of the blocking editor path.</li>
+            <li><strong>429:</strong> check account quota and rate limits. The service respects provider <code>Retry-After</code> when retrying a transient response, but retries cannot create quota.</li>
+            <li><strong>5xx or timeout:</strong> verify the provider is reachable and try again after checking its status. Adjust timeout/retry settings only when the expected request duration warrants it.</li>
+            <li><strong>400 or parse failure:</strong> inspect the request mode, model support, JSON mode, and Custom JSON response shape. Authentication and malformed-request failures are not treated as transient retry cases.</li>
           </ul>
 
-          <h2>Security reality</h2>
-          <p>Keys are intentionally local and not serialized into asset files, but they are not encrypted at rest. The docs should continue to frame this as convenience storage rather than as hardened credential management.</p>
+          <h2>Runtime request stalls or cannot be cancelled</h2>
+          <p>Do not call obsolete synchronous <code>TrySendPrompt</code> from gameplay code. Use <code>BeginPromptCoroutine</code> and retain its <code>PromptCoroutineHandle</code>; run <code>handle.Coroutine</code> on a live <code>MonoBehaviour</code> and call <code>handle.Cancel()</code> when the request owner is disabled. For asynchronous editor workflows, create a snapshot on the main thread and await <code>SendPromptAsync</code>.</p>
 
-          <h2>Custom JSON caveat</h2>
-          <p>The Custom JSON provider is intentionally flexible and correspondingly less strongly typed. If parsing fails, check the response shape your endpoint actually returns rather than assuming it matches the fallback text extraction rules.</p>
+          <h2>Ollama connection or model errors</h2>
+          <p>Confirm the Ollama service is running at the configured base URL and that the model has been pulled locally. Use <strong>Fetch Models</strong> to check model discovery, then copy the exact model identifier into the selected profile if it is not listed. Streaming uses Ollama NDJSON; check <code>SupportsStreaming</code> before exposing a streaming option.</p>
 
-          <nav class="page-nav" data-prev-next></nav>
+          <h2>Codex or Claude Code profile problems</h2>
+          <p>These are editor-only subscription integrations, not API-key profiles. Install and sign into the corresponding native tool yourself, then use the profile's connection flow. Unity does not collect subscription credentials or reuse subscription tokens as API keys. Use an HTTP/API profile for player builds.</p>
+
+          <h2>Safe diagnostics</h2>
+          <p>Use the provider window's sanitized diagnostics when reporting an issue. Remove prompts or response content that contains private project material, and confirm no API key, account token, or credential appears in the report or screenshot.</p>          <nav class="page-nav" data-prev-next></nav>
         </article>
       </main>
       <aside class="page-toc" data-page-toc></aside>

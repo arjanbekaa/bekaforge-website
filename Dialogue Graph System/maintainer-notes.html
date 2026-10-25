@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
@@ -39,19 +39,22 @@
             <li>hard-coded resource paths</li>
             <li>AI extension assumptions about graph JSON shape</li>
           </ul>
-          <h2>Useful future improvements</h2>
+          <h2>Verification responsibilities</h2>
           <ul>
-            <li>more formal tests around graph traversal and import/export</li>
-            <li>a package-style boundary for the AI extension</li>
-            <li>a documented graph upgrade or migration path if serialized formats evolve</li>
-            <li>reduced reliance on <code>Resources</code> lookups for production integrations</li>
+            <li>Run graph-traversal and import/export regression tests when changing stored graph structure or interchange behavior.</li>
+            <li>Preserve the product boundary: the AI Extension is included with DGS, while AI Providers is separate and required only for AI authoring.</li>
+            <li>Follow the documented schema-upgrade procedure; verify project backup, upgrade report, reference integrity, and rollback checks.</li>
+            <li>Preserve existing <code>Resources.Load</code> paths or provide a deliberate migration with compatibility coverage.</li>
           </ul>
+          <h2>Agent guidance and test ownership</h2>
+          <p>The DGS package includes its coding-agent guide at <code>Assets/DialogGraphSystem/SKILL.md</code>. The separately distributed AI Providers package has its own guide at <code>Assets/Beka Forge/AI Providers/SKILL.md</code>; use the guide for the package you are changing. These files guide development tools and are not runtime setup steps.</p>
+          <p>Development test assemblies are maintained in the source workspace and excluded from customer archives. Run them from their owning source project rather than expecting the test suite in an installed package.</p>
           <nav class="page-nav" data-prev-next></nav>
         </article>
       </main>
       <aside class="page-toc" data-page-toc></aside>
     </div>
-    <footer class="footer"><div class="footer-inner"><span>Dialogue Graph System v3.0.0</span><span>&copy; <span data-current-year></span></span></div></footer>
+    <footer class="footer"><div class="footer-inner"><span>Dialogue Graph System v4.0.0</span><span>&copy; <span data-current-year></span></span></div></footer>
   </div>
   <script src="assets/app.js"></script>
 </body>

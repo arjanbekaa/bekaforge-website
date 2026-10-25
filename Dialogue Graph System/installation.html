@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
@@ -21,66 +21,56 @@
       <aside class="sidebar" id="sidebar"><div class="sidebar-inner" data-sidebar-nav></div></aside>
       <main class="content-shell" id="main-content">
         <article class="doc-article" data-doc-content>
-          <nav class="breadcrumb"><a href="index.html">Home</a> / <span>Installation</span></nav>
-          <h1>Installation</h1>
-          <p class="lede">Use this page when importing the asset into a project or verifying that a scene has the minimum wiring required for runtime playback.</p>
+<nav class="breadcrumb"><a href="index.html">Home</a> / <span>Installation</span></nav>
+<h1>Install Dialogue Graph System 4.0</h1>
+<p class="lede">Install the complete DGS bundle, confirm its Unity dependencies, and open the included scene before building your first dialogue.</p>
 
-          <h2>Unity version</h2>
-          <p>The codebase targets Unity 2021.3 LTS or newer. The project changelog also indicates validation across later LTS/editor versions.</p>
+<div class="callout"><strong>Release status:</strong> these pages describe the prepared 4.0 bundle. The DGS 4.0 release has not been published. Its AI features require AI Providers 2.2.0, which has not been published; the current public listing is 1.0.0 and does not meet that prerequisite. Ordinary dialogue, Banter and Walla do not require AI Providers.</div>
 
-          <h2>Package dependencies</h2>
-          <p>From the current <code>Packages/manifest.json</code>, the key runtime/editor dependencies are <code>com.unity.textmeshpro</code>, <code>com.unity.ugui</code>, and the editor GraphView APIs used in authoring tools.</p>
+<h2>Before you begin</h2>
+<ul>
+  <li>The declared minimum is Unity 6000.3 or newer. The observed DGS 4.0 validation editor is Unity 6000.3.6f1 on Windows; that observation is not a promise of support for every later Unity release.</li>
+  <li>Have a Unity project that can resolve DGS declared package dependencies: <code>com.unity.ugui</code> 2.0.0 and <code>com.unity.nuget.newtonsoft-json</code> 3.2.2. DGS uses TextMesh Pro for its runtime text.</li>
+  <li>Save a copy of your project before importing or upgrading a large asset package.</li>
+</ul>
+<p>DGS product version <strong>4.0.0</strong> and the graph's serialized schema version are separate version numbers. The 4.0 editor manages the current graph schema when you open and save a graph.</p>
 
-          <h2>Scene setup checklist</h2>
-          <ol>
-            <li>Add a <code>DialogManager</code> to the scene.</li>
-            <li>Assign a <code>DialogUIController</code> to <code>DialogManager.uiPanel</code>.</li>
-            <li>Assign an <code>AudioSource</code> if voice or UI audio is required.</li>
-            <li>Add one or more <code>DialogGraph</code> entries in <code>dialogGraphs</code>.</li>
-            <li>Map each graph to a stable <code>dialogID</code>.</li>
-          </ol>
+<h2>Import the DGS bundle</h2>
+<ol>
+  <li>Open the Unity project you want to use.</li>
+  <li>Import Dialogue Graph System from the delivery method supplied for your purchase. If you received a Unity custom package, use <strong>Assets &gt; Import Package &gt; Custom Package…</strong> and select that file. If you received extracted product files, preserve their <code>.meta</code> files and copy the supplied product asset folders while Unity is closed. Resolve required Unity packages through Package Manager; preserve your existing project manifest.</li>
+  <li>Let Unity finish importing and compiling. In Package Manager, resolve the declared UGUI and Newtonsoft JSON dependencies if your delivery method did not install them automatically. TMP Essential Resources are project content and are not included in the DGS asset; import them from the TextMeshPro menu when Unity requests them. Do not add the separate <code>com.unity.textmeshpro</code> shim.</li>
+  <li>In Unity, choose <strong>Window &gt; TextMeshPro &gt; Import TMP Essential Resources</strong> if your project has not imported those resources before. This is a one-time Unity project resource setup, not an extra DGS package.</li>
+</ol>
+<p>The complete delivery has three product roots under <code>Assets/Beka Forge/</code>: <code>Dialogue Graph System</code>, <code>Camera Controller</code>, and <code>Interaction System</code>. Import all three for the bundled sample. Banter, Sound Sequencer, and AI Extension are included in that delivery; only AI Providers is supplied separately.</p>
+<p><strong>Expected result:</strong> the Console has no DGS compilation errors, and the main authoring window opens from <strong>Tools &gt; Beka Forge &gt; Dialogue Graph System &gt; Open Editor</strong>.</p>
+<figure class="screenshot-figure"><img class="screenshot-img" src="4.0/screenshots/clean/dgs-launcher.png" alt="DGS Home shows nine graphs with MarketTutorial selected." loading="lazy" width="1915" height="992"><figcaption>Home lists nine graph assets, with MarketTutorial selected.</figcaption></figure>
 
-          <div class="callout callout-warning">
-            <strong>Common integration miss</strong>
-            <span>If the graph exists but the conversation does not start, the missing piece is often the <code>dialogID</code> mapping on the manager rather than the graph asset itself.</span>
-          </div>
+<h2>Open the included sample</h2>
+<ol>
+  <li>In the Project window, open <code>Assets/Beka Forge/Dialogue Graph System/Samples/2DMarketDemo/Scenes/MarketDemo.unity</code>.</li>
+  <li>Wait for the scene to finish loading, then press <strong>Play</strong>.</li>
+  <li>Use the sample's on-screen instructions. In the current sample, move with WASD or arrow keys, interact with <strong>E</strong>, and advance or choose a dialogue response with <strong>Space</strong> or a click.</li>
+</ol>
+<p><strong>Expected result:</strong> the Market Demo starts in its own scene and dialogue appears in the sample's configured runtime UI. This confirms the included sample setup; it does not replace testing the manager and UI in your own scene.</p><figure class="screenshot-figure"><img class="screenshot-img" src="4.0/screenshots/dungeon-market-runtime.jpg" alt="Dungeon Market sample running with dialogue text and its gameplay HUD" loading="lazy" width="1920" height="1161"><figcaption>The included Market scene combines a dialogue line with its gameplay HUD.</figcaption></figure>
 
-          <h2>Optional runtime pieces</h2>
-          <ul>
-            <li><code>DialogActionRunner</code> if you use action nodes</li>
-            <li><code>DialogueHistory</code> and <code>DialogueHistoryView</code> if you want backlog support</li>
-          </ul>
+<h2>AI package boundary</h2>
+<p>The DGS bundle includes the base Interaction Playground and optional typed Input System adapter. <code>SimpleInteractionDemo</code> is not included in the DGS bundle; use the base Playground as the bundled starting sample. The Core package and ordinary graph authoring/runtime do not require AI Providers. AI Extension is included with the current DGS bundle, but provider-backed AI workflows require the separate <strong>AI Providers 2.2.0</strong> package. Install that package separately when it is available to you. Do not add provider-specific scripting define symbols by hand; the package's dependency-ready gate controls its AI integrations.</p>
 
-          <h2>Global settings asset</h2>
-          <p>The settings runtime loader expects the master settings asset at <code>Resources/DialogSettingsSO/DialogSystemSettings</code>. In this repository, the editor settings window creates and maintains that asset automatically.</p>
-          <p>Open <code>Tools â†’ Dialogue Graph System â†’ Settings</code> to create or verify the master settings asset and its sub-assets.</p>
+<h2>If Unity reports a problem</h2>
+<ul>
+  <li><strong>Missing TextMesh Pro resources:</strong> import TMP Essential Resources from the Window menu above, then reopen the sample.</li>
+  <li><strong>UGUI types are missing:</strong> open Package Manager and resolve the package dependency declared by DGS before recompiling.</li>
+  <li><strong>The menu item is absent:</strong> wait for compilation to finish and check the Console for editor-assembly errors. The menu is <strong>Tools &gt; Beka Forge &gt; Dialogue Graph System &gt; Open Editor</strong>.</li>
+  <li><strong>AI is unavailable:</strong> confirm that the separate AI Providers 2.2.0 package is installed and compiled. Core dialogue authoring and runtime can still be used without it.</li>
+</ul>
 
-          <h2>Input system notes</h2>
-          <p>The code supports legacy input and newer input packages through <code>InputHelper</code>. If you use the new Input System only, make sure the scene EventSystem is configured accordingly.</p>
-
-          <h2>Optional add-ons</h2>
-          <p>Optional AI tooling is documented separately so the DGS installation docs stay focused on the core product. If you are enabling the AI authoring add-on or provider layer, use the dedicated product docs in <a href="../Dialogue Graph AI Extension/index.html">Dialogue Graph AI Extension</a> and <a href="../AI Providers/index.html">AI Providers</a>.</p>
-
-          <h2>Verify your install</h2>
-          <ol>
-            <li>Open <code>Assets/DialogGraphSystem/DemoScenes/DialogueDemo.unity</code>.</li>
-            <li>Enter Play Mode and select any of the three sample graphs from the demo menu.</li>
-            <li>Confirm line reveal, choice display, and skip/autoplay behavior.</li>
-            <li>Open the graph editor via <code>Tools â†’ Dialogue Graph System â†’ Dialogue Graph</code> and load one of the sample graphs from <code>Assets/DialogGraphSystem/Graphs/</code>.</li>
-          </ol>
-
-          <h2>Suggested visuals</h2>
-          <div class="placeholder-grid">
-            <article class="placeholder-card"><h3>DialogManager inspector</h3><img class="screenshot-img" src="assets/images/dialog-manager-inspector.png" alt="Dialog Manager Inspector" loading="lazy"><p>Shows graph mapping, UI panel assignment, and optional runner wiring.</p></article>
-            <article class="placeholder-card"><h3>Settings window</h3><img class="screenshot-img" src="assets/images/settings-text.png" alt="Settings Text" loading="lazy"><p>Shows how the global settings asset is created and managed.</p></article>
-          </div>
-
-          <nav class="page-nav" data-prev-next></nav>
-        </article>
+<nav class="page-nav" data-prev-next></nav>
+</article>
       </main>
       <aside class="page-toc" data-page-toc></aside>
     </div>
-    <footer class="footer"><div class="footer-inner"><span>Dialogue Graph System v3.0.0</span><span>&copy; <span data-current-year></span></span></div></footer>
+    <footer class="footer"><div class="footer-inner"><span>Dialogue Graph System v4.0.0</span><span>&copy; <span data-current-year></span></span></div></footer>
   </div>
   <script src="assets/app.js"></script>
 </body>

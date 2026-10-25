@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
@@ -21,83 +21,67 @@
       <aside class="sidebar" id="sidebar"><div class="sidebar-inner" data-sidebar-nav></div></aside>
       <main class="content-shell" id="main-content">
         <article class="doc-article" data-doc-content>
-          <nav class="breadcrumb"><a href="index.html">Home</a> / <span>Getting Started</span></nav>
-          <h1>Getting Started</h1>
-          <p class="lede">Start here if you want to understand the project quickly, open the right demo scene first, and see how the runtime and editor pieces fit together before integrating anything into your own game.</p>
-          <div class="meta-strip">
-            <span class="meta-chip">Audience: developers and reviewers</span>
-            <span class="meta-chip">Best entry point for first-time readers</span>
-          </div>
+<nav class="breadcrumb"><a href="index.html">Home</a> / <span>Getting Started</span></nav>
+<h1>Getting Started</h1>
+<p class="lede">The shortest route to a working DGS 4.0 dialogue is to open the supplied sample, inspect its graph, then create a small graph of your own.</p>
 
-          <h2>What this project is</h2>
-          <p>Dialog Graph System is a Unity asset with a clear editor/runtime split. Authoring happens in editor-only GraphView tools under <code>Assets/DialogGraphSystem/Scripts/Editor</code>. Playback happens through runtime components under <code>Assets/DialogGraphSystem/Scripts/Runtime</code>.</p>
-          <p>The main runtime coordinator is <code>DialogManager</code>. It reads a <code>DialogGraph</code>, shows lines and choices through <code>DialogUIController</code>, executes optional action nodes through <code>DialogActionRunner</code>, and exposes events for history and game-side integration.</p>
+<h2>1. Open the authoring window</h2>
+<p>In the Unity Editor, choose <strong>Tools &gt; Beka Forge &gt; Dialogue Graph System &gt; Open Editor</strong>. The launcher opens the DGS workspace on <strong>Home</strong>. Use Home to create a graph; the <strong>Graphs</strong> tab is for browsing and opening graph assets.</p>
+<figure class="screenshot-figure"><img class="screenshot-img" src="4.0/screenshots/clean/dgs-launcher.png" alt="DGS Home shows nine graphs with MarketTutorial selected." loading="lazy" width="1915" height="992"><figcaption>Home lists nine graph assets, with MarketTutorial selected.</figcaption></figure>
 
-          <h2>Fastest way to see it running</h2>
-          <ol>
-            <li>Open the project in Unity 2021.3 LTS or newer (verified on Unity 6).</li>
-            <li>Open <code>Assets/DialogGraphSystem/DemoScenes/DialogueDemo.unity</code>.</li>
-            <li>Enter Play Mode.</li>
-            <li>Choose one of the three sample graphs from the demo menu:
-              <ul>
-                <li><strong>Cafe Choices</strong> â€” branching conversation with player choices.</li>
-                <li><strong>Control Room Actions</strong> â€” action nodes and waitable coroutine behavior.</li>
-                <li><strong>Product Tour</strong> â€” linear dialogue with typewriter and portrait effects.</li>
-              </ul>
-            </li>
-          </ol>
+<h2>2. Inspect the supplied sample</h2>
+<p>Open <code>Assets/Beka Forge/Dialogue Graph System/Samples/2DMarketDemo/Scenes/MarketDemo.unity</code> and press Play. Use WASD or the arrow keys to move, E to interact, and Space or a click to advance or select. The sample demonstrates dialogue working with gameplay in a configured Unity scene.</p>
+<p>To inspect its authoring data, select a graph asset in the Project window or open the DGS workspace's <strong>Graphs</strong> view. The sample graphs are under <code>Assets/Beka Forge/Dialogue Graph System/Samples/2DMarketDemo/Graphs</code>.</p><figure class="screenshot-figure"><img class="screenshot-img" src="4.0/screenshots/dungeon-market-runtime.jpg" alt="Dungeon Market sample running with dialogue text and its gameplay HUD" loading="lazy" width="1920" height="1161"><figcaption>The bundled Market sample presents dialogue alongside its gameplay state.</figcaption></figure>
 
-          <div class="callout callout-info">
-            <strong>Read this as two systems</strong>
-            <span>The graph editor is the authoring workflow. The runtime manager and UI bridge are the playback workflow. Most integration issues happen when those responsibilities get blurred.</span>
-          </div>
+<h2>3. Create and open a graph</h2>
+<ol>
+  <li>In the workspace's <strong>Home</strong> view, enter a clear name in the <strong>Name</strong> field.</li>
+  <li>Choose <strong>Create &amp; Open</strong>. The editor creates the graph in <code>Assets/DialogGraphSystem/Graphs</code> by default.</li>
+  <li>In the graph editor, create a <strong>Dialog</strong> node and a <strong>Choice</strong> node from the graph context menu. The editor supplies the Start and End boundary nodes for a graph.</li>
+  <li>Connect the Start output to the Dialog input, then connect the Dialog output to the Choice input. A new Choice starts with one answer row: edit it, then choose <strong>+ Add Option</strong> once for a second answer. Connect each answer output to a follow-up Dialog node or End.</li>
+  <li>Select each Dialog node and fill its speaker and line text. The question belongs in the preceding Dialog line; the Choice card has answer rows, not a prompt field. Edit the answer labels on the Choice card.</li>
+  <li>Choose <strong>Save</strong>. To review graph issues, show the graph sidebar, choose <strong>Validate</strong>, then click <strong>Validate Graph</strong>.</li>
+</ol>
+<figure class="preview-embed"><iframe class="preview-embed__frame" data-preview-src="../assets/unity-preview/embed.html?component=node%3ADialog&amp;embed=1" title="Editable Dialog node example" loading="lazy" hidden></iframe><figcaption>Separate browser example with editable Dialog fields; changes stay in this page. <a href="../assets/unity-preview/embed.html?component=node%3ADialog">Open the full Dialog node preview</a>.</figcaption></figure>
+<figure class="preview-embed"><iframe class="preview-embed__frame" data-preview-src="../assets/unity-preview/embed.html?component=node%3AChoice&amp;embed=1" title="Editable Choice answer rows example" loading="lazy" hidden></iframe><figcaption>Separate browser example with editable answer rows; it is not the graph you are building. <a href="../assets/unity-preview/embed.html?component=node%3AChoice">Open the full Choice node preview</a>.</figcaption></figure>
+<p class="try-it"><strong>Try the browser examples:</strong> in the Dialog example, edit <strong>Speaker</strong> and <strong>Dialog</strong> and see those values update on the card. In the Choice example, change an option's text and choose <strong>+ Add Option</strong>; the new row appears. These sandbox edits never save to Unity.</p>
+<p><strong>Expected result:</strong> the graph asset is saved and the graph sidebar shows validation results for that graph. Browse the <a href="node-reference.html">Node Reference</a> for field and port details, or the <a href="inspector-reference.html">Inspector Reference</a> for asset setup. The <a href="guides/creating-a-dialog.html">create-a-dialog walkthrough</a> explains the same flow with more detail.</p>
+<figure class="preview-embed"><iframe class="preview-embed__frame" data-preview-src="../assets/unity-preview/embed.html?window=dgs&amp;surface=home&amp;embed=1" title="DGS Home graph creation example" loading="lazy" hidden></iframe><figcaption>Sample Home workspace; the browser preview does not create an asset. <a href="../assets/unity-preview/embed.html?window=dgs&amp;surface=home">Open the full Home preview</a>.</figcaption></figure>
+<p class="try-it"><strong>Try the Home example:</strong> enter a graph name in the <strong>Graph name</strong> field and choose <strong>Create &amp; Open</strong>. The preview demonstrates the confirmation flow; it creates no Unity graph.</p>
 
-          <h2>First concepts to understand</h2>
-          <ul>
-            <li><code>DialogGraph</code>: the ScriptableObject that stores node collections and links.</li>
-            <li><code>DialogManager</code>: the runtime state machine that traverses the graph.</li>
-            <li><code>DialogUIController</code>: the bridge used to render lines, portraits, and choices.</li>
-            <li><code>DialogActionRunner</code>: dispatches action nodes to UnityEvents or coroutine handlers.</li>
-            <li><code>DialogueHistory</code>: records shown lines and selected choices for backlog display.</li>
-            <li><code>DialogGraphView</code>: the graph authoring surface built on GraphView.</li>
-          </ul>
 
-          <h2>Minimum runtime setup</h2>
-          <p>You need one <code>DialogManager</code> in the scene, one <code>DialogUIController</code> wired to scene UI, and at least one <code>DialogGraph</code> mapped to a <code>dialogID</code>.</p>
-<pre><code>using DialogSystem.Runtime.Core;
-using UnityEngine;
+<h2>4. Connect the graph to scene setup</h2><p>Use the <a href="inspector-reference.html#dialog-manager">Dialog Manager Inspector reference</a> for its graph registry and scene references. The following Unity steps show how to check the configured scene.</p>
+<ol>
+  <li>Drag <code>Assets/DialogGraphSystem/Resources/Prefabs/DialogueManager.prefab</code> into your scene. Use one manager instance for the dialogue system in that scene.</li>
+  <li>On the manager's <strong>Dialog Manager</strong> component, add an entry under <strong>Dialog Graphs</strong>. Assign your graph asset and enter a unique <strong>Dialog ID</strong>, such as <code>market_intro</code>.</li>
+  <li>Use the manager prefab's assigned runtime UI, or configure a <code>DialogUIManager</code> and its <code>DialogUIController</code> bindings as described in <a href="components/runtime-ui.html">Runtime UI</a>.</li>
+  <li>Add <code>DialogPlayer</code> to a scene object or your menu object. In a UI Button's <strong>On Click ()</strong> list, add that object and select <strong>DialogPlayer &gt; StartDialog (string)</strong>. Enter the same dialog ID as the manager mapping.</li>
+  <li>Enter Play mode and click the button.</li>
+</ol>
+<figure class="preview-embed"><iframe class="preview-embed__frame" data-preview-src="../assets/unity-preview/embed.html?component=inspector%3Adialog-manager&amp;embed=1" title="Dialog Manager graph registry example" loading="lazy" hidden></iframe><figcaption>Example manager references only; no Unity scene is loaded or changed. <a href="../assets/unity-preview/embed.html?component=inspector%3Adialog-manager">Open the full Dialog Manager preview</a>.</figcaption></figure>
+<p class="try-it"><strong>Try the manager example:</strong> expand <strong>Dialogue Graphs</strong>, open its sample graph row, and edit <strong>Dialog ID</strong>. The graph object reference is read-only here; assign your own graph in Unity.</p>
+<p><strong>Expected result:</strong> the mapped graph starts and its lines and choices appear in the dialogue UI. IDs must be non-empty and unique. For direct code launch or callbacks, see the <a href="api/dialog-manager.html">DialogManager API guide</a>.</p>
+<!-- Screenshot slot: dialogue-runtime.png (current 4.0 capture pending from the release owner). -->
 
-public class GuardIntroStarter : MonoBehaviour
-{
-    public void Begin()
-    {
-        DialogManager.Instance.PlayDialogByID("intro_guard");
-    }
-}</code></pre>
+<h2>Included Interaction sample boundary</h2>
+<p>The DGS bundle includes the base Interaction Playground and optional typed Input System adapter. <code>SimpleInteractionDemo</code> is not included in the DGS bundle, so use the base Playground scene as the bundled sample.</p>
 
-          <h2>First realistic flow</h2>
-          <ol>
-            <li>Create a <code>DialogGraph</code> asset in the editor.</li>
-            <li>Add dialog, choice, and optional action nodes.</li>
-            <li>Connect the graph from <code>Start</code> to <code>End</code>.</li>
-            <li>Assign the graph to a <code>dialogID</code> in <code>DialogManager</code>.</li>
-            <li>Call <code>PlayDialogByID</code>.</li>
-            <li>Let the manager drive UI, input, audio, and optional actions.</li>
-            <li>Read history or the rebuilt transcript if you need reporting.</li>
-          </ol>
+<h2>Which packages do I need?</h2>
+<p>Core authoring and runtime work without AI Providers. AI Extension is included in the DGS bundle; its provider-backed workflows need the separate AI Providers 2.2.0 package. Install that package separately when available. You do not need it to build or play ordinary dialogue graphs.</p>
 
-          <h2>Recommended screenshots for this page</h2>
-          <div class="placeholder-grid"><article class="placeholder-card screenshot-card"><h3>Demo scene</h3><img class="screenshot-img" src="assets/images/demo-main-menu.png" alt="Demo scene" loading="lazy"><p>The included demo scene entry point â€” open this first to see a working conversation in Play Mode.</p></article>
-            <article class="placeholder-card"><h3>Runtime dialogue panel</h3><img class="screenshot-img" src="assets/images/runtime-dialog-ui.png" alt="Runtime Dialog Ui" loading="lazy"><p>Shows readers what working looks like in Play Mode.</p></article>
-            <article class="placeholder-card"><h3>Graph editor overview</h3><img class="screenshot-img" src="assets/images/graph-editor-overview.png" alt="Graph Editor Overview" loading="lazy"><p>Helps connect the authoring model to the runtime flow early.</p></article>
-          </div>
-
-          <nav class="page-nav" data-prev-next></nav>
-        </article>
+<h2>Common setup checks</h2>
+<ul>
+  <li>If the menu is missing, finish Unity compilation and check the Console for editor errors.</li>
+  <li>On the graph sidebar’s <strong>Validate</strong> tab, choose <strong>Validate Graph</strong> and review the reported issues. Check each Choice answer’s output connection.</li>
+  <li>If the graph starts but no dialogue UI appears, check the manager's UI references and confirm the scene contains one active manager.</li>
+  <li>If the button does nothing, compare its string parameter exactly with the manager's Dialog ID and check for duplicate IDs.</li>
+</ul>
+<nav class="page-nav" data-prev-next></nav>
+</article>
       </main>
       <aside class="page-toc" data-page-toc></aside>
     </div>
-    <footer class="footer"><div class="footer-inner"><span>Dialogue Graph System v3.0.0</span><span>&copy; <span data-current-year></span></span></div></footer>
+    <footer class="footer"><div class="footer-inner"><span>Dialogue Graph System v4.0.0</span><span>&copy; <span data-current-year></span></span></div></footer>
   </div>
   <script src="assets/app.js"></script>
 </body>
