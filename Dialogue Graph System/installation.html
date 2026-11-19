@@ -25,7 +25,7 @@
 <h1>Install Dialogue Graph System 4.0</h1>
 <p class="lede">Install the complete DGS bundle, confirm its Unity dependencies, and open the included scene before building your first dialogue.</p>
 
-<div class="callout"><strong>Release status:</strong> these pages describe the prepared 4.0 bundle. The DGS 4.0 release has not been published. Its AI features require AI Providers 2.2.0, which has not been published; the current public listing is 1.0.0 and does not meet that prerequisite. Ordinary dialogue, Banter and Walla do not require AI Providers.</div>
+<div class="callout"><strong>Release status.</strong> <a href="https://assetstore.unity.com/packages/tools/gui/dialogue-graph-system-332234">Dialogue Graph System 4.0.0</a> and <a href="https://assetstore.unity.com/packages/tools/ai-ml-integration/ai-providers-for-unity-beka-forge-384482">AI Providers 2.2.0</a> were released on the Unity Asset Store on November 3, 2026. Install AI Providers 2.2.0 for DGS AI features. Dialogue, Banter, and Walla work without it.</div>
 
 <h2>Before you begin</h2>
 <ul>
@@ -58,7 +58,7 @@
 <p>Keep a project backup before updating DGS. Opening a graph does not mean every existing graph must be migrated. When the editor detects missing legacy identity or port metadata, it can show <strong>Upgrade Dialogue Graph</strong>.</p>
 <ol><li>Read the upgrade prompt for the selected graph. Choose <strong>Upgrade With Backup</strong> to keep a graph backup before upgrading, or <strong>Later</strong> to defer the operation.</li><li>After a successful upgrade, review the reported schema, link counts and backup path. Open the graph sidebar, select <strong>Validate</strong>, and run <strong>Validate Graph</strong>.</li><li>Test the conversation and its branches in your own scene before replacing your working project copy. The browser examples do not migrate Unity assets.</li></ol>
 <h2>AI package boundary</h2>
-<p>The DGS bundle includes the base Interaction Playground and optional typed Input System adapter. <code>SimpleInteractionDemo</code> is not included in the DGS bundle; use the base Playground as the bundled starting sample. The Core package and ordinary graph authoring/runtime do not require AI Providers. AI Extension is included with the current DGS bundle, but provider-backed AI workflows require the separate <strong>AI Providers 2.2.0</strong> package. Install that package separately when it is available to you. Do not add provider-specific scripting define symbols by hand; the package's dependency-ready gate controls its AI integrations.</p>
+<p>The DGS bundle includes the base Interaction Playground and optional typed Input System adapter. <code>SimpleInteractionDemo</code> is not included in the DGS bundle; use the base Playground as the bundled starting sample. The Core package and ordinary graph authoring/runtime do not require AI Providers. AI Extension is included with the current DGS bundle, but provider-backed AI workflows require the separate <strong>AI Providers 2.2.0</strong> package. Install that package separately from the Unity Asset Store. Do not add provider-specific scripting define symbols by hand; the package's dependency-ready gate controls its AI integrations.</p>
 
 <h2>If Unity reports a problem</h2>
 <ul>

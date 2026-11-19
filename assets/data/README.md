@@ -11,7 +11,7 @@
 
 The file is downloaded by every page after safe defaults are rendered. If it is missing, malformed, offline, or contains a disallowed URL scheme, the loader keeps its defaults. Never place GitHub tokens, API keys, passwords, webhook secrets, private report data, or other credentials here; GitHub Pages serves this file publicly.
 
-Product names, descriptions, canonical relative docs paths, screenshots, and icons remain in `textresources.js`. Keep that file browser-compatible because this site has no build step. DGS remains prepared and unpublished; publishing website documentation does not publish the Unity asset or change its store listing.
+Product names, descriptions, canonical relative docs paths, screenshots, and icons remain in `textresources.js`. Keep that file browser-compatible because this site has no build step. Keep published versions and release status aligned with the Unity Asset Store listings.
 
 ## Public reports
 

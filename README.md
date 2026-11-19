@@ -29,10 +29,10 @@ When adding or changing product names, descriptions, docs paths, screenshots, or
 
 Current public product areas:
 
-- Dialogue Graph System 4.0.0 - one package containing Core, Banter, Sound/Walla, AI Extension, Camera Controller, and Interaction; documentation is prepared locally and the release is not published
-- AI Providers for Unity 1.0.0 - the only separate package in the DGS lineup; DGS 4.0 AI compatibility is pending publication
+- Dialogue Graph System 4.0.0 - one package containing Core, Banter, Sound/Walla, AI Extension, Camera Controller, and Interaction. Released November 3, 2026.
+- AI Providers for Unity 2.2.0 - the separate package for DGS 4.0 AI features. Released November 3, 2026.
 
-Keep the DGS 4.0 package as one listing. Do not create individual store listings for included components. Do not state an unverified price, release date, or platform support matrix. The current DGS listing remains linked, but its 4.0 update is pending publication. AI Providers uses its separate listing; do not describe it as free unless that is reverified for the actual listing. Use `ProjectDocs` from the source project as the source of truth.
+Keep the DGS 4.0 package as one listing. Do not create individual store listings for included components. Do not state an unverified price, release date, or platform support matrix. AI Providers uses its separate listing; do not describe it as free unless that is reverified for the actual listing. Use `ProjectDocs` from the source project as the source of truth.
 
 ## Public reports
 
@@ -47,7 +47,7 @@ node --test tests/site-launch.test.mjs
 node scripts/validate-site.mjs
 ```
 
-The validator checks local links and images, dynamic resource bindings, the DGS single-package boundary, AI Providers requirements, unpublished 4.0 status wording, forbidden stale copy, and secret-like public config fields.
+The validator checks local links and images, dynamic resource bindings, the DGS single-package boundary, AI Providers requirements, published release metadata, forbidden stale copy, and secret-like public config fields.
 
 ## Asset Planning
 

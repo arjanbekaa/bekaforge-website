@@ -30,11 +30,11 @@ test("public config exposes the DGS 4.0 bundle and separate AI Providers without
   assert.deepEqual(Object.keys(config).sort(), ["documentation", "products", "publisher", "support"]);
   assert.equal(config.products.dialogueGraphSystem.version, "4.0.0");
   assert.equal(config.products.dialogueGraphSystem.price, "");
-  assert.match(config.products.dialogueGraphSystem.status, /not published/i);
+  assert.equal(config.products.dialogueGraphSystem.status, "Available on the Unity Asset Store");
   assert.equal(config.products.dialogueGraphSystem.assetStoreUrl, "https://assetstore.unity.com/packages/tools/gui/dialogue-graph-system-332234");
   assert.equal(config.products.aiProviders.price, "");
-  assert.equal(config.products.aiProviders.version, "1.0.0");
-  assert.match(config.products.aiProviders.status, /Published 1\.0\.0.*unpublished 2\.2\.0.*DGS 4\.0 AI/i);
+  assert.equal(config.products.aiProviders.version, "2.2.0");
+  assert.match(config.products.aiProviders.status, /2\.2\.0 available.*supports DGS 4\.0 AI/i);
   assert.match(config.products.aiProviders.assetStoreUrl, /ai-providers-for-unity-beka-forge-384482$/);
   assert.equal(config.products.aiExtension.status, "Included in DGS 4.0.0");
   assert.equal(config.products.aiExtension.assetStoreUrl, "");
@@ -88,8 +88,13 @@ test("root pages present the approved release matrix", async () => {
   assert.match(home, /data-resource-src="products\.dialogueGraphSystem\.iconPath"/);
   assert.match(home, /\.hero-visual img\s*\{[^}]*object-fit:\s*contain/s);
   assert.match(home, /One complete DGS package/);
-  assert.match(home, /release has not been published/i);
-  assert.match(home, /AI Providers remains a separate package/i);
+  for (const page of [home, docs, roadmap]) {
+    assert.match(page, /href="https:\/\/assetstore\.unity\.com\/packages\/tools\/gui\/dialogue-graph-system-332234"[^>]*>Get DGS 4\.0\.0 on the Asset Store<\/a>/);
+    assert.match(page, /DGS 4\.0\.0|Dialogue Graph System 4\.0\.0/);
+    assert.match(page, /AI Providers 2\.2\.0/);
+    assert.match(page, /November 3, 2026/);
+  }
+  assert.match(home, /AI features require the separate AI Providers 2\.2\.0 package/i);
   assert.doesNotMatch(home, /products\.aiExtension\.(?:assetStoreUrl|docsPath)/);
   assert.match(docs, /Which documentation do you need/);
   assert.match(publicPages, /support\.reportIssueUrl/);
@@ -101,7 +106,7 @@ test("root pages present the approved release matrix", async () => {
   assert.doesNotMatch(docs, /modules\/command-workflows\.html/);
 });
 
-test("DGS public docs consistently describe the prepared 4.0 package", async () => {
+test("DGS public docs consistently describe the released 4.0 package", async () => {
   const files = await htmlFiles("Dialogue Graph System");
   const combined = (await Promise.all(files.map(read))).join("\n");
   const landing = await read("Dialogue Graph System/index.html");
@@ -125,9 +130,8 @@ test("DGS public docs consistently describe the prepared 4.0 package", async () 
   );
   assert.match(combined, /Core, Banter, Sound\/Walla, AI Extension, Camera Controller, and Interaction/);
   assert.match(combined, /AI Providers remains the only separate package/i);
-  assert.match(combined, /AI Providers 2\.2\.0, which has not been published/i);
-  assert.match(combined, /current public listing is 1\.0\.0 and does not meet that prerequisite/i);
-  assert.match(combined, /release has not been published/i);
+  assert.match(combined, /Install AI Providers 2\.2\.0 for DGS AI features/i);
+  assert.match(combined, /Dialogue Graph System 4\.0\.0 was released on November 3, 2026/i);
   assert.doesNotMatch(combined, /Dialogue Graph System 3\.0|\$24\.99|AI Extension is a separate product/i);
   assert.doesNotMatch(combined, /fed to the AI extension|shipped AI extension/i);
 });
@@ -167,9 +171,8 @@ test("AI Providers has one separate listing and the old AI Extension URL redirec
   const providers = await read("AI Providers/index.html");
   const extension = await read("Dialogue Graph AI Extension/index.html");
 
-  assert.match(providers, /Separate package/);
-  assert.match(providers, /DGS 4\.0 integration requires the separate 2\.2\.0 update/i);
-  assert.match(providers, /not yet published|unpublished/i);
+  assert.match(providers, /AI Providers 2\.2\.0 · Available on the Unity Asset Store/);
+  assert.match(providers, /DGS 4\.0 AI authoring requires this separate package/i);
   assert.match(providers, /products\.aiProviders\.assetStoreUrl/);
   assert.match(providers, /ai-providers-for-unity-beka-forge-384482/);
   assert.doesNotMatch(providers, /Available Free|Get free on Asset Store/i);

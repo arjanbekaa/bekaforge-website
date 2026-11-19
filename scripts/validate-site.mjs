@@ -160,16 +160,16 @@ function validateConfig(config) {
   }
 
   if (config.products?.dialogueGraphSystem?.version !== "4.0.0") {
-    errors.push("Dialogue Graph System must identify the prepared 4.0.0 documentation.");
+    errors.push("Dialogue Graph System must use its published 4.0.0 version.");
   }
-  if (config.products?.dialogueGraphSystem?.price !== "" || !/not published/i.test(config.products?.dialogueGraphSystem?.status || "")) {
-    errors.push("DGS 4.0 must not claim a price or publication before release.");
+  if (config.products?.dialogueGraphSystem?.price !== "" || config.products?.dialogueGraphSystem?.status !== "Available on the Unity Asset Store") {
+    errors.push("DGS 4.0 must show its Asset Store availability without embedding a price.");
   }
   if (config.products?.dialogueGraphSystem?.assetStoreUrl !== "https://assetstore.unity.com/packages/tools/gui/dialogue-graph-system-332234") {
     errors.push("DGS must keep the verified current single Asset Store listing URL.");
   }
-  if (!/published 1\.0\.0.*unpublished 2\.2\.0.*DGS 4\.0 AI/i.test(config.products?.aiProviders?.status || "") || config.products?.aiProviders?.version !== "1.0.0" || config.products?.aiProviders?.price !== "") {
-    errors.push("AI Providers must distinguish its published 1.0.0 listing from pending DGS 4.0 compatibility.");
+  if (!/^2\.2\.0 available.*supports DGS 4\.0 AI$/i.test(config.products?.aiProviders?.status || "") || config.products?.aiProviders?.version !== "2.2.0" || config.products?.aiProviders?.price !== "") {
+    errors.push("AI Providers must show its published 2.2.0 version and DGS 4.0 AI compatibility without embedding a price.");
   }
   if (!/\/packages\/tools\/ai-ml-integration\/ai-providers-for-unity-beka-forge-384482\/?$/.test(config.products?.aiProviders?.assetStoreUrl || "")) {
     errors.push("AI Providers must use its current verified Asset Store listing URL.");
@@ -229,6 +229,13 @@ for (const [key, value] of resourcePaths) {
 
 const config = JSON.parse(await readFile(path.join(projectRoot, "assets/data/site-config.json"), "utf8"));
 validateConfig(config);
+for (const product of ["dialogueGraphSystem", "aiProviders"]) {
+  for (const key of ["version", "status", "assetStoreUrl"]) {
+    if (resources.products[product][key] !== config.products?.[product]?.[key]) {
+      errors.push(`${product}.${key} differs between browser defaults and public config.`);
+    }
+  }
+}
 
 const publicFiles = htmlFiles.filter((file) => {
   const relative = display(file);
@@ -248,6 +255,7 @@ const dgsSetupPages = [
 ].map((page) => htmlSources.get(path.join(projectRoot, "Dialogue Graph System", page)) || "").join("\n");
 const stalePatterns = [
   /store link pending/i,
+  /Current DGS 3\.0 listing|publication (?:is |remains )?pending|unpublished|(?:has|have) not been published|release not published|release candidate/i,
   /public asset placeholders/i,
   /own public folder/i,
   /Dialogue Graph System v2\.0\.0/i,
@@ -275,7 +283,7 @@ if (!/TMP Essential Resources.*not included/i.test(dgsSetupPages) || !/Do not ad
   errors.push("Current DGS setup pages must explain TMP Essentials and reject the separate TextMeshPro shim.");
 }
 if (!/Samples\/2DMarketDemo\/Scenes\/MarketDemo\.unity/i.test(dgsSetupPages)) {
-  errors.push("Current DGS setup pages must point to the sample scene present in the prepared bundle.");
+  errors.push("Current DGS setup pages must point to the sample scene present in the 4.0 bundle.");
 }
 if (/Tools\s*(?:â†|&gt;)\s*Dialogue Graph System|DemoScenes\/DialogueDemo\.unity|3 playable graphs/i.test(dgsSetupPages)) {
   errors.push("Current DGS setup pages contain an obsolete menu, demo path, or sample count.");

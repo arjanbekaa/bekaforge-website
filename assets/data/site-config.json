@@ -33,7 +33,7 @@
   },
   "products": {
     "dialogueGraphSystem": {
-      "status": "4.0 documentation prepared · release not published",
+      "status": "Available on the Unity Asset Store",
       "price": "",
       "version": "4.0.0",
       "assetStoreUrl": "https://assetstore.unity.com/packages/tools/gui/dialogue-graph-system-332234",
@@ -44,9 +44,9 @@
       "changelogUrl": "https://bekaforge.com/Dialogue%20Graph%20System/changelog.html"
     },
     "aiProviders": {
-      "status": "Published 1.0.0 · requires unpublished 2.2.0 for DGS 4.0 AI",
+      "status": "2.2.0 available · supports DGS 4.0 AI",
       "price": "",
-      "version": "1.0.0",
+      "version": "2.2.0",
       "assetStoreUrl": "https://assetstore.unity.com/packages/tools/ai-ml-integration/ai-providers-for-unity-beka-forge-384482",
       "youtubeUrl": "",
       "docsPath": "AI Providers/index.html",
